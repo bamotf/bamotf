@@ -1,0 +1,35 @@
+{
+  "name": "cli",
+  "version": "0.0.1",
+  "description": "",
+  "bin": "./bin/cli.js",
+  "files": [
+    "bin/*.js"
+  ],
+  "scripts": {
+    "dev": "pnpm build --watch",
+    "build": "tsup",
+    "lint": "eslint *.ts*",
+    "typecheck": "tsc",
+    "test": "vitest run"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@cashier/cashier": "workspace:*",
+    "@clack/prompts": "^0.6.3",
+    "cac": "^6.7.14",
+    "picocolors": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/async": "^3.2.18",
+    "@types/node": "^17.0.12",
+    "eslint": "^8.37.0",
+    "eslint-config-custom": "workspace:*",
+    "tsconfig": "workspace:*",
+    "tsup": "^6.7.0",
+    "typescript": "^5.0.3",
+    "vitest": "^0.29.8"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "extends": "tsconfig/base.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "isolatedModules": false,
+    "target": "ESNext",
+    "downlevelIteration": true,
+    "preserveWatchOutput": true,
+    "noEmit": true
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules"]
+}
