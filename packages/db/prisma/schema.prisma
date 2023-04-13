@@ -1,0 +1,27 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./client"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model PaymentIntent {
+  id             String   @id @default(cuid())
+  amount         BigInt /// In sats
+  amountReceived BigInt   @default(0) /// In sats
+  // canceledAt DateTime?
+  // cancellationReason String?
+  // customer  String?
+  // description String?
+  // metadata Json?
+  // receiptEmail String?
+  status         String   @default("CONFIRMING")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
