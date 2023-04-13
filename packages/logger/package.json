@@ -1,0 +1,22 @@
+{
+  "name": "logger",
+  "private": true,
+  "version": "0.0.0",
+  "sideEffects": false,
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc -b"
+  },
+  "dependencies": {
+    "picocolors": "^1.0.0",
+    "winston": "^3.8.2"
+  },
+  "devDependencies": {
+    "eslint": "8.38.0",
+    "eslint-config-custom": "workspace:*",
+    "tsconfig": "workspace:*",
+    "typescript": "4.9.5"
+  }
+}
