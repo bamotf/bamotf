@@ -1,4 +1,4 @@
-# Cashier - A zero-config Bitcoin payment processor
+# Cashier - A zero-config Bitcoin payment gateway
 
 What devs need to know:
 
@@ -9,7 +9,9 @@ What we need:
 
 - [-] Bitcoin Core
 - [ ] API Interface
-  - [ ] Criar um Payment Intent
+  - [x] Criar um Payment Intent
+    - [ ] Adicionar o endereco no bitcoin core
+    - [ ] Adicioinar a tarefa numa queue para checar se o payment foi recebido
   - [ ] Verificar o status de um Payment Intent
 - [ ] Quirrel
 - [ ] Redis
