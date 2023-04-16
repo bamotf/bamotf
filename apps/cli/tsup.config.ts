@@ -1,8 +1,8 @@
-import { defineConfig } from "tsup";
+import {defineConfig} from 'tsup'
 
 export default defineConfig({
-  format: "cjs",
+  format: 'cjs',
   entry: {
-    cli: "src/cli.ts",
+    cli: 'src/cli.ts',
   },
-});
+})

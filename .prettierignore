@@ -13,6 +13,6 @@ pnpm-lock.yaml
 # Storybook
 storybook-static
 
+# Db 
+packages/db/prisma/client
 
-# Codemod 
-apps/codemod/transforms/__testfixtures__/*
