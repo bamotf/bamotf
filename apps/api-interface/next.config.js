@@ -1,3 +1,4 @@
+require('./scripts/load-env-vars')
 const {PrismaPlugin} = require('@prisma/nextjs-monorepo-workaround-plugin')
 
 module.exports = {

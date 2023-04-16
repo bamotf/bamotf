@@ -1,3 +1,4 @@
+import './scripts/load-env-vars'
 import {defineConfig} from 'vitest/config'
 
 export default defineConfig({
