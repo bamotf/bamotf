@@ -1,0 +1,45 @@
+version: "3.8"
+services:
+  bitcoin-core:
+    image: btcpayserver/bitcoin:24.0.1 # doesn't have a latest tag 😕
+    environment:
+      - BITCOIN_NETWORK=regtest
+      - |
+        BITCOIN_EXTRA_ARGS=
+        rpcuser=username
+        rpcpassword=password
+        rpcbind=0.0.0.0
+        debug=http
+        rpcallowip=0.0.0.0/0
+      # server=1
+      # rpcport=8332
+    ports:
+      - "8332:8332" # RPC
+      - "8333:8333" # bitcoin clients
+      # - "8334:8334" # Tor connections
+      - "18443:18443" # ???
+      - "18444:18444" # ???
+      # - "18445:18445" # ???
+    volumes:
+      - ./docker/server/data:/data
+
+  # quirrel:
+  #   image: ghcr.io/quirrel-dev/quirrel:sha-855909d
+
+  # cashier:
+  #   build:
+  #     context: .
+  #     dockerfile: ./docker/server/Dockerfile
+  #   environment:
+  #     - API_KEY
+  #   ports:
+  #     - "2345:2345"
+# depends_on:
+#       - db
+
+# bitcoin-cli getdescriptorinfo "addr(bcrt1qkg5kdqcxlzecaqws4ha80d2twttle869z0ugjv)"
+# bitcoin-cli -rpcwallet=descwallet importdescriptors '[{ "desc": "addr(bcrt1qkg5kdqcxlzecaqws4ha80d2twttle869z0ugjv)#ffhyxaga", "timestamp":1455191478, "internal": true }]'
+
+# Lista transacoes (posso usar isso para ver se a transacao foi confirmada e se o valor necessario foi recebido)
+# bitcoin-cli -rpcwallet=descwallet listunspent 6 9999999 "[\"bcrt1qkg5kdqcxlzecaqws4ha80d2twttle869z0ugjv\"]"
+

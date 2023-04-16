@@ -1,17 +1,17 @@
-import winston from "winston";
-import format from "picocolors";
+import winston from 'winston'
+import format from 'chalk'
 
 // Create a Winston logger - passing in the Logtail transport
 const logger = winston.createLogger({
-  level: process.env.LOG_LEVEL || "info",
+  level: process.env.LOG_LEVEL || 'info',
   transports: [
     new winston.transports.Console({
       format: winston.format.simple(),
     }),
   ],
-});
+})
 
-if (process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV === 'production') {
   // If we're in production, we'll want to send our logs to an external service
   // like Logtail or Datadog. To do that, we'll need to install the transport
   // and create a client.
@@ -31,4 +31,4 @@ export {
    * A terminal output formatting with ANSI colors
    */
   format,
-};
+}

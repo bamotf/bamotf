@@ -13,7 +13,6 @@
     "prisma": "dotenv -e ../../.env -- prisma"
   },
   "dependencies": {
-    ".prisma/client": "link:prisma/client",
     "@prisma/client": "^4.12.0",
     "logger": "workspace:*"
   },
