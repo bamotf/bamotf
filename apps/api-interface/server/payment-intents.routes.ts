@@ -3,12 +3,41 @@ import {contract} from './contract'
 import {prisma} from 'db'
 
 export const paymentIntentsRouter = createNextRoute(contract.paymentIntents, {
-  createPaymentIntent: async args => {
-    const {amount} = args.body
+  create: async args => {
+    let address: string
+
+    if ('address' in args.body) {
+      address = args.body.address
+    } else if ('account' in args.body) {
+      const {account: extendedPublicKey} = args.body
+      // saves the account in the database and gets what is going to be the next derivation path
+      const account = await prisma.account.upsert({
+        where: {extendedPublicKey},
+        update: {},
+        create: {
+          extendedPublicKey,
+        },
+        include: {
+          _count: {
+            select: {
+              PaymentIntent: true,
+            },
+          },
+        },
+      })
+
+      // derive next address from extended public key
+      // TODO: use BIP44 path
+      address = '123'
+    } else {
+      throw new Error('Invalid request body, missing address or account.')
+    }
 
     const pi = await prisma.paymentIntent.create({
       data: {
-        amount,
+        amount: args.body.amount,
+        description: args.body.description,
+        address,
       },
     })
 
@@ -18,7 +47,7 @@ export const paymentIntentsRouter = createNextRoute(contract.paymentIntents, {
     }
   },
 
-  listAllPaymentIntents: async () => {
+  list: async () => {
     const [paymentIntents, total] = await Promise.all([
       prisma.paymentIntent.findMany(),
       prisma.paymentIntent.count(),
@@ -33,7 +62,7 @@ export const paymentIntentsRouter = createNextRoute(contract.paymentIntents, {
     }
   },
 
-  getPaymentIntent: async args => {
+  retrieve: async args => {
     const {id} = args.params
 
     const pi = await prisma.paymentIntent.findUniqueOrThrow({
@@ -46,13 +75,12 @@ export const paymentIntentsRouter = createNextRoute(contract.paymentIntents, {
     }
   },
 
-  updatePaymentIntent: async args => {
+  update: async args => {
     const {id} = args.params
-    const {amount} = args.body
 
     const pi = await prisma.paymentIntent.update({
       where: {id},
-      data: {amount},
+      data: args.body,
     })
 
     return {
@@ -61,12 +89,13 @@ export const paymentIntentsRouter = createNextRoute(contract.paymentIntents, {
     }
   },
 
-  cancelPaymentIntent: async args => {
+  cancel: async args => {
     const {id} = args.params
+    const {cancellationReason} = args.body
 
     const pi = await prisma.paymentIntent.update({
       where: {id},
-      data: {status: 'CANCELLED'},
+      data: {status: 'CANCELLED', cancellationReason},
     })
 
     return {

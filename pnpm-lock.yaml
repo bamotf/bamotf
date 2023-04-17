@@ -204,6 +204,10 @@ importers:
         version: 4.9.5
 
   packages/cashier-node:
+    dependencies:
+      '@ts-rest/core':
+        specifier: ^3.19.0
+        version: 3.19.0(zod@3.21.4)
     devDependencies:
       '@types/react':
         specifier: ^18.0.17
@@ -211,12 +215,24 @@ importers:
       '@types/react-dom':
         specifier: ^18.0.6
         version: 18.0.7
+      api-interface:
+        specifier: workspace:*
+        version: link:../../apps/api-interface
+      db:
+        specifier: workspace:*
+        version: link:../db
       eslint:
         specifier: ^7.32.0
         version: 7.32.0
       eslint-config-custom:
         specifier: workspace:*
         version: link:../eslint-config-custom
+      logger:
+        specifier: workspace:*
+        version: link:../logger
+      msw:
+        specifier: ^1.2.1
+        version: 1.2.1(typescript@4.9.5)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -226,6 +242,9 @@ importers:
       typescript:
         specifier: 4.9.5
         version: 4.9.5
+      vitest:
+        specifier: ^0.30.1
+        version: 0.30.1
 
   packages/db:
     dependencies:

@@ -5,7 +5,7 @@ import {describe, afterAll, test, expect} from 'vitest'
 
 import supertest from 'supertest'
 import {server} from '../tests/server'
-import {PaymentIntentSchema} from './payment-intents.schemas'
+import {PaymentIntentSchema} from './schemas/payment-intent.schema'
 
 const request = supertest(server)
 
