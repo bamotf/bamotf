@@ -9,6 +9,12 @@
     "lint": {
       "outputs": []
     },
+    "typecheck": {
+      "outputs": []
+    },
+    "test:integration": {
+      "outputs": []
+    },
     "dev": {
       "cache": false
     }

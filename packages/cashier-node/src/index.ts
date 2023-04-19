@@ -5,7 +5,7 @@
 import {initClient} from '@ts-rest/core'
 import {contract} from 'api-interface/server/contract'
 import type {InitClientReturn} from '@ts-rest/core'
-import type {} from 'db'
+export type {PaymentIntent} from 'db'
 
 type APIClient = InitClientReturn<
   typeof contract,

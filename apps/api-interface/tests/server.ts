@@ -1,6 +1,12 @@
 /**
  * This file is used to run the Next.js API routes in a Node.js environment
  * so that we can test them with Vitest during our integration tests.
+ *
+ * It is based on the following npm package:
+ * https://www.npmjs.com/package/next-test-api-routes
+ *
+ * The original package is not compatible with Next.js 13, so we had to
+ * make some changes to make it work.
  */
 
 import {beforeAll} from 'vitest'

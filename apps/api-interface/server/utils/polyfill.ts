@@ -1,13 +1,19 @@
 /**
- * Polyfill BigInt to string form in JSON.stringify
+ * Polyfill BigInt to string form in JSON.stringify as a number
  */
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 interface BigInt {
   /** Convert to BigInt to string form in JSON.stringify */
   toJSON: () => number
 }
 
 BigInt.prototype.toJSON = function () {
-  return Number(this)
+  if (
+    (this as bigint) >= BigInt(Number.MIN_SAFE_INTEGER) &&
+    (this as bigint) <= BigInt(Number.MAX_SAFE_INTEGER)
+  ) {
+    return Number(this)
+  }
+
+  throw new TypeError('Do not know how to serialize a BigInt')
 }

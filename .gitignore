@@ -35,3 +35,5 @@ yarn-error.log*
 
 # Docker
 docker/*/data
+
+tsconfig.tsbuildinfo

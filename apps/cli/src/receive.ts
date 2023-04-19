@@ -31,10 +31,14 @@ export async function receive(options: ReceiveOptions) {
     address,
   })
 
+  if (pi.status !== 200) {
+    return cancel('Failed to create payment intent')
+  }
+
   const s = spinner()
   s.start('Waiting payment confirmation')
 
-  await waitPaymentConfirmation(pi.id)
+  await waitPaymentConfirmation(pi.body.id)
 
   s.stop('Payment confirmed')
 
@@ -51,13 +55,11 @@ async function waitPaymentConfirmation(id: string): Promise<PaymentIntent> {
   await sleep(1000)
 
   const pi = await cashier.paymentIntents.retrieve(id)
-  if (!pi) {
-    return waitPaymentConfirmation(id)
+  if (pi.status === 200 && pi.body.status === 'confirmed') {
+    return Promise.resolve(pi.body)
   }
 
-  return {
-    id,
-  }
+  return waitPaymentConfirmation(id)
 }
 
 /**
@@ -68,7 +70,7 @@ async function waitPaymentConfirmation(id: string): Promise<PaymentIntent> {
 async function getAmount(options: Pick<ReceiveOptions, 'amount'>) {
   // TODO: Validate here
   if (options.amount) {
-    return options.amount
+    return Number(options.amount)
   }
 
   const amount = await text({
@@ -77,6 +79,11 @@ async function getAmount(options: Pick<ReceiveOptions, 'amount'>) {
     validate: value => {
       // TODO: Validate here
       if (value.length === 0) return `Value is required!`
+      try {
+        if (Number(value) < 1) throw new Error('Amount is too low')
+      } catch (error) {
+        return `Invalid amount`
+      }
     },
   })
 
@@ -85,7 +92,7 @@ async function getAmount(options: Pick<ReceiveOptions, 'amount'>) {
     return process.exit(0)
   }
 
-  return amount
+  return Number(amount)
 }
 
 async function getAddress(options: Pick<ReceiveOptions, 'address'>) {

@@ -1,4 +1,4 @@
-import Cashier from '@cashier/cashier'
+import {Cashier} from '@cashier/cashier'
 
 const cashier = new Cashier('API_KEY', {
   //   maxNetworkRetries: 1,

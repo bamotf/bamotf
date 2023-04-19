@@ -5,6 +5,7 @@ import {prisma} from 'db'
 export const paymentIntentsRouter = createNextRoute(contract.paymentIntents, {
   create: async args => {
     let address: string
+    let accountId: string | null = null
 
     if ('address' in args.body) {
       address = args.body.address
@@ -29,6 +30,7 @@ export const paymentIntentsRouter = createNextRoute(contract.paymentIntents, {
       // derive next address from extended public key
       // TODO: use BIP44 path
       address = '123'
+      accountId = account.id
     } else {
       throw new Error('Invalid request body, missing address or account.')
     }
@@ -38,6 +40,7 @@ export const paymentIntentsRouter = createNextRoute(contract.paymentIntents, {
         amount: args.body.amount,
         description: args.body.description,
         address,
+        accountId,
       },
     })
 

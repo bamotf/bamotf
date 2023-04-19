@@ -4,6 +4,7 @@
   "exclude": ["node_modules"],
   "compilerOptions": {
     "baseUrl": ".",
+    "isolatedModules": false, // This is required because polyfill BigInt :/
     "paths": {
       "~/*": ["./*"]
     }

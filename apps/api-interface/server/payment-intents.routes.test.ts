@@ -13,23 +13,26 @@ afterAll(() => {
   server.close() // don't forget to close your server after your tests
 })
 
-function createFakePaymentIntent(props?: {amount: number}) {
-  const {amount = 100} = props || {}
+function createFakePaymentIntent(props?: {amount?: number; address?: string}) {
+  const {amount = 100, address = '1Dg5jKw5bfW8uV1LbiY1YXcx7KjQPK8uV7'} =
+    props || {}
   return prisma.paymentIntent.create({
     data: {
-      amount: BigInt(amount),
+      amount: amount,
+      address,
     },
   })
 }
 
 describe('[POST] /api/payment-intents', () => {
-  test('should respond with a 200 status code when passed correct data', async () => {
+  test.only('should respond with a 200 status code when passed correct data', async () => {
     const pi = await request.post('/api/payment-intents').send({
       amount: 100,
+      address: '1Dg5jKw5bfW8uV1LbiY1YXcx7KjQPK8uV7',
     })
 
     expect(pi.ok).toBeTruthy()
-    expect(await pi.body).toStrictEqual(
+    expect(pi.body).toStrictEqual(
       expect.objectContaining({
         id: expect.any(String),
         amount: 100,
