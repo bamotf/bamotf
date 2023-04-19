@@ -12,7 +12,7 @@
     "lint": "turbo lint",
     "test:integration": "turbo test:integration",
     "typecheck": "turbo typecheck",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "format": "prettier --write \"**/*.{js,ts,tsx,md}\"",
     "prisma": "cd packages/db && pnpm prisma",
     "prepare": "node ./scripts/prepare.js"
   },

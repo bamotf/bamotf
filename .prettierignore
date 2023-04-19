@@ -14,5 +14,9 @@ pnpm-lock.yaml
 storybook-static
 
 # Db 
-packages/db/prisma/client
+**/prisma/client
+
+# Next.js build output
+**/.next/**
+
 
