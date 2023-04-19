@@ -25,7 +25,7 @@ function createFakePaymentIntent(props?: {amount?: number; address?: string}) {
 }
 
 describe('[POST] /api/payment-intents', () => {
-  test.only('should respond with a 200 status code when passed correct data', async () => {
+  test('should respond with a 200 status code when passed correct data', async () => {
     const pi = await request.post('/api/payment-intents').send({
       amount: 100,
       address: '1Dg5jKw5bfW8uV1LbiY1YXcx7KjQPK8uV7',
@@ -124,7 +124,7 @@ describe('[POST] /api/payment-intents/:id/cancel', () => {
     const {id} = await createFakePaymentIntent()
 
     // Cancel the payment intent
-    const pi = await request.post(`/api/payment-intents/${id}/cancel`)
+    const pi = await request.post(`/api/payment-intents/${id}/cancel`).send({})
 
     // Check that the response is correct
     expect(pi.ok).toBeTruthy()
