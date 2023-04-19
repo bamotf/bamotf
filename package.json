@@ -13,10 +13,12 @@
     "test:integration": "turbo test:integration",
     "typecheck": "turbo typecheck",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "prisma": "cd packages/db && pnpm prisma"
+    "prisma": "cd packages/db && pnpm prisma",
+    "prepare": "node ./scripts/prepare.js"
   },
   "devDependencies": {
     "eslint-config-custom": "workspace:*",
+    "husky": "^8.0.3",
     "prettier": "latest",
     "turbo": "latest"
   },
