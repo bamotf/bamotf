@@ -10,6 +10,7 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
+    "test:unit": "turbo test:unit",
     "test:integration": "turbo test:integration",
     "typecheck": "turbo typecheck",
     "format": "prettier --write \"**/*.{js,ts,tsx,md}\"",

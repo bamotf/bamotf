@@ -16,6 +16,9 @@
     "test:integration": {
       "outputs": []
     },
+    "test:unit": {
+      "outputs": []
+    },
     "dev": {
       "cache": false
     }
