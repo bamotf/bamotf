@@ -7,6 +7,7 @@ interface BigInt {
   toJSON: () => number
 }
 
+// @ts-expect-error - 😢 I had to...
 BigInt.prototype.toJSON = function () {
   if (
     (this as bigint) >= BigInt(Number.MIN_SAFE_INTEGER) &&
@@ -17,3 +18,5 @@ BigInt.prototype.toJSON = function () {
 
   throw new TypeError('Do not know how to serialize a BigInt')
 }
+
+export {}

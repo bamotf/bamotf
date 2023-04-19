@@ -3,6 +3,9 @@
   "globalEnv": ["LOG_LEVEL", "NODE_ENV"],
   "globalDependencies": ["**/.env.*local"],
   "pipeline": {
+    "dev": {
+      "cache": false
+    },
     "build": {
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
@@ -19,8 +22,9 @@
     "test:unit": {
       "outputs": []
     },
-    "dev": {
-      "cache": false
+    "test:e2e": {
+      "env": ["CI"],
+      "outputs": []
     }
   }
 }

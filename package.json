@@ -12,6 +12,7 @@
     "lint": "turbo lint",
     "test:unit": "turbo test:unit",
     "test:integration": "turbo test:integration",
+    "test:e2e": "turbo test:e2e",
     "typecheck": "turbo typecheck",
     "format": "prettier --write \"**/*.{js,ts,tsx,md}\"",
     "prisma": "cd packages/db && pnpm prisma",
