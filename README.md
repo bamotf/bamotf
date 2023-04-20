@@ -1,5 +1,17 @@
 # Cashier - A zero-config Bitcoin payment gateway
 
+Tools
+
+- [x] Format
+- [x] Lint
+- [x] Typescript
+- [x] Unit Test
+- [x] Integration Test
+- [x] e2e Test
+- [ ] Debug tests
+- [ ] CI main
+- [ ] CI release
+
 What devs need to know:
 
 - [-] Developer API
