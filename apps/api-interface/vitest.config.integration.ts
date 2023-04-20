@@ -1,8 +1,9 @@
 import './scripts/load-env-vars'
-import {defineConfig} from 'vitest/config'
+import {defineProject} from 'vitest/config'
 
-export default defineConfig({
+export default defineProject({
   test: {
+    name: 'api-interface:integration',
     include: ['server/**/*.routes.test.ts'],
 
     // This is extremely important because our integration tests will be

@@ -4,6 +4,7 @@
   "globalDependencies": ["**/.env.*local"],
   "pipeline": {
     "dev": {
+      "persistent": true,
       "cache": false
     },
     "build": {
@@ -16,10 +17,7 @@
     "typecheck": {
       "outputs": []
     },
-    "test:integration": {
-      "outputs": []
-    },
-    "test:unit": {
+    "//#test:vitest": {
       "outputs": []
     },
     "test:e2e": {

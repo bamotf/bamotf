@@ -9,14 +9,16 @@
  * make some changes to make it work.
  */
 
-import {beforeAll} from 'vitest'
+import {beforeAll, afterAll} from 'vitest'
 import http, {RequestListener} from 'http'
 import {globSync} from 'glob'
 import path from 'path'
 import fs from 'fs'
 import {apiResolver} from 'next/dist/server/api-utils/node'
+import supertest from 'supertest'
 
-const rootPath = path.resolve('.')
+const rootPath = path.resolve(__dirname, '..')
+
 const nextPagesDirectory = fs.existsSync(`${rootPath}/pages`)
   ? `${rootPath}/pages`
   : `${rootPath}/src/pages`
@@ -32,6 +34,7 @@ beforeAll(async () => {
     handlers.map(async handler => {
       const key = handler.endsWith('/index') ? handler.slice(0, -6) : handler // handle index routes
       try {
+        // eslint-disable-next-line @next/next/no-assign-module-variable
         const module = await import(`${nextPagesDirectory}${handler}`)
         mapping[key] = module.default
       } catch (error) {
@@ -123,3 +126,7 @@ const requestHandler: RequestListener = (request, response) => {
 }
 
 export const server = http.createServer(requestHandler)
+export const request = supertest(server)
+afterAll(() => {
+  server.close() // don't forget to close your server after your tests
+})

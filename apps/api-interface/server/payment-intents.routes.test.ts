@@ -1,17 +1,9 @@
 import {prisma} from 'db'
 import {generateMock} from '@anatine/zod-mock'
 
-import {describe, afterAll, test, expect} from 'vitest'
+import {describe, test, expect} from 'vitest'
 
-import supertest from 'supertest'
-import {server} from '../tests/server'
-import {PaymentIntentSchema} from './schemas/payment-intent.schema'
-
-const request = supertest(server)
-
-afterAll(() => {
-  server.close() // don't forget to close your server after your tests
-})
+import {request} from '../tests/server'
 
 function createFakePaymentIntent(props?: {amount?: number; address?: string}) {
   const {amount = 100, address = '1Dg5jKw5bfW8uV1LbiY1YXcx7KjQPK8uV7'} =

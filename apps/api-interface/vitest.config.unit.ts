@@ -1,8 +1,9 @@
 import './scripts/load-env-vars'
-import {defineConfig} from 'vitest/config'
+import {defineProject} from 'vitest/config'
 
-export default defineConfig({
+export default defineProject({
   test: {
+    name: 'api-interface:unit',
     include: [
       'tests/**/*.test.ts',
       'server/**/*.test.ts',

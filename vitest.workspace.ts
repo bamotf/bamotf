@@ -1,4 +1,4 @@
 export default [
-  'apps/*/vitest.config.{e2e,unit}.ts',
-  'packages/*/vitest.config.{e2e,unit}.ts',
+  'apps/*/vitest.config.{unit,integration}.ts',
+  'packages/*/vitest.config.{unit,integration}.ts',
 ]
