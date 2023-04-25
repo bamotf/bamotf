@@ -1,3 +1,8 @@
 {
-  "cSpell.words": ["nvmrc", "satoshis"]
+  "cSpell.words": ["nvmrc", "satoshis"],
+  "vitest.nodeEnv": {
+    "DATABASE_CONNECTION_STRING": "file:/tmp/dev.db",
+    "BITCOIN_CORE_CONNECTION_STRING": "http://username:password@localhost:18443",
+    "LOG_LEVEL": "error"
+  }
 }

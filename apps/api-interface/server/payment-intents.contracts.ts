@@ -28,7 +28,7 @@ export const contract = c.router({
     responses: {
       200: c.response<PaymentIntent>(),
       400: c.response<z.ZodError>(),
-      401: c.response<string>(),
+      401: c.response<{message: string}>(),
     },
     summary: 'Create a new payment intent',
   },

@@ -1,4 +1,4 @@
-import {format} from 'logger'
+import {format, logger} from 'logger'
 import type {
   DefaultBodyType,
   PathParams,
@@ -14,9 +14,9 @@ import type {
  * @param data - Any json object to log.
  */
 export async function logMockedData(message: string, data?: object) {
-  console.info(`🔶 ${format.dim(`mocked ${format.reset.bold(message)}`)}`)
+  logger.info(`🔶 ${format.dim(`mocked ${format.reset.bold(message)}`)}`)
   if (data) {
-    console.debug(
+    logger.debug(
       format.dim(
         `     data ${format.reset.hex('#ff9600')(JSON.stringify(data))}`,
       ),

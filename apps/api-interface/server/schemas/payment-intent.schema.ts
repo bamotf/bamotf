@@ -1,12 +1,7 @@
 import {z} from '../utils/zod'
 
-import type {PaymentIntent} from 'db'
-import type {Schema} from 'zod-prisma-utils'
-
 import {AddressSchema} from './address.schema'
 import {AmountSchema} from './amount.schema'
-
-type HiddenFields = 'createdAt' | 'updatedAt' | 'canceledAt'
 
 export const PaymentIntentSchema = z.object(
   // <
@@ -17,7 +12,7 @@ export const PaymentIntentSchema = z.object(
     /**
      * @type {string} - The address the user needs to pay to
      */
-    address: AddressSchema,
+    address: z.string(),
     /**
      * @type {bigint} - The amount the user needs to pay in satoshis
      */

@@ -1,35 +1,22 @@
 import {createNextRoute} from '@ts-rest/next'
-import {contract} from './contract'
 import {prisma} from 'db'
+import {contract} from './contract'
+import * as bitcoin from './utils/bitcoin'
 
 export const paymentIntentsRouter = createNextRoute(contract.paymentIntents, {
   create: async args => {
+    const {amount, description, ...rest} = args.body
     let address: string
     let accountId: string | null = null
 
-    if ('address' in args.body) {
-      address = args.body.address
-    } else if ('account' in args.body) {
-      const {account: extendedPublicKey} = args.body
+    if ('address' in rest) {
+      address = rest.address
+    } else if ('account' in rest) {
       // saves the account in the database and gets what is going to be the next derivation path
-      const account = await prisma.account.upsert({
-        where: {extendedPublicKey},
-        update: {},
-        create: {
-          extendedPublicKey,
-        },
-        include: {
-          _count: {
-            select: {
-              PaymentIntent: true,
-            },
-          },
-        },
-      })
+      const account = await getTotalAddressUsedFromAccount(rest.account)
 
-      // derive next address from extended public key
-      // TODO: use BIP44 path
-      address = '123'
+      // TODO: derive next address from extended public key
+      address = 'TODO'
       accountId = account.id
     } else {
       throw new Error('Invalid request body, missing address or account.')
@@ -37,12 +24,26 @@ export const paymentIntentsRouter = createNextRoute(contract.paymentIntents, {
 
     const pi = await prisma.paymentIntent.create({
       data: {
-        amount: args.body.amount,
-        description: args.body.description,
+        amount,
+        description,
         address,
         accountId,
       },
     })
+
+    await bitcoin.createWatchOnlyWallet(pi.id)
+    const descriptor = await bitcoin.getDescriptor(address)
+    try {
+      await bitcoin.addWatchOnlyAddress({
+        wallet: pi.id,
+        descriptor,
+      })
+    } catch (error) {
+      console.log({error})
+    }
+
+    // TODO: create job que vai ficar checando se ta pago
+    // await createJob('check-payment-intent', {id: pi.id})
 
     return {
       status: 200,
@@ -101,9 +102,35 @@ export const paymentIntentsRouter = createNextRoute(contract.paymentIntents, {
       data: {status: 'CANCELLED', cancellationReason},
     })
 
+    // TODO: cancelar job de checar se ta pago
+
     return {
       status: 200,
       body: pi,
     }
   },
 })
+
+/**
+ * Returns the total number of addresses used from an extended public key
+ * (also known as `account`).
+ *
+ * @param extendedPublicKey A BIP32 extended public key
+ * @returns
+ */
+async function getTotalAddressUsedFromAccount(extendedPublicKey: string) {
+  return await prisma.account.upsert({
+    where: {extendedPublicKey},
+    update: {},
+    create: {
+      extendedPublicKey,
+    },
+    include: {
+      _count: {
+        select: {
+          paymentIntents: true,
+        },
+      },
+    },
+  })
+}
