@@ -6,9 +6,9 @@ export default defineProject({
     name: 'cashier-server:unit',
     include: [
       'tests/**/*.test.ts',
-      'server/**/*.test.ts',
+      'api/**/*.test.ts',
       // If you want to test a route, you are probably looking for an integration test.
-      '!server/**/*.routes.test.ts',
+      '!api/**/*.routes.test.ts',
     ],
     setupFiles: ['./tests/setup.unit.ts'],
   },

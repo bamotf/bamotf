@@ -4,7 +4,7 @@ import {defineProject} from 'vitest/config'
 export default defineProject({
   test: {
     name: 'cashier-server:integration',
-    include: ['server/**/*.routes.test.ts'],
+    include: ['api/**/*.routes.test.ts'],
 
     // This is extremely important because our integration tests will be
     // interacting with a database and expecting specific sets of data.

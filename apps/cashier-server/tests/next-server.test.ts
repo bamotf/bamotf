@@ -1,4 +1,4 @@
-import {getDynamicRoute} from './server'
+import {getDynamicRoute} from './next-server'
 import {expect, describe, it} from 'vitest'
 
 describe('dynamic-route', () => {
