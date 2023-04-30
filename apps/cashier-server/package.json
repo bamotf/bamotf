@@ -29,7 +29,8 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "ui": "workspace:*",
-    "zod": "^3.21.4"
+    "zod": "^3.21.4",
+    "zod-prisma-utils": "^0.0.8"
   },
   "devDependencies": {
     "@anatine/zod-mock": "^3.10.0",
