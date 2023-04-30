@@ -13,5 +13,9 @@ export default defineProject({
     threads: false,
 
     setupFiles: ['./tests/setup.integration.ts'],
+
+    deps: {
+      inline: ['quirrel'],
+    },
   },
 })

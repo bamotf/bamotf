@@ -11,5 +11,8 @@ export default defineProject({
       '!api/**/*.routes.test.ts',
     ],
     setupFiles: ['./tests/setup.unit.ts'],
+    deps: {
+      inline: ['quirrel'],
+    },
   },
 })

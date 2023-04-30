@@ -2,6 +2,7 @@ import {createNextRoute} from '@ts-rest/next'
 import {prisma} from 'db'
 import {contract} from './contract'
 import * as bitcoin from './utils/bitcoin'
+import EmailQueue from '../pages/api/queues/email'
 
 export const paymentIntentsRouter = createNextRoute(contract.paymentIntents, {
   create: async args => {
@@ -32,17 +33,22 @@ export const paymentIntentsRouter = createNextRoute(contract.paymentIntents, {
 
     await bitcoin.createWatchOnlyWallet(pi.id)
     const descriptor = await bitcoin.getDescriptor(address)
-    try {
-      await bitcoin.addWatchOnlyAddress({
-        wallet: pi.id,
-        descriptor,
-      })
-    } catch (error) {
-      console.log({error})
-    }
+    await bitcoin.addWatchOnlyAddress({
+      wallet: pi.id,
+      descriptor,
+    })
 
     // TODO: create job que vai ficar checando se ta pago
-    // await createJob('check-payment-intent', {id: pi.id})
+    EmailQueue.enqueue(
+      {
+        paymentIntentId: pi.id,
+      },
+      {
+        repeat: {
+          every: '5s',
+        },
+      },
+    )
 
     return {
       status: 200,

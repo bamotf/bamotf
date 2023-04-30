@@ -149,3 +149,45 @@ export async function addWatchOnlyAddress({
 
   return data.result
 }
+
+export async function listUnspent(wallet: string): Promise<
+  {
+    txid: string
+    vout: number
+    address: string
+    label: string
+    scriptPubKey: string
+    amount: number
+    confirmations: number
+    spendable: boolean
+    solvable: boolean
+    parent_descs: string[]
+    safe: boolean
+  }[]
+> {
+  const request = await fetch(
+    `${BITCOIN_CORE_URL}/wallet/${encodeURIComponent(wallet)}`,
+    {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        jsonrpc: '1.0',
+        id: `listunspent-${wallet}`,
+        method: 'listunspent',
+        params: {},
+      }),
+    },
+  )
+
+  if (!request.ok) {
+    throw new Error(`Failed to list unspent: ${request.statusText}`)
+  }
+
+  const data = (await request.json()) as BitcoinCoreResponse
+
+  if (data.error) {
+    throw new Error(`Failed to list unspent: ${data.error.message}`)
+  }
+
+  return data.result
+}
