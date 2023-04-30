@@ -5,29 +5,28 @@ import * as bitcoin from './utils/bitcoin'
 
 export const paymentIntentsRouter = createNextRoute(contract.paymentIntents, {
   create: async args => {
-    const {amount, description, ...rest} = args.body
-    let address: string
-    let accountId: string | null = null
+    const {amount, description, address, ...rest} = args.body
 
-    if ('address' in rest) {
-      address = rest.address
-    } else if ('account' in rest) {
-      // saves the account in the database and gets what is going to be the next derivation path
-      const account = await getTotalAddressUsedFromAccount(rest.account)
+    // let accountId: string | null = null
+    // if ('address' in rest) {
+    //   address = rest.address
+    // } else if ('account' in rest) {
+    //   // saves the account in the database and gets what is going to be the next derivation path
+    //   const account = await getTotalAddressUsedFromAccount(rest.account)
 
-      // TODO: derive next address from extended public key
-      address = 'TODO'
-      accountId = account.id
-    } else {
-      throw new Error('Invalid request body, missing address or account.')
-    }
+    //   // TODO: derive next address from extended public key
+    //   address = 'TODO'
+    //   accountId = account.id
+    // } else {
+    //   throw new Error('Invalid request body, missing address or account.')
+    // }
 
     const pi = await prisma.paymentIntent.create({
       data: {
         amount,
         description,
         address,
-        accountId,
+        // accountId,
       },
     })
 
@@ -111,26 +110,26 @@ export const paymentIntentsRouter = createNextRoute(contract.paymentIntents, {
   },
 })
 
-/**
- * Returns the total number of addresses used from an extended public key
- * (also known as `account`).
- *
- * @param extendedPublicKey A BIP32 extended public key
- * @returns
- */
-async function getTotalAddressUsedFromAccount(extendedPublicKey: string) {
-  return await prisma.account.upsert({
-    where: {extendedPublicKey},
-    update: {},
-    create: {
-      extendedPublicKey,
-    },
-    include: {
-      _count: {
-        select: {
-          paymentIntents: true,
-        },
-      },
-    },
-  })
-}
+// /**
+//  * Returns the total number of addresses used from an extended public key
+//  * (also known as `account`).
+//  *
+//  * @param extendedPublicKey A BIP32 extended public key
+//  * @returns
+//  */
+// async function getTotalAddressUsedFromAccount(extendedPublicKey: string) {
+//   return await prisma.account.upsert({
+//     where: {extendedPublicKey},
+//     update: {},
+//     create: {
+//       extendedPublicKey,
+//     },
+//     include: {
+//       _count: {
+//         select: {
+//           paymentIntents: true,
+//         },
+//       },
+//     },
+//   })
+// }

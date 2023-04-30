@@ -19,11 +19,12 @@ export const contract = c.router({
       amount: true,
       description: true,
     }).and(
-      PaymentIntentSchema.pick({address: true}).or(
-        z.object({
-          account: ExtendedPublicKeySchema,
-        }),
-      ),
+      PaymentIntentSchema.pick({address: true}),
+      // .or(
+      //   z.object({
+      //     account: ExtendedPublicKeySchema,
+      //   }),
+      // ),
     ),
     responses: {
       200: c.response<PaymentIntent>(),

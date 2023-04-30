@@ -24,8 +24,8 @@ model PaymentIntent {
   // receiptEmail String?
   status             String        @default("CONFIRMING")
   transactions       Transaction[]
-  account            Account?      @relation(fields: [accountId], references: [id])
-  accountId          String?
+  // account            Account?      @relation(fields: [accountId], references: [id])
+  // accountId          String?
   createdAt          DateTime      @default(now())
   updatedAt          DateTime      @updatedAt
 }
@@ -39,10 +39,10 @@ model Transaction {
   updatedAt       DateTime      @updatedAt
 }
 
-model Account {
-  id                String          @id @default(cuid())
-  extendedPublicKey String          @unique
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
-  paymentIntents    PaymentIntent[]
-}
+// model Account {
+//   id                String          @id @default(cuid())
+//   extendedPublicKey String          @unique
+//   createdAt         DateTime        @default(now())
+//   updatedAt         DateTime        @updatedAt
+//   paymentIntents    PaymentIntent[]
+// }

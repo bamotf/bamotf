@@ -25,5 +25,5 @@ export const PaymentIntentSchema = z.object({
   status: z.enum(['CONFIRMING', 'CANCELED', 'SUCCEEDED']),
   canceledAt: z.date().optional(),
   cancellationReason: z.string().optional(),
-  accountId: z.string().uuid().optional(),
+  // accountId: z.string().uuid().optional(),
 } satisfies SchemaType)
