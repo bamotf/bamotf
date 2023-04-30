@@ -57,11 +57,13 @@ Enviar o pagamento
 
 What we need:
 
-- [ ] API Interface
-  - [x] Criar um Payment Intent
-    - [ ] Adicionar a tarefa numa queue para checar se o payment foi recebido
-    - [ ] Job para checar se o pagamento foi recebido
-  - [ ] Verificar o status de um Payment Intent
+- [x] Criar um Payment Intent
+  - [ ] Adicionar a tarefa numa queue para checar se o payment foi recebido
+  - [ ] Job para checar se o pagamento foi recebido
+- [ ] Verificar o status de um Payment Intent
+
+Docker Image:
+
 - [ ] Quirrel
 - [ ] Redis
 - [ ] Bitcoin Core
@@ -72,12 +74,13 @@ What we need:
 # new address
 alias bitcoin="bitcoin-cli -regtest -rpcuser=username -rpcpassword=password -rpcwallet=test-wallet"
 
+bitcoin-cli -regtest -rpcuser=username -rpcpassword=password createwallet test-wallet
 bitcoin-cli -regtest -rpcuser=username -rpcpassword=password -rpcwallet=test-wallet getnewaddress
 
 # 🚨 So pra ver quanto a carteira tem
-bitcoin-cli -regtest -rpcuser=username -rpcpassword=password createwallet "watch-only-wallet" true
-bitcoin-cli -regtest -rpcuser=username -rpcpassword=password getdescriptorinfo "addr(bcrt1qtfjrpdwcxa7et498ead2gwxrnscl8eaaxvdxzp)"
-bitcoin-cli -regtest -rpcuser=username -rpcpassword=password -rpcwallet=watch-only-wallet importdescriptors '[{"desc":"addr(bcrt1qtfjrpdwcxa7et498ead2gwxrnscl8eaaxvdxzp)#hjw9tktm","timestamp":"now",
+
+bitcoin-cli -regtest -rpcuser=username -rpcpassword=password getdescriptorinfo "addr(bcrt1q6du4q67wfpgnmply8mqce43eedhz286hy3nm6p)"
+bitcoin-cli -regtest -rpcuser=username -rpcpassword=password -rpcwallet=clgwoxrm20013p2enbqpxxv0x importdescriptors '[{"desc":"addr(bcrt1q6du4q67wfpgnmply8mqce43eedhz286hy3nm6p)#yeww39pe","timestamp":"now",
 "label":"test-address"}]'
 
 # Minerar o bloco para o endereco
@@ -90,11 +93,22 @@ bitcoin-cli -regtest -rpcuser=username -rpcpassword=password -rpcwallet=watch-on
 # return only the ballance
 bitcoin-cli -regtest -rpcuser=username -rpcpassword=password -rpcwallet=test-wallet getwalletinfo
 # return the transactions with the number confirmations
-bitcoin-cli -regtest -rpcuser=username -rpcpassword=password -rpcwallet=test-wallet listunspent
+bitcoin-cli -regtest -rpcuser=username -rpcpassword=password -rpcwallet=clgyzlhlv0003p2pi17fvoruf listunspent
 
+clgyzlhlv0003p2pi17fvoruf
 
 # Send to address
-bitcoin-cli -regtest -rpcuser=username -rpcpassword=password -rpcwallet=test-wallet sendtoaddress bcrt1qtjdgdn736qz6txc84s9tnhgk7vc8fu7t8zymt9 0.1 "drinks" "room77" true true null "unset" null 1.1
+bitcoin-cli -regtest -rpcuser=username -rpcpassword=password -rpcwallet=test-wallet sendtoaddress bcrt1q6du4q67wfpgnmply8mqce43eedhz286hy3nm6p 0.1 "drinks" "room77" true true null "unset" null 1.1
+
+
+# bitcoin-cli getdescriptorinfo "addr(bcrt1qkg5kdqcxlzecaqws4ha80d2twttle869z0ugjv)"
+# bitcoin-cli -rpcwallet=descwallet importdescriptors '[{ "desc": "addr(bcrt1qkg5kdqcxlzecaqws4ha80d2twttle869z0ugjv)#ffhyxaga", "timestamp":1455191478, "internal": true }]'
+
+# Lista transacoes (posso usar isso para ver se a transacao foi confirmada e se o valor necessario foi recebido)
+# bitcoin-cli -rpcwallet=descwallet listunspent 6 9999999 "[\"bcrt1qkg5kdqcxlzecaqws4ha80d2twttle869z0ugjv\"]"
+
+
+
 
 # Resetar a regtest
 rm -rf ~/bitcoin/.bitcoin/regtest
