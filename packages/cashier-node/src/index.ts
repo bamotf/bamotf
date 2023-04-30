@@ -15,6 +15,14 @@ type APIClient = InitClientReturn<
   }
 >
 
+type ObjectsFromAPI = keyof APIClient
+type MethodsFromObject<T extends ObjectsFromAPI> = keyof APIClient[T]
+
+type Params<
+  TObject extends ObjectsFromAPI,
+  TMethod extends MethodsFromObject<TObject>,
+> = APIClient[TObject][TMethod]
+
 export type CashierConfig = {
   /**
    * Hostname of the Cashier server.
@@ -54,10 +62,7 @@ export class PaymentIntents {
   }
 
   async create(
-    params: {
-      amount: number
-      description?: string
-    } & ({account: string} | {address: string}),
+    params: Parameters<Params<'paymentIntents', 'create'>>['0']['body'],
   ) {
     return this.client.paymentIntents.create({
       body: params,
@@ -66,7 +71,7 @@ export class PaymentIntents {
 
   async retrieve(id: string) {
     return this.client.paymentIntents.retrieve({
-      params: {id},
+      params: {id: 'id'},
     })
   }
 

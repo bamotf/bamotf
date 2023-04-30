@@ -8,6 +8,9 @@ import type {PaymentIntent} from 'db'
 type SchemaType = Schema<PaymentIntent, 'createdAt' | 'updatedAt'>
 
 export const PaymentIntentSchema = z.object({
+  /**
+   * @type {string} - The id of the payment intent
+   */
   id: z.string(),
   /**
    * @type {string} - The address the user needs to pay to
