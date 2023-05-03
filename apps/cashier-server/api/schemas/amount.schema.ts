@@ -1,4 +1,4 @@
-import {z} from '../utils/zod'
+import {z} from '~/api/utils'
 
 const MIN_AMOUNT = 0
 const MAX_AMOUNT = 21_000_000 * 100_000_000

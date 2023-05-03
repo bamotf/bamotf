@@ -3,7 +3,7 @@ import {generateMock} from '@anatine/zod-mock'
 
 import {describe, test, expect} from 'vitest'
 
-import {request} from '../tests/next-server'
+import {request} from '~/tests/next-server'
 
 function createFakePaymentIntent(props?: {amount?: number; address?: string}) {
   const {amount = 100, address = '1Dg5jKw5bfW8uV1LbiY1YXcx7KjQPK8uV7'} =

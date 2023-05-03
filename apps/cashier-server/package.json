@@ -54,6 +54,7 @@
     "supertest": "^6.3.3",
     "tsconfig": "workspace:*",
     "typescript": "4.9.5",
+    "vite-tsconfig-paths": "^4.2.0",
     "vitest-mock-extended": "^1.1.3"
   }
 }

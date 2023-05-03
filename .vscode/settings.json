@@ -1,5 +1,6 @@
 {
   "cSpell.words": ["nvmrc", "satoshis"],
+  "typescript.preferences.importModuleSpecifier": "non-relative",
   "vitest.nodeEnv": {
     "DATABASE_CONNECTION_STRING": "file:/tmp/dev.db",
     "BITCOIN_CORE_CONNECTION_STRING": "http://username:password@localhost:18443",

@@ -2,7 +2,7 @@ import {createNextRoute} from '@ts-rest/next'
 import {prisma} from 'db'
 import {contract} from './contract'
 import * as bitcoin from './utils/bitcoin'
-import EmailQueue from '../pages/api/queues/email'
+import EmailQueue from '~/pages/api/queues/email'
 
 export const paymentIntentsRouter = createNextRoute(contract.paymentIntents, {
   create: async args => {

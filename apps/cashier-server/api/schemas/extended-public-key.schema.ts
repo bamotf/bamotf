@@ -1,4 +1,4 @@
-import {z} from '../utils/zod'
+import {z} from '~/api/utils'
 
 const XpubSchema = z.string().regex(/^xpub[a-zA-HJ-NP-Z0-9]{107}$/)
 const YpubSchema = z.string().regex(/^ypub[a-zA-HJ-NP-Z0-9]{107}$/)

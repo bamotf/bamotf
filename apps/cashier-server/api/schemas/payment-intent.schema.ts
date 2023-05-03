@@ -1,5 +1,5 @@
 import {Schema} from 'zod-prisma-utils'
-import {z} from '../utils/zod'
+import {z} from '~/api/utils'
 
 import {AddressSchema} from './address.schema'
 import {AmountSchema} from './amount.schema'

@@ -1,6 +1,6 @@
 import {Queue} from 'quirrel/next'
 import {logger} from 'logger'
-import * as bitcoin from '../../../api/utils/bitcoin'
+import * as bitcoin from '~/api/utils/bitcoin'
 import {prisma} from 'db'
 
 type Payload = {

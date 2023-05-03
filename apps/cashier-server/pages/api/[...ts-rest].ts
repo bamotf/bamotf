@@ -1,13 +1,13 @@
-import '../../api/utils/polyfill'
+import '~/api/utils/polyfill'
 import {NextApiRequest, NextApiResponse} from 'next'
 import cors from 'nextjs-cors'
 import {createNextRouter} from '@ts-rest/next'
 import {Prisma} from 'db'
 
-import {contract, appRouter} from '../../api'
+import {contract, appRouter} from '~/api'
 import {ResponseValidationError} from '@ts-rest/core'
 import {logger} from 'logger'
-import {env} from '../../api/utils'
+import {env} from '~/api/utils'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // Setup CORS
