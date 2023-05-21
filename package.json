@@ -1,0 +1,39 @@
+{
+  "name": "btc-cashier",
+  "version": "0.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "test": "turbo test:unit test:integration test:e2e",
+    "test:unit": "turbo test:unit",
+    "test:integration": "turbo test:integration",
+    "test:e2e": "turbo test:e2e",
+    "typecheck": "turbo typecheck",
+    "format": "prettier --write \"**/*.{js,jsx,json,yml,yaml,css,ts,tsx,md,mdx}\"",
+    "prisma": "cd packages/db && pnpm prisma",
+    "prepare": "node ./scripts/prepare.js"
+  },
+  "devDependencies": {
+    "eslint": "8.35.0",
+    "eslint-config-custom": "workspace:*",
+    "husky": "8.0.3",
+    "nano-staged": "0.8.0",
+    "prettier": "2.8.7",
+    "turbo": "1.9.3",
+    "vitest": "^0.30.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "packageManager": "pnpm@8.1.1",
+  "nano-staged": {
+    "*.{js,jsx,ts,tsx}": "eslint --cache --cache-location ./node_modules/.cache/eslint --fix",
+    "*.{js,jsx,json,yml,yaml,css,ts,tsx,md,mdx}": "prettier --write"
+  }
+}

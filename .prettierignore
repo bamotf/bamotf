@@ -1,0 +1,22 @@
+# project
+node_modules
+.DS_Store
+pnpm-lock.yaml
+
+# VERCEL
+.vercel
+.output
+
+# Turborepo
+.turbo
+
+# Storybook
+storybook-static
+
+# Db 
+**/prisma/client
+
+# Next.js build output
+**/.next/**
+
+

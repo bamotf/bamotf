@@ -1,0 +1,43 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:base", ":disableRateLimiting"],
+  "schedule": ["at any time"],
+  "semanticCommits": "enabled",
+  "labels": ["dependencies"],
+  "rebaseWhen": "conflicted",
+  "packageRules": [
+    {
+      "groupName": "devDependencies (non-major)",
+      "automerge": "true",
+      "depTypeList": ["devDependencies"],
+      "updateTypes": ["patch", "minor"],
+      "schedule": ["before 8am on Monday"]
+    },
+    {
+      "groupName": "dependencies (non-major)",
+      "labels": ["production"],
+      "depTypeList": ["dependencies"],
+      "updateTypes": ["patch", "minor"],
+      "schedule": ["before 8am on Monday"]
+    },
+    {
+      "groupName": "definitelyTyped",
+      "automerge": "true",
+      "packagePatterns": ["^@types/"],
+      "updateTypes": ["patch", "minor"],
+      "schedule": ["before 8am on Monday"]
+    },
+    {
+      "groupName": "Storybook",
+      "automerge": "true",
+      "matchPackagePatterns": [".*storybook.*"],
+      "schedule": ["before 8am on Monday"]
+    },
+    {
+      "groupName": "Turbo",
+      "automerge": "true",
+      "matchPackagePatterns": ["eslint-config-turbo", "turbo"],
+      "schedule": ["before 8am on Monday"]
+    }
+  ]
+}
