@@ -1,36 +1,26 @@
 version: '3.8'
 services:
+  # Bitcoin-core for development
   bitcoin-core:
-    image: btcpayserver/bitcoin:24.0.1 # doesn't have a latest tag 😕
-    environment:
-      - BITCOIN_NETWORK=regtest
-      - |
-        BITCOIN_EXTRA_ARGS=
-        rpcuser=username
-        rpcpassword=password
-        rpcbind=0.0.0.0
-        debug=http
-        rpcallowip=0.0.0.0/0
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
     ports:
-      - '8332:8332' # RPC
-      - '8333:8333' # bitcoin clients
-      # - "8334:8334" # Tor connections
-      - '18443:18443' # ???
-      - '18444:18444' # ???
-      # - "18445:18445" # ???
+      - 18443:18443
+      - 18444:18444
     volumes:
-      - ./docker/bitcoin-core/data:/data
+      - ./docker/bitcoin-core/data:/home/bitcoin/.bitcoin
 
-  quirrel:
-    image: ghcr.io/quirrel-dev/quirrel:main
-    ports:
-      - '9181:9181'
-    environment:
-      - REDIS_URL=redis://redis:6379
-      - PASSPHRASES=random123
-      # curl --user ignored:random123 -X PUT http://localhost:9181/tokens/NAME_OF_TOKEN
+  # quirrel:
+  #   image: ghcr.io/quirrel-dev/quirrel:main
+  #   ports:
+  #     - '9181:9181'
+  #   environment:
+  #     - REDIS_URL=redis://redis:6379
+  #     - PASSPHRASES=random123
+  #     # curl --user ignored:random123 -X PUT http://localhost:9181/tokens/NAME_OF_TOKEN
 
-  redis:
-    image: redis
-    ports:
-      - '6379:6379'
+  # redis:
+  #   image: redis
+  #   ports:
+  #     - '6379:6379'
