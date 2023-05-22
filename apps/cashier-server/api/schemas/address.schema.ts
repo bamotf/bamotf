@@ -1,4 +1,4 @@
-import {env, z} from '../utils'
+import {z} from '../utils/zod'
 
 // Mainet addresses
 const P2PKHAddressSchema = z.string().regex(/^1[a-km-zA-HJ-NP-Z1-9]{25,34}$/)
