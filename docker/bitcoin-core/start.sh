@@ -11,7 +11,7 @@ exec bitcoind -printtoconsole \
   -debug=http \
   -rpcbind=0.0.0.0 \
   -rpcallowip=0.0.0.0/0 \
-  -rpcauth='foo:7d9ba5ae63c3d4dc30583ff4fe65a67e$9e3634e81c11659e3de036d0bf88f89cd169c1039e6e09607562d54765c649cc' \
+  -rpcauth='username:340db8e27fe6914442fd3564f5a1dfb0$89b8428fdff2b34f6f1adb2e19ac7e7a610891ea00261afaf3c647b0d550eea5' \
   -datadir=$BITCOIN_DATA &
 
 sleep 3
