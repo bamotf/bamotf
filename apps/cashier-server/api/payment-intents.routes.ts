@@ -1,7 +1,7 @@
 import {createNextRoute} from '@ts-rest/next'
 import {prisma} from 'db'
 import {contract} from './contract'
-import * as bitcoin from './utils/bitcoin'
+import * as bitcoinCore from './utils/bitcoin-core'
 import TransactionQueue from '../pages/api/queues/transaction'
 import {logger, format} from 'logger'
 
@@ -32,9 +32,9 @@ export const paymentIntentsRouter = createNextRoute(contract.paymentIntents, {
       },
     })
 
-    await bitcoin.createWatchOnlyWallet(pi.id)
-    const descriptor = await bitcoin.getDescriptor(address)
-    await bitcoin.addWatchOnlyAddress({
+    await bitcoinCore.createWatchOnlyWallet(pi.id)
+    const descriptor = await bitcoinCore.getDescriptor(address)
+    await bitcoinCore.addWatchOnlyAddress({
       wallet: pi.id,
       descriptor,
     })

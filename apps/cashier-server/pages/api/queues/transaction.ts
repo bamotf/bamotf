@@ -5,7 +5,7 @@ import fetch from 'node-fetch'
 
 import {symmetric} from 'secure-webhooks'
 import {env} from '../../../api/utils'
-import * as bitcoin from '../../../api/utils/bitcoin'
+import * as bitcoinCore from '../../../api/utils/bitcoin-core'
 
 const QUEUE_ID = 'api/queues/transaction' // 👈 the route it's reachable on
 
@@ -23,7 +23,7 @@ const TransactionQueue = Queue<TransactionQueuePayload>(
 
     const [transactions, paymentIntent] = await Promise.all([
       // Check if the payment was made
-      bitcoin.listUnspent(payload.paymentIntentId).catch(_ => []),
+      bitcoinCore.listUnspent(payload.paymentIntentId).catch(_ => []),
       prisma.paymentIntent.findFirst({
         where: {id: payload.paymentIntentId},
       }),

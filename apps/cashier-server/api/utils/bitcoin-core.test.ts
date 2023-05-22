@@ -1,10 +1,10 @@
 import {describe, expect, test} from 'vitest'
-import * as bitcoin from './bitcoin'
+import * as bitcoinCore from './bitcoin-core'
 import {env} from './env'
 
 describe('bitcoin', () => {
   test('createWatchOnlyWallet', async () => {
-    const wallet = await bitcoin.createWatchOnlyWallet('wilson')
+    const wallet = await bitcoinCore.createWatchOnlyWallet('wilson')
 
     expect(wallet).toEqual(
       expect.objectContaining({
@@ -14,7 +14,7 @@ describe('bitcoin', () => {
   })
 
   test('getDescriptor', async () => {
-    const descriptor = await bitcoin.getDescriptor(
+    const descriptor = await bitcoinCore.getDescriptor(
       'bcrt1qtfjrpdwcxa7et498ead2gwxrnscl8eaaxvdxzp',
     )
 
@@ -24,7 +24,7 @@ describe('bitcoin', () => {
   })
 
   test('addWatchOnlyAddress', async () => {
-    const [{success}] = await bitcoin.addWatchOnlyAddress({
+    const [{success}] = await bitcoinCore.addWatchOnlyAddress({
       descriptor: 'addr(bcrt1qtfjrpdwcxa7et498ead2gwxrnscl8eaaxvdxzp)#hjw9tktm',
       wallet: 'fake-wallet',
     })

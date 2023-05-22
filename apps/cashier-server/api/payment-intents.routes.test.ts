@@ -1,5 +1,5 @@
 import {prisma} from 'db'
-import * as bitcoin from './utils/bitcoin'
+import * as bitcoinCore from './utils/bitcoin-core'
 
 import {describe, expect, test, vi} from 'vitest'
 
@@ -59,7 +59,7 @@ describe('[POST] /api/payment-intents', () => {
             address,
           })
 
-          await bitcoin.simulatePayment({
+          await bitcoinCore.simulatePayment({
             address,
             amount: 100,
           })
