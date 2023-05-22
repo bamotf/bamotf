@@ -13,7 +13,8 @@ datasource db {
 
 model PaymentIntent {
   id                 String        @id @default(cuid())
-  address            String
+  // Addresses are unique, so we can identify the payment intent by the address
+  address            String        @unique
   /// In sats
   amount             BigInt
   canceledAt         DateTime?
