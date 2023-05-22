@@ -7,7 +7,7 @@ ENV BITCOIN_DATA=/home/bitcoin/.bitcoin
 WORKDIR /home/bitcoin
 
 # Copy startup script
-COPY ./docker/start.sh .
+COPY ./start.sh .
 
 # Ensure script is executable
 RUN chmod +x start.sh

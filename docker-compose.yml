@@ -3,24 +3,24 @@ services:
   # Bitcoin-core for development
   bitcoin-core:
     build:
-      context: .
-      dockerfile: ./docker/Dockerfile
+      context: ./docker/bitcoin-core
+      dockerfile: ./Dockerfile
     ports:
       - 18443:18443
       - 18444:18444
     volumes:
       - ./docker/bitcoin-core/data:/home/bitcoin/.bitcoin
 
-  # quirrel:
-  #   image: ghcr.io/quirrel-dev/quirrel:main
-  #   ports:
-  #     - '9181:9181'
-  #   environment:
-  #     - REDIS_URL=redis://redis:6379
-  #     - PASSPHRASES=random123
-  #     # curl --user ignored:random123 -X PUT http://localhost:9181/tokens/NAME_OF_TOKEN
+  quirrel:
+    image: ghcr.io/quirrel-dev/quirrel:main
+    ports:
+      - '9181:9181'
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - PASSPHRASES=random123
+      # curl --user ignored:random123 -X PUT http://localhost:9181/tokens/NAME_OF_TOKEN
 
-  # redis:
-  #   image: redis
-  #   ports:
-  #     - '6379:6379'
+  redis:
+    image: redis
+    ports:
+      - '6379:6379'
