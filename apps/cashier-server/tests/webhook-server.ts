@@ -1,6 +1,6 @@
 import http from 'http'
 import {vi} from 'vitest'
-import {env} from '../api/utils/env'
+import {env} from '~/utils/env.server'
 
 /**
  * Create a simple http server that emits a `webhook` event when a request is received.

@@ -3,20 +3,27 @@
   "private": true,
   "version": "0.0.0",
   "sideEffects": false,
-  "main": "./index.ts",
-  "types": "./index.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**"
+  ],
   "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts",
+    "dev": "tsup src/index.ts --format esm,cjs --watch --dts",
     "lint": "eslint .",
     "typecheck": "tsc"
   },
   "dependencies": {
-    "chalk": "^5.2.0",
+    "chalk": "^4.1.2",
     "winston": "^3.8.2"
   },
   "devDependencies": {
     "eslint": "8.38.0",
     "eslint-config-custom": "workspace:*",
     "tsconfig": "workspace:*",
+    "tsup": "^6.7.0",
     "typescript": "4.9.5"
   }
 }

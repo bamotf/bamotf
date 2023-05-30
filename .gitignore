@@ -37,3 +37,4 @@ yarn-error.log*
 docker/*/data
 
 tsconfig.tsbuildinfo
+postgres-data
