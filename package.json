@@ -20,6 +20,8 @@
     "prepare": "node ./scripts/prepare.js"
   },
   "devDependencies": {
+    "dotenv": "^16.1.0",
+    "dotenv-cli": "^7.0.0",
     "eslint": "8.35.0",
     "eslint-config-custom": "workspace:*",
     "husky": "8.0.3",

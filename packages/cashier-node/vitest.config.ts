@@ -1,6 +1,8 @@
-import {defineConfig} from 'vitest/config'
+import {defineProject} from 'vitest/config'
 
-export default defineConfig({
+process.env.LOG_LEVEL = 'error'
+
+export default defineProject({
   test: {
     name: 'cashier-node',
     include: ['src/**/*.test.ts'],

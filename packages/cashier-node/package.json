@@ -7,15 +7,15 @@
   "scripts": {
     "lint": "eslint *.ts*",
     "typecheck": "tsc",
-    "test:integration": "vitest -c vitest.config.integration.ts run",
-    "test:integration:watch": "vitest -c vitest.config.integration.ts"
+    "test:integration": "vitest run",
+    "test:integration:watch": "vitest"
   },
   "devDependencies": {
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
+    "cashier-server": "workspace:*",
     "eslint": "^7.32.0",
     "eslint-config-custom": "workspace:*",
-    "cashier-server": "workspace:*",
     "logger": "workspace:*",
     "msw": "^1.2.1",
     "react": "^18.2.0",
