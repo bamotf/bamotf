@@ -73,16 +73,20 @@ test.describe('[POST] /api/payment-intents', () => {
     })
   })
 
-  test('should respond with a 400 status code if an invalid request body is provided', async () => {
-    // const pi = await request.post('/api/payment-intents').send({
-    //   amount: -1,
-    // })
-    // expect(pi.status).toBe(400)
-    // expect(await pi.body).toStrictEqual(
-    //   expect.objectContaining({
-    //     issues: expect.objectContaining({}),
-    //   }),
-    // )
+  test('should respond with a 400 status code if an invalid request body is provided', async ({
+    request,
+  }) => {
+    const pi = await request.post('/api/payment-intents', {
+      data: {
+        amount: -1,
+      },
+    })
+    expect(pi.status()).toBe(400)
+    expect(await pi.json()).toStrictEqual(
+      expect.objectContaining({
+        issues: expect.objectContaining({}),
+      }),
+    )
   })
 })
 

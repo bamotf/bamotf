@@ -57,7 +57,11 @@ function parseSchema<T extends ZodTypeAny>({
 
   const parsed = schema.safeParse(data)
   if (!parsed.success) {
-    throw new Response(parsed.error.toString(), {
+    const result = JSON.stringify({
+      name,
+      issues: parsed.error.issues,
+    })
+    throw new Response(result, {
       status: 400,
       statusText: `Invalid ${name} params`,
       headers: {
