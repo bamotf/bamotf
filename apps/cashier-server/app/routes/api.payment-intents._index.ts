@@ -66,8 +66,10 @@ export async function action({request, params}: LoaderArgs) {
     },
   )
 
-  logger.debug(
-    `📚 Adding job to check if payment was made: ${format.green(job.id)}`,
+  logger.info(
+    `Adding job (${format.cyan(job.id)}) to check if payment (${format.cyan(
+      pi.id,
+    )}) was made`,
   )
 
   return typedjson(pi)

@@ -1,10 +1,12 @@
 import {Queue} from '~/utils/queue.server'
 
 import {prisma} from '~/utils/prisma.server'
-import {logger} from 'logger'
+import {format, logger} from 'logger'
 
 import {symmetric} from 'secure-webhooks'
 import {env} from '~/utils/env.server'
+
+import {v4 as uuidv4} from 'uuid'
 
 import * as bitcoinCore from '~/utils/bitcoin-core'
 
@@ -21,10 +23,8 @@ const QUEUE_ID = 'transaction'
 export const queue = Queue<QueueData>(QUEUE_ID, async job => {
   const {data: payload, id} = job
 
-  logger.info(`▸ Job started for '${QUEUE_ID}'`, {
-    id,
-    payload,
-  })
+  const log = QueueLog(QUEUE_ID, payload, 'paymentIntentId')
+  log('started')
 
   const [transactions, paymentIntent] = await Promise.all([
     // Check if the payment was made
@@ -35,13 +35,21 @@ export const queue = Queue<QueueData>(QUEUE_ID, async job => {
   ])
 
   if (!paymentIntent) {
-    logger.error(`✝︎ Payment intent not found: ${payload.paymentIntentId}`)
-    return await job.remove()
+    logger.error(
+      `${format.red('✝︎ Payment intent not found')}: ${format.dim(
+        payload.paymentIntentId,
+      )}`,
+    )
+    return await job.discard()
   }
 
   if (paymentIntent.status === 'canceled') {
-    logger.error(`✝︎ Payment intent was canceled: ${payload.paymentIntentId}`)
-    return await job.remove()
+    logger.error(
+      `${format.red('✝︎ Payment intent was canceled')}: ${format.dim(
+        payload.paymentIntentId,
+      )}`,
+    )
+    return await job.discard()
   }
 
   // Update the local database with transaction history
@@ -80,7 +88,8 @@ export const queue = Queue<QueueData>(QUEUE_ID, async job => {
 
   if (status === 'succeeded') {
     const body = {
-      id: job.id!,
+      id: uuidv4(),
+      idempotenceKey: job.id!,
       data: {
         paymentIntent: {
           ...paymentIntent,
@@ -102,15 +111,43 @@ export const queue = Queue<QueueData>(QUEUE_ID, async job => {
       }),
     ])
 
-    logger.info(`✓ Job completed for '${QUEUE_ID}'`, {
-      id,
-      payload,
-    })
+    return log('completed')
   }
+
+  log('rescheduled')
 })
+
+/**
+ * Logs a specific for a queue.
+ *
+ * @param queueName Queue name
+ * @param payload Data to be logged
+ * @param prop Prop of the payload to be logged as ID
+ * @returns
+ */
+function QueueLog<T extends object, TProp extends keyof T>(
+  queueName: string,
+  payload: T,
+  prop: TProp,
+) {
+  const name = {
+    started: '▸ Job started',
+    completed: '✓ Job completed',
+    rescheduled: '♺ Job rescheduled',
+  }
+
+  return (status: keyof typeof name) => {
+    logger.info(
+      `[${format.yellow(queueName)}] ${name[status]}: ${format.cyan(
+        payload[prop],
+      )}`,
+    )
+  }
+}
 
 function triggerSuccessfulWebhook(body: {
   id: string
+  idempotenceKey: string
   data: {
     paymentIntent: {
       status: string

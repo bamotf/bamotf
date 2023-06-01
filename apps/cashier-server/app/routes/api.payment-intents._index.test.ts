@@ -2,6 +2,8 @@ import {expect, test} from 'tests/base.fixture'
 import {prisma} from '~/utils/prisma.server'
 import * as bitcoinCore from '../utils/bitcoin-core'
 import * as webhookServer from '../../tests/webhook-server'
+import {APIResponse} from '@playwright/test'
+import {queue} from '~/queues/transaction.server'
 
 function createFakePaymentIntent(props?: {amount?: number; address?: string}) {
   const {amount = 100, address = '1Dg5jKw5bfW8uV1LbiY1YXcx7KjQPK8uV7'} =
@@ -16,60 +18,64 @@ function createFakePaymentIntent(props?: {amount?: number; address?: string}) {
 
 test.describe('[POST] /api/payment-intents', () => {
   test.describe('when it works', async () => {
+    test.afterAll(async () => {
+      queue.obliterate()
+    })
+
     test('should respond with a 200 status code when passed correct data', async ({
       request,
     }) => {
       const response = await request.post('/api/payment-intents', {
         data: {
           amount: 100,
-          // address: '1Dg5jKw5bfW8uV1LbiY1YXcx7KjQPK8uV7',
           address: 'bcrt1qkg5kdqcxlzecaqws4ha80d2twttle869z0ugjv',
         },
       })
-      expect(response.ok).toBeTruthy()
-      expect(response.body).toStrictEqual(
+      expect(response.ok()).toBeTruthy()
+      expect(await response.json()).toStrictEqual(
         expect.objectContaining({
           id: expect.any(String),
-          amount: 100,
+          amount: '100',
         }),
       )
     })
 
-    test('should trigger webhook and job has stopped', async () => {
-      //   let response: supertest.Response
-      //   const expectedPayload = {id: 1, name: 'foo'}
-      //   // This is a fairly complex test, so let's break it down:
-      //   // 1. start the server that will receive the trigger from queue and execute the job
-      //   // 2. start the server that will receive the webhook from job
-      //   // 3. trigger the endpoint that will enqueue the job
-      //   server.listen(3000, async () => {
-      //     webhookServer.listen(async () => {
-      //       const address = 'bcrt1qkg5kdqcxlzecaqws4ha80d2twttle869z0ugjv'
-      //       // add payment intent
-      //       response = await request.post('/api/payment-intents').send({
-      //         amount: 100,
-      //         // address: '1Dg5jKw5bfW8uV1LbiY1YXcx7KjQPK8uV7',
-      //         address,
-      //       })
-      //       await bitcoinCore.simulatePayment({
-      //         address,
-      //         amount: 100,
-      //       })
-      //     })
-      //   })
-      //   const receivedPayload = await webhookServer.onServerCalled()
-      //   expect(receivedPayload).toEqual(expectedPayload)
-      //   // Make sure the job has been removed from the queue
-      //   const jobs: Job<TransactionQueuePayload>[] = []
-      //   for await (const jobsInterator of TransactionQueue.get()) {
-      //     ;[...jobsInterator].forEach(job => {
-      //       jobs.push(job)
-      //     })
-      //   }
-      //   const job = jobs.find(
-      //     job => job.body.paymentIntentId === response.body.id,
-      //   )
-      //   expect(job).toBeFalsy()
+    test('should trigger webhook and job has stopped', async ({request}) => {
+      let response: APIResponse | undefined
+      const expectedPayload = {id: 1, name: 'foo'}
+
+      // This is a fairly complex test, so let's break it down:
+      // 1. start the server that will receive the webhook from job
+      // 2. trigger the endpoint that will enqueue the job
+      webhookServer.listen(async () => {
+        const address = 'bcrt1qkg5kdqcxlzecaqws4ha80d2twttle869z0ugjv'
+        // add payment intent
+        response = await request.post('/api/payment-intents', {
+          data: {
+            amount: 100,
+            address,
+          },
+        })
+        await bitcoinCore.simulatePayment({
+          address,
+          amount: 100,
+        })
+      })
+
+      const receivedPayload = await webhookServer.onServerCalled()
+      expect(receivedPayload).toEqual(expectedPayload)
+
+      // Make sure the job has been removed from the queue
+      const jobs = await queue.getJobs()
+      expect(jobs).toHaveLength(0)
+
+      if (!response) {
+        throw new Error('Response is undefined')
+      }
+
+      const data = await response.json()
+      const job = jobs.find(job => job.data.paymentIntentId === data.id)
+      expect(job).toBeFalsy()
     })
   })
 

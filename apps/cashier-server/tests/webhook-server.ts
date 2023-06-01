@@ -1,3 +1,4 @@
+import {ConnectionString} from 'connection-string'
 import http from 'http'
 import {vi} from 'vitest'
 import {env} from '~/utils/env.server'
@@ -13,16 +14,11 @@ export const server = http.createServer()
  * @param next Function to be called after the server is listening.
  */
 export const listen = async (next: () => Promise<void>) => {
-  server.listen(0, async () => {
-    vi.spyOn(env, 'CASHIER_WEBHOOK_URL', 'get').mockReturnValue(
-      `http://localhost:${
-        // @ts-expect-error
-        server.address().port
-      }`,
-    )
+  const webhookConnectionString = new ConnectionString(
+    process.env.CASHIER_WEBHOOK_URL,
+  )
 
-    vi.spyOn(env, 'CASHIER_SECRET', 'get').mockReturnValue('secret')
-
+  server.listen(webhookConnectionString.port, async () => {
     await next()
   })
 }
