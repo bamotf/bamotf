@@ -3,17 +3,16 @@
  */
 
 import {initClient} from '@ts-rest/core'
-import {contract} from 'cashier-server/api/contract'
-import type {InitClientReturn} from '@ts-rest/core'
-export type {PaymentIntent} from 'db'
+export type {PaymentIntent} from '@prisma/client'
 
-type APIClient = InitClientReturn<
-  typeof contract,
-  {
-    baseUrl: string
-    baseHeaders: {}
-  }
->
+// type APIClient = InitClientReturn<
+//   typeof contract,
+//   {
+//     baseUrl: string
+//     baseHeaders: {}
+//   }
+// >
+type APIClient = any
 
 type ObjectsFromAPI = keyof APIClient
 type MethodsFromObject<T extends ObjectsFromAPI> = keyof APIClient[T]
@@ -62,6 +61,7 @@ export class PaymentIntents {
   }
 
   async create(
+    // @ts-expect-error
     params: Parameters<Params<'paymentIntents', 'create'>>['0']['body'],
   ) {
     return this.client.paymentIntents.create({
@@ -130,6 +130,7 @@ export class CashierClient {
       throw new Error('Cashier API key is required.')
     }
 
+    // @ts-expect-error
     this.client = initClient(contract, {
       baseUrl: `http://${host}:${port}/api`,
       baseHeaders: {
