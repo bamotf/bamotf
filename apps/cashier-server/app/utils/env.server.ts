@@ -8,7 +8,8 @@ const envSchema = z.object({
   NODE_ENV: z
     .enum(['development', 'production', 'test'])
     .default('development'),
-  DATABASE_CONNECTION_STRING: STRING_REQUIRED,
+  DATABASE_CONNECTION_STRING: STRING_REQUIRED.url(),
+  REDIS_URL: STRING_REQUIRED.url(),
   BITCOIN_CORE_CONNECTION_STRING: STRING_REQUIRED.url().transform(url => {
     return new ConnectionString(url, {
       protocol: 'http',

@@ -19,6 +19,7 @@ export default function Index() {
     <div>
       <h1>Welcome to Remix</h1>
       <ul>
+        {message}
         <li>
           <a
             target="_blank"

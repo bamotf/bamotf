@@ -1,4 +1,4 @@
-import {LoaderArgs} from '@remix-run/node'
+import type {LoaderArgs} from '@remix-run/node'
 import {prisma} from '~/utils/prisma.server'
 import {createContract} from '~/utils/contract'
 import {PaymentIntentSchema} from '~/schemas'
@@ -20,7 +20,7 @@ export const contract = createContract({
 /**
  * Shows a list of all PaymentIntent objects.
  */
-export async function loader({}: LoaderArgs) {
+export async function loader() {
   const [paymentIntents, total] = await Promise.all([
     prisma.paymentIntent.findMany(),
     prisma.paymentIntent.count(),
@@ -35,10 +35,10 @@ export async function loader({}: LoaderArgs) {
 /**
  * Creates a PaymentIntent object.
  */
-export async function action({request, params}: LoaderArgs) {
+export async function action({request}: LoaderArgs) {
   const {body} = await contract.action({request})
 
-  const {amount, description, address, ...rest} = body
+  const {amount, description, address} = body
   const pi = await prisma.paymentIntent.create({
     data: {
       amount,

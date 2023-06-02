@@ -12,5 +12,10 @@ module.exports = {
     },
   },
 
-  ignorePatterns: ['**/storybook-static', '**/prisma/client', '**/.next/*'],
+  ignorePatterns: [
+    '**/storybook-static',
+    '**/prisma/client',
+    '**/.next/*',
+    '**/dist',
+  ],
 }

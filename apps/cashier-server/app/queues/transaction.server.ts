@@ -21,7 +21,7 @@ const QUEUE_ID = 'transaction'
  * It also triggers a webhook if the payment was successful.
  */
 export const queue = Queue<QueueData>(QUEUE_ID, async job => {
-  const {data: payload, id} = job
+  const {data: payload} = job
 
   const log = QueueLog(QUEUE_ID, payload, 'paymentIntentId')
   log('started')

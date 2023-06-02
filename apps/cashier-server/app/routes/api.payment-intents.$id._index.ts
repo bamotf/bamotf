@@ -1,4 +1,4 @@
-import {LoaderArgs} from '@remix-run/node'
+import type {LoaderArgs} from '@remix-run/node'
 import {prisma} from '~/utils/prisma.server'
 import {createContract} from '~/utils/contract'
 import {PaymentIntentSchema} from '~/schemas'

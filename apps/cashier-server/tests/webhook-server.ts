@@ -1,6 +1,5 @@
 import {ConnectionString} from 'connection-string'
 import http from 'http'
-import {vi} from 'vitest'
 import {env} from '~/utils/env.server'
 
 /**
@@ -14,9 +13,7 @@ export const server = http.createServer()
  * @param next Function to be called after the server is listening.
  */
 export const listen = async (next: () => Promise<void>) => {
-  const webhookConnectionString = new ConnectionString(
-    process.env.CASHIER_WEBHOOK_URL,
-  )
+  const webhookConnectionString = new ConnectionString(env.CASHIER_WEBHOOK_URL)
 
   server.listen(webhookConnectionString.port, async () => {
     await next()

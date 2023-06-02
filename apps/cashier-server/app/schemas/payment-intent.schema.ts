@@ -1,7 +1,6 @@
-import {Schema} from 'zod-prisma-utils'
+import type {Schema} from 'zod-prisma-utils'
 import {z} from '~/utils/zod'
 
-import {AddressSchema} from './address.schema'
 import {AmountSchema} from './amount.schema'
 import type {PaymentIntent} from '~/utils/prisma.server'
 

@@ -2,7 +2,7 @@ import {expect, test} from 'tests/base.fixture'
 import {prisma} from '~/utils/prisma.server'
 import * as bitcoinCore from '../utils/bitcoin-core'
 import * as webhookServer from '../../tests/webhook-server'
-import {APIResponse} from '@playwright/test'
+import type {APIResponse} from '@playwright/test'
 import {queue} from '~/queues/transaction.server'
 
 function createFakePaymentIntent(props?: {amount?: number; address?: string}) {

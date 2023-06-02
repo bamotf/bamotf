@@ -1,5 +1,4 @@
-import {describe, expect, test} from 'vitest'
-import {env} from './env.server'
+import {expect, test} from 'vitest'
 import {
   addWatchOnlyAddress,
   createWatchOnlyWallet,
