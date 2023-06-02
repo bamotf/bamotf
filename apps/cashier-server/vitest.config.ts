@@ -1,8 +1,10 @@
 import {defineProject} from 'vitest/config'
+import tsconfigPaths from 'vite-tsconfig-paths'
 
 process.env.LOG_LEVEL = 'error'
 
 export default defineProject({
+  plugins: [tsconfigPaths()],
   test: {
     name: 'cashier-server',
     include: [
