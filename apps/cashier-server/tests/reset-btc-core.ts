@@ -1,5 +1,5 @@
-import {listWallets} from '../app/utils/bitcoin-core'
-import {unloadWallet} from '../app/utils/bitcoin-core'
+import {listWallets} from '~/utils/bitcoin-core'
+import {unloadWallet} from '~/utils/bitcoin-core'
 
 export default async function resetBitcoinCore() {
   const wallets = await listWallets()

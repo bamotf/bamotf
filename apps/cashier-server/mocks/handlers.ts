@@ -95,6 +95,28 @@ export const handlers = [
             }),
           )
 
+        case 'listunspent':
+          return res(
+            ctx.json({
+              result: [
+                {
+                  amount: 0.0001,
+                  confirmations: 0,
+                },
+                {
+                  amount: 0.0001,
+                  confirmations: 2,
+                },
+                {
+                  amount: 0.0001,
+                  confirmations: 6,
+                },
+              ],
+              error: null,
+              id: data.params.id,
+            }),
+          )
+
         default:
           return res(ctx.json({}))
       }

@@ -18,10 +18,6 @@ function createFakePaymentIntent(props?: {amount?: number; address?: string}) {
 
 test.describe('[POST] /api/payment-intents', () => {
   test.describe('when it works', async () => {
-    test.afterAll(async () => {
-      queue.obliterate()
-    })
-
     test('should respond with a 200 status code when passed correct data', async ({
       request,
     }) => {

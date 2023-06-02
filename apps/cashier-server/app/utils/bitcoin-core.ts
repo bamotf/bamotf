@@ -1,7 +1,8 @@
 /**
- * Most of this file can be replaced with BDK but for now this is good enough.
- * The idea is to keep dependencies to a minimum.
- * Also, this is a temporary solution until we have a better way to handle the communication
+ * This file contains functions that interact with the Bitcoin Core.
+ * I haven't found a good library for this, so I'm using fetch.
+ *
+ * It's a good idea to replace this with a library that supports TypeScript.
  */
 
 import {logger, format} from 'logger'
@@ -9,15 +10,6 @@ import {env} from './env.server'
 import {fetch} from '@remix-run/node'
 
 const BITCOIN_CORE_URL = `${env.BITCOIN_CORE_CONNECTION_STRING.protocol}://${env.BITCOIN_CORE_CONNECTION_STRING.host}`
-
-const headers = {
-  'Content-Type': 'application/json',
-  Authorization:
-    'Basic ' +
-    btoa(
-      `${env.BITCOIN_CORE_CONNECTION_STRING.user}:${env.BITCOIN_CORE_CONNECTION_STRING.password}`,
-    ),
-}
 
 type BitcoinCoreResponse =
   | {
@@ -37,6 +29,55 @@ type BitcoinCoreResponse =
     )
 
 /**
+ * Abstracts the Bitcoin Core RPC calls.
+ */
+async function cmd({
+  method,
+  params = {},
+  wallet,
+}: {
+  method: string
+  params?: object
+  /**
+   * Specify the wallet name to use for the command.
+   */
+  wallet?: string
+}) {
+  const address = `${BITCOIN_CORE_URL}${
+    wallet ? `/wallet/${encodeURIComponent(wallet)}` : ''
+  }`
+  const request = await fetch(address, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization:
+        'Basic ' +
+        btoa(
+          `${env.BITCOIN_CORE_CONNECTION_STRING.user}:${env.BITCOIN_CORE_CONNECTION_STRING.password}`,
+        ),
+    },
+    body: JSON.stringify({
+      jsonrpc: '1.0',
+      id: `${method}-${Date.now()}`,
+      method,
+      params,
+    }),
+  })
+
+  if (!request.ok) {
+    throw new Error(`Failed to ${method}: ${request.statusText}`)
+  }
+
+  const data = (await request.json()) as BitcoinCoreResponse
+
+  if (data.error) {
+    throw new Error(`Failed to ${method}: ${data.error.message}`)
+  }
+
+  return data.result
+}
+
+/**
  *  Creates a watch-only wallet with the given name.
  * Wallets are created with private keys disabled by default.
  *
@@ -46,58 +87,30 @@ type BitcoinCoreResponse =
 export async function createWatchOnlyWallet(name: string) {
   logger.silly(`🟠 Creating wallet '${format.yellow(name)}'`)
 
-  const request = await fetch(BITCOIN_CORE_URL, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify({
-      jsonrpc: '1.0',
-      id: `create-wallet-${name}`,
-      method: 'createwallet',
-      params: {
-        wallet_name: name,
-        disable_private_keys: true,
-      },
-    }),
+  return await cmd({
+    method: 'createwallet',
+    params: {
+      wallet_name: name,
+      disable_private_keys: true,
+    },
   })
-
-  if (!request.ok) {
-    throw new Error(`Failed to create wallet: ${request.statusText}`)
-  }
-
-  const data = (await request.json()) as BitcoinCoreResponse
-
-  if (data.error) {
-    throw new Error(`Failed to create wallet: ${data.error.message}`)
-  }
-
-  return data.result
 }
 
+/**
+ * Gets the descriptor for the given address so that it can be imported into the watch-only wallet.
+ *
+ * @param address A Bitcoin address
+ * @returns
+ */
 export async function getDescriptor(address: string) {
   logger.silly(`🟠 Getting descriptor for address '${format.yellow(address)}'`)
 
-  const request = await fetch(BITCOIN_CORE_URL, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify({
-      jsonrpc: '1.0',
-      id: `get-desc-${address}`,
-      method: 'getdescriptorinfo',
-      params: {descriptor: `addr(${address})`},
-    }),
+  const result = await cmd({
+    method: 'getdescriptorinfo',
+    params: {descriptor: `addr(${address})`},
   })
 
-  if (!request.ok) {
-    throw new Error(`Failed to get a descriptor: ${request.statusText}`)
-  }
-
-  const data = (await request.json()) as BitcoinCoreResponse
-
-  if (data.error) {
-    throw new Error(`Failed to get a descriptor: ${data.error.message}`)
-  }
-
-  return data.result.descriptor as string
+  return result.descriptor as string
 }
 
 /**
@@ -119,9 +132,10 @@ export async function addWatchOnlyAddress({
    */
   descriptor: string
 }) {
-  const body = JSON.stringify({
-    jsonrpc: '1.0',
-    id: `import-desc-${wallet}`,
+  logger.silly('🟠 Importing address into wallet in the Bitcoin Core')
+
+  return await cmd({
+    wallet,
     method: 'importdescriptors',
     params: {
       requests: [
@@ -133,30 +147,13 @@ export async function addWatchOnlyAddress({
       ],
     },
   })
-  logger.silly('🟠 Importing address into wallet in the Bitcoin Core', {body})
-
-  const request = await fetch(
-    `${BITCOIN_CORE_URL}/wallet/${encodeURIComponent(wallet)}`,
-    {
-      method: 'POST',
-      headers,
-      body,
-    },
-  )
-
-  if (!request.ok) {
-    throw new Error(`Failed to add address to wallet: ${request.statusText}`)
-  }
-
-  const data = (await request.json()) as BitcoinCoreResponse
-
-  if (data.error) {
-    throw new Error(`Failed to add address to wallet: ${data.error.message}`)
-  }
-
-  return data.result
 }
 
+/**
+ * Lists all unspent transactions for the given wallet.
+ * @param wallet wallet name
+ * @returns
+ */
 export async function listUnspent(wallet: string): Promise<
   {
     txid: string
@@ -176,38 +173,27 @@ export async function listUnspent(wallet: string): Promise<
     `🟠 Requesting transactions from wallet ${format.yellow(wallet)}`,
   )
 
-  const url = `${BITCOIN_CORE_URL}/wallet/${encodeURIComponent(wallet)}`
-  const request = await fetch(url, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify({
-      jsonrpc: '1.0',
-      id: `listunspent-${wallet}`,
-      method: 'listunspent',
-      params: {},
-    }),
+  return await cmd({
+    method: 'listunspent',
+    wallet,
   })
+}
 
-  if (!request.ok) {
-    throw new Error(`Failed to list unspent: ${request.statusText}`)
-  }
-
-  const data = (await request.json()) as BitcoinCoreResponse
-
-  if (data.error) {
-    throw new Error(`Failed to list unspent: ${data.error.message}`)
-  }
-
-  return data.result
+/**
+ *
+ * @param wallet wallet name
+ * @returns
+ */
+export async function getBalance(wallet: string) {
+  logger.silly(`🟠 Getting balance for wallet ${format.yellow(wallet)}`)
+  const l = await listUnspent(wallet)
+  return l
+    .filter(a => a.confirmations > 0)
+    .reduce((acc, curr) => acc + curr.amount, 0)
 }
 
 /**
  * Simulates a payment to the given address.
- *
- * - [ ] Transferir atraves da carteira padrao.
- * - [ ] Checar se a cateira tem saldo suficiente.
- * - [ ] caso nao tenha, minerar o bloco apontando ela
- * - [ ] transferir
  */
 export async function simulatePayment({
   address,
@@ -216,6 +202,37 @@ export async function simulatePayment({
   address: string
   amount: number
 }) {
-  // O problema que tenho eh o seguinte, vou conseguir recuperar o saldo da carteira
-  // se por algum motivo a wallet nao estiver carregada.
+  const wallet = 'test-wallet'
+  const balance = await getBalance(wallet)
+  if (balance < amount) {
+    // TODO: mine a block in order to get some funds
+    throw new Error('Insufficient funds')
+  }
+
+  return await cmd({
+    wallet,
+    method: 'sendtoaddress',
+    params: {
+      address,
+      amount,
+      fee_rate: 25,
+    },
+  })
+}
+
+/**
+ * Only for testing purposes.
+ * @returns
+ */
+export async function listWallets() {
+  return (await cmd({method: 'listwallets'})) as string[]
+}
+
+/**
+ * Only for testing purposes.
+ * @param wallet
+ * @returns
+ */
+export function unloadWallet(wallet: string) {
+  return cmd({method: 'unloadwallet', params: {wallet_name: wallet}})
 }
