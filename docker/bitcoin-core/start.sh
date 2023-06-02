@@ -21,11 +21,20 @@ if [ ! -f "$BITCOIN_DATA/regtest/wallets/$WALLET_NAME/wallet.dat" ]; then
     echo "🧪 Creating the test wallet: $WALLET_NAME"
     bitcoin-cli -datadir=$BITCOIN_DATA -regtest -named createwallet wallet_name="$WALLET_NAME" load_on_startup=true
 
+fi
+
+# If blocks 0-100 are not mined, mine them
+if [ $(bitcoin-cli -datadir=$BITCOIN_DATA -regtest getblockcount) -lt 101 ]; then
+    echo "🧪 Mining the first 101 blocks"
+    
     # Get the address from the wallet
     ADDRESS=$(bitcoin-cli -datadir=$BITCOIN_DATA -regtest -rpcwallet="$WALLET_NAME" getnewaddress)
 
     # Generate 101 blocks to the given address
     bitcoin-cli -datadir=$BITCOIN_DATA -regtest generatetoaddress 101 "$ADDRESS"
 fi
+
+alias bitcoin-cli="bitcoin-cli -regtest -rpcuser=username -rpcpassword=wc7eFmVwEeZCDYTMaOqxRnLWSR7aI76bGmHl6pRFtAU";
+alias bitcoin-cli-teste="bitcoin-cli -rpcwallet=test-wallet";
 
 sleep infinity
