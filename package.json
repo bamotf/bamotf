@@ -20,6 +20,7 @@
     "prepare": "node ./scripts/prepare.js"
   },
   "devDependencies": {
+    "@ianvs/prettier-plugin-sort-imports": "^4.0.2",
     "dotenv": "^16.1.0",
     "dotenv-cli": "^7.0.0",
     "eslint": "8.35.0",
