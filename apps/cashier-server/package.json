@@ -16,8 +16,11 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.1.0",
     "@prisma/client": "^4.12.0",
+    "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-toast": "^1.1.4",
     "@remix-run/css-bundle": "^1.16.1",
     "@remix-run/node": "^1.16.1",
     "@remix-run/react": "^1.16.1",
@@ -34,6 +37,7 @@
     "lucide-react": "^0.233.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.44.3",
     "remix-typedjson": "^0.1.7",
     "secure-webhooks": "^0.3.0",
     "tailwind-merge": "^1.13.0",

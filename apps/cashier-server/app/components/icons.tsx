@@ -28,28 +28,28 @@ import {
 export type Icon = LucideIcon
 
 export const Icons = {
-  logo: Command,
-  close: X,
-  spinner: Loader2,
-  chevronLeft: ChevronLeft,
-  chevronRight: ChevronRight,
-  trash: Trash,
-  post: FileText,
-  page: File,
-  media: Image,
-  settings: Settings,
-  billing: CreditCard,
-  ellipsis: MoreVertical,
-  add: Plus,
-  warning: AlertTriangle,
-  user: User,
-  arrowRight: ArrowRight,
-  help: HelpCircle,
-  pizza: Pizza,
-  sun: SunMedium,
-  moon: Moon,
-  laptop: Laptop,
-  gitHub: ({...props}: LucideProps) => (
+  Logo: Command,
+  Close: X,
+  Spinner: Loader2,
+  ChevronLeft: ChevronLeft,
+  ChevronRight: ChevronRight,
+  Trash: Trash,
+  Post: FileText,
+  Page: File,
+  Media: Image,
+  Settings: Settings,
+  Billing: CreditCard,
+  Ellipsis: MoreVertical,
+  Add: Plus,
+  Warning: AlertTriangle,
+  User: User,
+  ArrowRight: ArrowRight,
+  Help: HelpCircle,
+  Pizza: Pizza,
+  Sun: SunMedium,
+  Moon: Moon,
+  Laptop: Laptop,
+  GitHub: ({...props}: LucideProps) => (
     <svg
       aria-hidden="true"
       focusable="false"
@@ -66,6 +66,6 @@ export const Icons = {
       ></path>
     </svg>
   ),
-  twitter: Twitter,
-  check: Check,
+  Twitter: Twitter,
+  Check: Check,
 }
