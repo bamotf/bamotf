@@ -5,9 +5,9 @@
  * It's a good idea to replace this with a library that supports TypeScript.
  */
 
-import {logger, format} from 'logger'
-import {env} from './env.server'
 import {fetch} from '@remix-run/node'
+import {format, logger} from 'logger'
+import {env} from './env.server'
 
 const BITCOIN_CORE_URL = `${env.BITCOIN_CORE_CONNECTION_STRING.protocol}://${env.BITCOIN_CORE_CONNECTION_STRING.host}`
 
@@ -63,10 +63,6 @@ async function cmd({
       params,
     }),
   })
-
-  if (!request.ok) {
-    throw new Error(`Failed to ${method}: ${request.statusText}`)
-  }
 
   const data = (await request.json()) as BitcoinCoreResponse
 
@@ -170,7 +166,7 @@ export async function listUnspent(wallet: string): Promise<
   }[]
 > {
   logger.silly(
-    `🟠 Requesting transactions from wallet ${format.yellow(wallet)}`,
+    `🟠 Requesting transactions from wallet ${format.magenta(wallet)}`,
   )
 
   return await cmd({
@@ -185,7 +181,7 @@ export async function listUnspent(wallet: string): Promise<
  * @returns
  */
 export async function getBalance(wallet: string) {
-  logger.silly(`🟠 Getting balance for wallet ${format.yellow(wallet)}`)
+  logger.silly(`🟠 Getting balance for wallet ${format.magenta(wallet)}`)
   const l = await listUnspent(wallet)
   return l
     .filter(a => a.confirmations > 0)
@@ -200,22 +196,57 @@ export async function simulatePayment({
   amount,
 }: {
   address: string
+  /**
+   * Amount in satoshis
+   */
   amount: number
 }) {
+  logger.silly(
+    `🟠 Simulating payment of ${format.yellow(
+      amount,
+    )} satoshis to address ${format.magenta(address)}`,
+  )
+
   const wallet = 'test-wallet'
   const balance = await getBalance(wallet)
-  if (balance < amount) {
+  if (amount < balance) {
     // TODO: mine a block in order to get some funds
     throw new Error('Insufficient funds')
   }
 
-  return await cmd({
+  logger.silly(
+    `🟠 Sending ${format.yellow(amount)} satoshis to address ${format.magenta(
+      address,
+    )}`,
+  )
+
+  await cmd({
     wallet,
     method: 'sendtoaddress',
     params: {
       address,
-      amount,
+      amount: amount / 100_000_000,
       fee_rate: 25,
+    },
+  })
+
+  // getnewaddress from the wallet
+  const testWalletAddress = await cmd({
+    wallet: 'test-wallet',
+    method: 'getnewaddress',
+  })
+  logger.silly(
+    `🟠 Mining a block to get the funds to the test wallet ${format.magenta(
+      testWalletAddress,
+    )}`,
+  )
+
+  // mine a block
+  await cmd({
+    method: 'generatetoaddress',
+    params: {
+      nblocks: 1,
+      address: testWalletAddress,
     },
   })
 }

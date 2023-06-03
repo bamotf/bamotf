@@ -2,43 +2,55 @@ import {ConnectionString} from 'connection-string'
 import http from 'http'
 import {env} from '~/utils/env.server'
 
-/**
- * Create a simple http server that emits a `webhook` event when a request is received.
- * Good for testing if webhooks are called.
- */
-export const server = http.createServer()
+export class WebhookTestServer {
+  /**
+   * Create a simple http server that emits a `webhook` event when a request is received.
+   * Good for testing if webhooks are called.
+   */
+  readonly server: http.Server<
+    typeof http.IncomingMessage,
+    typeof http.ServerResponse
+  >
 
-/**
- * Start the server and set the environment variables.
- * @param next Function to be called after the server is listening.
- */
-export const listen = async (next: () => Promise<void>) => {
-  const webhookConnectionString = new ConnectionString(env.CASHIER_WEBHOOK_URL)
+  constructor() {
+    this.server = http.createServer()
+  }
 
-  server.listen(webhookConnectionString.port, async () => {
-    await next()
-  })
-}
+  /**
+   * Start the server and set the environment variables.
+   * @param next Function to be called after the server is listening.
+   */
+  public async listen() {
+    const webhookConnectionString = new ConnectionString(
+      env.CASHIER_WEBHOOK_URL,
+    )
 
-/**
- * Wait for the server to receive a request.
- * @returns A promise that resolves when the server receives a request.
- */
-export const onServerCalled = () => {
-  return new Promise(resolve => {
-    server.on('request', (req, res) => {
-      console.log('🔥🔥 ~ webhook trigger')
-      let body = ''
-      req.on('data', chunk => {
-        body += chunk
-      })
-      req.on('end', () => {
-        const payload = JSON.parse(body)
-        res.writeHead(200, {'Content-Type': 'text/plain'})
-        res.end('OK')
-
-        resolve(payload)
+    return new Promise<void>(resolve => {
+      this.server.listen(webhookConnectionString.port, async () => {
+        await resolve()
       })
     })
-  })
+  }
+
+  /**
+   * Wait for the server to receive a request.
+   * @returns A promise that resolves when the server receives a request.
+   */
+  public onServerCalled() {
+    return new Promise(resolve => {
+      this.server.on('request', (req, res) => {
+        let body = ''
+        req.on('data', chunk => {
+          body += chunk
+        })
+        req.on('end', () => {
+          const payload = JSON.parse(body)
+          res.writeHead(200, {'Content-Type': 'text/plain'})
+          res.end('OK')
+
+          resolve(payload)
+        })
+      })
+    })
+  }
 }

@@ -1,6 +1,7 @@
-import type {Processor} from 'bullmq'
-import {Queue as BullQueue, Worker} from 'bullmq'
+import type { Processor} from 'bullmq';
+import {Queue as BullQueue, UnrecoverableError, Worker} from 'bullmq'
 
+import {logger} from 'logger'
 import {redis} from './redis.server'
 
 type RegisteredQueue = {
@@ -15,7 +16,7 @@ declare global {
 const registeredQueues =
   global.__registeredQueues || (global.__registeredQueues = {})
 
-export function Queue<Payload>(
+export function createQueue<Payload>(
   name: string,
   handler: Processor<Payload>,
 ): BullQueue<Payload> {
@@ -31,6 +32,16 @@ export function Queue<Payload>(
   // in an order determined by factors such as job priority, delay, etc.
   // The scheduler plays an important role in helping workers stay busy.
   const worker = new Worker<Payload>(name, handler, {connection: redis})
+  worker.on('failed', async (job, err) => {
+    if (err instanceof UnrecoverableError) {
+      if (job.repeatJobKey && job.id) {
+        logger.error(`✝︎ ${err.message}`)
+        return await queue.removeRepeatableByKey(job.repeatJobKey)
+      }
+    }
+
+    logger.error(`✝︎ ${err.message}`)
+  })
 
   registeredQueues[name] = {queue, worker}
 

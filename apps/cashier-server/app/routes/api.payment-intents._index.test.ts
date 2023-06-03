@@ -1,20 +1,6 @@
 import {expect, test} from 'tests/base.fixture'
-import {prisma} from '~/utils/prisma.server'
-import * as bitcoinCore from '../utils/bitcoin-core'
-import * as webhookServer from '../../tests/webhook-server'
-import type {APIResponse} from '@playwright/test'
 import {queue} from '~/queues/transaction.server'
-
-function createFakePaymentIntent(props?: {amount?: number; address?: string}) {
-  const {amount = 100, address = '1Dg5jKw5bfW8uV1LbiY1YXcx7KjQPK8uV7'} =
-    props || {}
-  return prisma.paymentIntent.create({
-    data: {
-      amount: amount,
-      address,
-    },
-  })
-}
+import {WebhookTestServer} from '../../tests/webhook-server'
 
 test.describe('[POST] /api/payment-intents', () => {
   test.describe('when it works', async () => {
@@ -36,34 +22,60 @@ test.describe('[POST] /api/payment-intents', () => {
       )
     })
 
-    test('should trigger webhook and job has stopped', async ({request}) => {
-      let response: APIResponse | undefined
-      const expectedPayload = {id: 1, name: 'foo'}
+    test('should trigger webhook and job has stopped', async ({
+      request,
+      bitcoinCore,
+      faker,
+    }) => {
+      const address = faker.createRandomBech32Address()
 
       // This is a fairly complex test, so let's break it down:
       // 1. start the server that will receive the webhook from job
       // 2. trigger the endpoint that will enqueue the job
-      webhookServer.listen(async () => {
-        const address = 'bcrt1qkg5kdqcxlzecaqws4ha80d2twttle869z0ugjv'
-        // add payment intent
-        response = await request.post('/api/payment-intents', {
-          data: {
-            amount: 100,
-            address,
-          },
-        })
-        await bitcoinCore.simulatePayment({
+      const webhook = new WebhookTestServer()
+      await webhook.listen()
+
+      // Create a fake payment intent
+      const response = await request.post('/api/payment-intents', {
+        data: {
+          amount: 10000,
+          confirmations: 1,
           address,
-          amount: 100,
-        })
+        },
       })
 
-      const receivedPayload = await webhookServer.onServerCalled()
-      expect(receivedPayload).toEqual(expectedPayload)
+      // Wait for the webhook to be called
+      const receivedPayload = webhook.onServerCalled()
+
+      // Simulate the payment in the background
+      await bitcoinCore.simulatePayment({
+        address,
+        amount: 10000,
+      })
+      expect(await receivedPayload).toStrictEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          idempotenceKey: expect.any(String),
+          event: 'payment_intent.succeeded',
+          data: expect.objectContaining({
+            paymentIntent: expect.objectContaining({
+              id: expect.any(String),
+              status: 'succeeded',
+              transactions: expect.arrayContaining([
+                expect.objectContaining({
+                  id: expect.any(String),
+                  amount: '10000',
+                  confirmations: 1,
+                }),
+              ]),
+            }),
+          }),
+        }),
+      )
 
       // Make sure the job has been removed from the queue
-      const jobs = await queue.getJobs()
-      expect(jobs).toHaveLength(0)
+      const jobs = await queue.getJobs('completed')
+      expect(jobs).toHaveLength(1)
 
       if (!response) {
         throw new Error('Response is undefined')
@@ -71,7 +83,7 @@ test.describe('[POST] /api/payment-intents', () => {
 
       const data = await response.json()
       const job = jobs.find(job => job.data.paymentIntentId === data.id)
-      expect(job).toBeFalsy()
+      expect(job).toBeTruthy()
     })
   })
 
@@ -93,9 +105,9 @@ test.describe('[POST] /api/payment-intents', () => {
 })
 
 test.describe('[GET] /api/payment-intents', () => {
-  test('should respond with a 200 status code', async ({request}) => {
+  test('should respond with a 200 status code', async ({request, faker}) => {
     // Create a fake payment intent
-    await createFakePaymentIntent()
+    await faker.createFakePaymentIntent()
 
     // Get all payment intents
     const pi = await request.get('/api/payment-intents')

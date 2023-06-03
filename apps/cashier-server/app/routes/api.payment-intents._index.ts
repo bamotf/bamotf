@@ -1,11 +1,12 @@
 import type {LoaderArgs} from '@remix-run/node'
-import {prisma} from '~/utils/prisma.server'
-import {createContract} from '~/utils/contract'
-import {PaymentIntentSchema} from '~/schemas'
-import * as bitcoinCore from '~/utils/bitcoin-core'
-import {queue} from '~/queues/transaction.server'
 import {format, logger} from 'logger'
 import {typedjson} from 'remix-typedjson'
+import {queue} from '~/queues/transaction.server'
+import {PaymentIntentSchema} from '~/schemas'
+import * as bitcoinCore from '~/utils/bitcoin-core'
+import {createContract} from '~/utils/contract'
+import {env} from '~/utils/env.server'
+import {prisma} from '~/utils/prisma.server'
 
 export const contract = createContract({
   action: {
@@ -13,6 +14,7 @@ export const contract = createContract({
       amount: true,
       description: true,
       address: true,
+      confirmations: true,
     }),
   },
 })
@@ -36,19 +38,14 @@ export async function loader() {
  * Creates a PaymentIntent object.
  */
 export async function action({request}: LoaderArgs) {
-  const {body} = await contract.action({request})
+  const {body: data} = await contract.action({request})
 
-  const {amount, description, address} = body
   const pi = await prisma.paymentIntent.create({
-    data: {
-      amount,
-      description,
-      address,
-    },
+    data,
   })
 
   await bitcoinCore.createWatchOnlyWallet(pi.id)
-  const descriptor = await bitcoinCore.getDescriptor(address)
+  const descriptor = await bitcoinCore.getDescriptor(pi.address)
   await bitcoinCore.addWatchOnlyAddress({
     wallet: pi.id,
     descriptor,
@@ -61,15 +58,17 @@ export async function action({request}: LoaderArgs) {
     },
     {
       repeat: {
-        every: 10000,
+        pattern: env.RUNNING_TESTS
+          ? '*/1 * * * * *' // every 1 seconds
+          : '*/10 * * * * *', // every 10 seconds
       },
     },
   )
 
   logger.info(
-    `Adding job (${format.cyan(job.id)}) to check if payment (${format.cyan(
-      pi.id,
-    )}) was made`,
+    `Adding job (${format.magenta(
+      job.id,
+    )}) to check if payment (${format.magenta(pi.id)}) was made`,
   )
 
   return typedjson(pi)

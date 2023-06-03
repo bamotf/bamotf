@@ -1,6 +1,6 @@
 /* eslint-disable import/first */
-import {z} from './zod'
 import {ConnectionString} from 'connection-string'
+import {z} from './zod'
 
 const STRING_REQUIRED = z.string().min(1, 'Required')
 
@@ -17,6 +17,7 @@ const envSchema = z.object({
   }),
   CASHIER_WEBHOOK_URL: STRING_REQUIRED.url(),
   CASHIER_SECRET: STRING_REQUIRED,
+  RUNNING_TESTS: z.coerce.boolean().default(false),
 })
 
 /**

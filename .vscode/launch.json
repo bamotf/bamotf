@@ -16,7 +16,10 @@
       "name": "Next.js: debug server-side",
       "type": "node-terminal",
       "request": "launch",
-      "command": "pnpm run dev"
+      "command": "pnpm run dev",
+      "env": {
+        "LOG_LEVEL": "debug"
+      }
     },
     {
       "name": "Next.js: debug client-side",
@@ -28,11 +31,14 @@
       "name": "Next.js: debug full stack",
       "type": "node-terminal",
       "request": "launch",
-      "command": "npm run dev",
+      "command": "pnpm run dev",
       "serverReadyAction": {
         "pattern": "started server on .+, url: (https?://.+)",
         "uriFormat": "%s",
         "action": "debugWithChrome"
+      },
+      "env": {
+        "LOG_LEVEL": "debug"
       }
     }
   ]

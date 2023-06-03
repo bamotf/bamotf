@@ -1,5 +1,6 @@
 import {PrismaClient} from '@prisma/client'
-import {logger, format} from 'logger'
+import {format, logger} from 'logger'
+import {env} from './env.server'
 
 // export all types from from prisma client
 export * from '@prisma/client'
@@ -27,7 +28,7 @@ export const prisma = getClient(() => {
 
   const client = new PrismaClient({
     log:
-      process.env.NODE_ENV === 'test'
+      env.NODE_ENV === 'test' || env.RUNNING_TESTS
         ? [{emit: 'stdout', level: 'error'}]
         : [
             {emit: 'event', level: 'query'},
@@ -59,7 +60,7 @@ export const prisma = getClient(() => {
 
     const dur = format[color](`${e.duration}ms`)
 
-    logger.info(`${format.cyan('prisma:query')} - ${dur} - ${e.query}`, {
+    logger.info(`${format.magenta('prisma:query')} - ${dur} - ${e.query}`, {
       duration: e.duration,
     })
   })
