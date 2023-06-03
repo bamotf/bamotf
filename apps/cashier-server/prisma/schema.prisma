@@ -10,10 +10,17 @@ datasource db {
   url      = env("DATABASE_CONNECTION_STRING")
 }
 
+enum PaymentIntentStatus {
+  pending
+  processing
+  succeeded
+  canceled
+}
+
 model PaymentIntent {
-  id                 String        @id @default(uuid())
+  id                 String              @id @default(uuid())
   // Addresses are unique, so we can identify the payment intent by the address
-  address            String        @unique
+  address            String              @unique
   /// In sats
   amount             BigInt
   canceledAt         DateTime?
@@ -23,13 +30,13 @@ model PaymentIntent {
   // customer  String?
   // receiptEmail String?
   // Number of blocks confirmed required for the transaction to be considered confirmed.
-  confirmations      Int           @default(6)
-  status             String        @default("pending")
+  confirmations      Int                 @default(6)
+  status             PaymentIntentStatus @default(pending)
   transactions       Transaction[]
   // account            Account?      @relation(fields: [accountId], references: [id])
   // accountId          String?
-  createdAt          DateTime      @default(now())
-  updatedAt          DateTime      @updatedAt
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
 }
 
 model Transaction {
