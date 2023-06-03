@@ -1,10 +1,23 @@
+import * as bitcoin from 'bitcoinjs-lib'
 import ECPairFactory from 'ecpair'
 import * as ecc from 'tiny-secp256k1'
-import * as bitcoin from 'bitcoinjs-lib'
 
 const ECPair = ECPairFactory(ecc)
 
 const network = bitcoin.networks.regtest
+
+/**
+ * Creates a random bitcoin address
+ */
+export function createRandomAddress() {
+  const functions = [
+    createRandomP2PKHAddress,
+    createRandomP2SHAddress,
+    createRandomBech32Address,
+  ]
+  const randomIndex: number = Math.floor(Math.random() * functions.length)
+  return functions[randomIndex]()
+}
 
 /**
  * P2PKH (BASE58) / Legacy

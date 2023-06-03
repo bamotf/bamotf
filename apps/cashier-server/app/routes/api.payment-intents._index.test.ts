@@ -27,7 +27,7 @@ test.describe('[POST] /api/payment-intents', () => {
       bitcoinCore,
       faker,
     }) => {
-      const address = faker.createRandomBech32Address()
+      const address = faker.createRandomAddress()
 
       // This is a fairly complex test, so let's break it down:
       // 1. start the server that will receive the webhook from job
