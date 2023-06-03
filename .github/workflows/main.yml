@@ -120,10 +120,10 @@ jobs:
       - name: 📦 Install dependencies
         run: pnpm install
 
-      # - name: 🐳 Docker compose
-      #   run:
-      #     docker-compose up -d && sleep 3 && pnpm prisma:example migrate reset
-      #     --force --skip-seed
+      - name: 🐳 Docker compose
+        run:
+          docker-compose up -d && sleep 3 && pnpm prisma migrate reset --force
+          --skip-seed
 
       - name: 🚦 Run unit tests
         run: pnpm test:integration
@@ -161,10 +161,10 @@ jobs:
       - name: 🧪 Install Playwright Browsers
         run: pnpm dlx playwright@1.32.3 install --with-deps
 
-      # - name: 🐳 Docker compose
-      #   run:
-      #     docker-compose up -d && sleep 3 && pnpm prisma:example migrate reset
-      #     --force --skip-seed
+      - name: 🐳 Docker compose
+        run:
+          docker-compose up -d && sleep 3 && pnpm prisma migrate reset --force
+          --skip-seed
 
       - name: 🤹‍♀️ Run Playwright tests
         run: pnpm test:e2e
