@@ -1,5 +1,12 @@
 {
-  "cSpell.words": ["nvmrc", "Quirrel", "satoshis", "txid", "typedjson"],
+  "cSpell.words": [
+    "Lucide",
+    "nvmrc",
+    "Quirrel",
+    "satoshis",
+    "txid",
+    "typedjson"
+  ],
   "vitest.exclude": [
     "**/node_modules/**",
     "**/dist/**",
