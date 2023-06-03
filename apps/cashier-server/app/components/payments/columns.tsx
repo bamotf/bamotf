@@ -1,5 +1,6 @@
 import type {PaymentIntent} from '@prisma/client'
 import type {ColumnDef} from '@tanstack/react-table'
+import {Badge} from '~/components/payments/badge'
 
 export const columns: ColumnDef<PaymentIntent>[] = [
   {
@@ -26,9 +27,26 @@ export const columns: ColumnDef<PaymentIntent>[] = [
   {
     accessorKey: 'status',
     header: 'Status',
+    cell: ({row}) => {
+      const status = row.getValue('status') as PaymentIntent['status']
+
+      return <Badge status={status} />
+    },
   },
   {
     accessorKey: 'createdAt',
     header: 'Created at',
+    cell: ({row}) => {
+      const date = new Date(row.getValue('createdAt'))
+      // format like `18 de mai. 20:38`
+      const formatted = new Intl.DateTimeFormat('en-US', {
+        day: 'numeric',
+        month: 'short',
+        hour: 'numeric',
+        minute: 'numeric',
+      }).format(date)
+
+      return formatted
+    },
   },
 ]
