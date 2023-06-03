@@ -1,10 +1,14 @@
 {
-  "cSpell.words": ["nvmrc", "Quirrel", "satoshis", "typedjson"],
+  "cSpell.words": ["nvmrc", "Quirrel", "satoshis", "txid", "typedjson"],
   "vitest.exclude": [
     "**/node_modules/**",
     "**/dist/**",
     "**/cypress/**",
     "**/.{idea,git,cache,output,temp}/**",
     "**/routes/**/*.test.ts"
-  ]
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true,
+    "source.organizeImports": true
+  }
 }
