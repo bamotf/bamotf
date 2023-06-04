@@ -29,7 +29,9 @@ export const contract = createContract({
  */
 export async function loader() {
   const [paymentIntents, total] = await Promise.all([
-    prisma.paymentIntent.findMany(),
+    prisma.paymentIntent.findMany({
+      orderBy: {createdAt: 'desc'},
+    }),
     prisma.paymentIntent.count(),
   ])
 
