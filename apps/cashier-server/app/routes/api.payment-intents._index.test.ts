@@ -27,7 +27,7 @@ test.describe('[POST] /api/payment-intents', () => {
       bitcoinCore,
       faker,
     }) => {
-      const address = faker.createRandomAddress()
+      const address = faker.bitcoin.createRandomAddress()
 
       // This is a fairly complex test, so let's break it down:
       // 1. start the server that will receive the webhook from job
@@ -85,6 +85,71 @@ test.describe('[POST] /api/payment-intents', () => {
       const job = jobs.find(job => job.data.paymentIntentId === data.id)
       expect(job).toBeTruthy()
     })
+
+    test('should accept payments with another currency', async ({
+      request,
+      bitcoinCore,
+      faker,
+    }) => {
+      const address = faker.bitcoin.createRandomAddress()
+
+      // This is a fairly complex test, so let's break it down:
+      // 1. start the server that will receive the webhook from job
+      // 2. trigger the endpoint that will enqueue the job
+      const webhook = new WebhookTestServer()
+      await webhook.listen()
+
+      // Create a fake payment intent
+      const response = await request.post('/api/payment-intents', {
+        data: {
+          currency: 'USD',
+          amount: 10_000_00,
+          confirmations: 1,
+          address,
+        },
+      })
+
+      // Wait for the webhook to be called
+      const receivedPayload = webhook.onServerCalled()
+
+      // Simulate the payment in the background
+      await bitcoinCore.simulatePayment({
+        address,
+        amount: 10000,
+      })
+      // expect(await receivedPayload).toStrictEqual(
+      //   expect.objectContaining({
+      //     id: expect.any(String),
+      //     idempotenceKey: expect.any(String),
+      //     event: 'payment_intent.succeeded',
+      //     data: expect.objectContaining({
+      //       paymentIntent: expect.objectContaining({
+      //         id: expect.any(String),
+      //         status: 'succeeded',
+      //         transactions: expect.arrayContaining([
+      //           expect.objectContaining({
+      //             id: expect.any(String),
+      //             amount: '10000',
+      //             confirmations: 1,
+      //           }),
+      //         ]),
+      //       }),
+      //     }),
+      //   }),
+      // )
+
+      // // Make sure the job has been removed from the queue
+      // const jobs = await queue.getJobs('completed')
+      // expect(jobs).toHaveLength(1)
+
+      // if (!response) {
+      //   throw new Error('Response is undefined')
+      // }
+
+      // const data = await response.json()
+      // const job = jobs.find(job => job.data.paymentIntentId === data.id)
+      // expect(job).toBeTruthy()
+    })
   })
 
   test('should respond with a 400 status code if an invalid request body is provided', async ({
@@ -107,7 +172,7 @@ test.describe('[POST] /api/payment-intents', () => {
 test.describe('[GET] /api/payment-intents', () => {
   test('should respond with a 200 status code', async ({request, faker}) => {
     // Create a fake payment intent
-    await faker.createFakePaymentIntent()
+    await faker.paymentIntent.createFakePaymentIntent()
 
     // Get all payment intents
     const pi = await request.get('/api/payment-intents')

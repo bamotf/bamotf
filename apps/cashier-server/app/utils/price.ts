@@ -1,7 +1,8 @@
+import type {FiatCurrencyCode} from '~/config/currency'
 import {env} from './env.server'
 
 type CurrencyData = {
-  currencyCode: string
+  currencyCode: FiatCurrencyCode
   price: number
   timestampSec: number
   provider: string
@@ -55,7 +56,7 @@ type DataObject = {
  * @param currencyCode The currency code to get the price in.
  * @returns The price of bitcoin in the given currency
  */
-export const getBitcoinPrice = async (currencyCode: string) => {
+export const getBitcoinPrice = async (currencyCode: FiatCurrencyCode) => {
   const result = await getData()
   const priceData = result.data.find(d => d.currencyCode === currencyCode)
   if (!priceData) {

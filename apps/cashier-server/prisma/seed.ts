@@ -3,18 +3,17 @@ import {createRandomAddress} from '../tests/faker/bitcoin'
 const prisma = new PrismaClient()
 
 async function main() {
-  // Create a pending payment intent
   const s1 = await prisma.paymentIntent.upsert({
     where: {id: 'seed-1'},
     update: {},
     create: {
       id: 'seed-1',
       amount: 100,
+      description: 'User has not paid',
       address: createRandomAddress(),
     },
   })
 
-  // Create a succeeded payment intent
   const s2 = await prisma.paymentIntent.upsert({
     where: {id: 'seed-2'},
     update: {},
@@ -23,6 +22,7 @@ async function main() {
       amount: 420.69 * 1e8,
       address: createRandomAddress(),
       status: 'succeeded',
+      description: 'User has paid',
       transactions: {
         create: [
           {
@@ -35,8 +35,6 @@ async function main() {
     },
   })
 
-  // Create a pending payment intent with a transaction
-  // that has less confirmations
   const s3 = await prisma.paymentIntent.upsert({
     where: {id: 'seed-3'},
     update: {},
@@ -45,6 +43,8 @@ async function main() {
       amount: 10_000_000,
       address: createRandomAddress(),
       status: 'pending',
+      confirmations: 6,
+      description: 'Not enough confirmations',
       transactions: {
         create: [
           {
@@ -57,7 +57,6 @@ async function main() {
     },
   })
 
-  // User has paid but we haven't received enough funds
   const s4 = await prisma.paymentIntent.upsert({
     where: {id: 'seed-4'},
     update: {},
@@ -65,12 +64,47 @@ async function main() {
       id: 'seed-4',
       amount: 10_00_000_000,
       address: createRandomAddress(),
+      description: "User has paid but we haven't received enough funds",
       transactions: {
         create: [
           {
             id: 'transaction-3',
             amount: 10_000_000,
             confirmations: 6,
+          },
+        ],
+      },
+    },
+  })
+
+  const s5 = await prisma.paymentIntent.upsert({
+    where: {id: 'seed-5'},
+    update: {},
+    create: {
+      id: 'seed-5',
+      amount: 10000_00,
+      address: createRandomAddress(),
+      currency: 'USD',
+      description: 'Requested in another currency',
+    },
+  })
+
+  const s6 = await prisma.paymentIntent.upsert({
+    where: {id: 'seed-6'},
+    update: {},
+    create: {
+      id: 'seed-6',
+      amount: 130_99,
+      address: createRandomAddress(),
+      currency: 'BRL',
+      description: 'Payed a PI that requested in another currency',
+      transactions: {
+        create: [
+          {
+            id: 'transaction-4',
+            amount: 30_000,
+            confirmations: 6,
+            originalAmount: 130_99,
           },
         ],
       },

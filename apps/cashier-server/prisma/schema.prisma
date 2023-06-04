@@ -19,40 +19,27 @@ enum PaymentIntentStatus {
 
 model PaymentIntent {
   id                 String              @id @default(uuid())
-  // Addresses are unique, so we can identify the payment intent by the address
-  address            String              @unique
-  /// In sats
+  address            String              @unique // Addresses are unique, so we can identify the payment intent by the address
   amount             BigInt
+  status             PaymentIntentStatus @default(pending)
+  confirmations      Int                 @default(1) // Number of blocks confirmed required for the transaction to be considered confirmed.
+  currency           String              @default("BTC") @db.VarChar(3) // 3 letter currency code
   canceledAt         DateTime?
   cancellationReason String?
   description        String?
-  // metadata Json?
-  // customer  String?
-  // receiptEmail String?
-  // Number of blocks confirmed required for the transaction to be considered confirmed.
-  confirmations      Int                 @default(6)
-  status             PaymentIntentStatus @default(pending)
+  metadata           Json?
   transactions       Transaction[]
-  // account            Account?      @relation(fields: [accountId], references: [id])
-  // accountId          String?
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @updatedAt
 }
 
 model Transaction {
   id              String        @id
-  amount          BigInt /// In sats
+  amount          BigInt /// Transaction amount in satoshis
+  originalAmount  BigInt? /// Converted to the currency of the payment intent at the time of the transaction @map("amountReceived")
   confirmations   Int
   paymentIntent   PaymentIntent @relation(fields: [paymentIntentId], references: [id])
   paymentIntentId String
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
 }
-
-// model Account {
-//   id                String          @id @default(cuid())
-//   extendedPublicKey String          @unique
-//   createdAt         DateTime        @default(now())
-//   updatedAt         DateTime        @updatedAt
-//   paymentIntents    PaymentIntent[]
-// }

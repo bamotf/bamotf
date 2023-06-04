@@ -16,6 +16,7 @@ export async function loader({params, request}: LoaderArgs) {
     include: {transactions: true},
     orderBy: {createdAt: 'desc'},
   })
+
   return typedjson({data: paymentIntents})
 }
 

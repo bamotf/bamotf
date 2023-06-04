@@ -3,7 +3,11 @@ import {format, logger} from 'logger'
 import {typedjson} from 'remix-typedjson'
 import {queue} from '~/queues/transaction.server'
 import {PaymentIntentSchema} from '~/schemas'
-import * as bitcoinCore from '~/utils/bitcoin-core'
+import {
+  addWatchOnlyAddress,
+  createWatchOnlyWallet,
+  getDescriptor,
+} from '~/utils/bitcoin-core'
 import {createContract} from '~/utils/contract'
 import {env} from '~/utils/env.server'
 import {prisma} from '~/utils/prisma.server'
@@ -15,6 +19,7 @@ export const contract = createContract({
       description: true,
       address: true,
       confirmations: true,
+      currency: true,
     }),
   },
 })
@@ -44,9 +49,9 @@ export async function action({request}: LoaderArgs) {
     data,
   })
 
-  await bitcoinCore.createWatchOnlyWallet(pi.id)
-  const descriptor = await bitcoinCore.getDescriptor(pi.address)
-  await bitcoinCore.addWatchOnlyAddress({
+  await createWatchOnlyWallet(pi.id)
+  const descriptor = await getDescriptor(pi.address)
+  await addWatchOnlyAddress({
     wallet: pi.id,
     descriptor,
   })

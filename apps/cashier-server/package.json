@@ -59,6 +59,7 @@
     "zod-prisma-utils": "^0.0.9"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.0.2",
     "@playwright/test": "^1.34.3",
     "@remix-run/dev": "^1.16.1",
     "@types/ioredis": "^4.28.10",
