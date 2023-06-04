@@ -34,6 +34,48 @@ async function main() {
       },
     },
   })
+
+  // Create a pending payment intent with a transaction
+  // that has less confirmations
+  const s3 = await prisma.paymentIntent.upsert({
+    where: {id: 'seed-3'},
+    update: {},
+    create: {
+      id: 'seed-3',
+      amount: 10_000_000,
+      address: createRandomAddress(),
+      status: 'pending',
+      transactions: {
+        create: [
+          {
+            id: 'transaction-2',
+            amount: 10_000_000,
+            confirmations: 2,
+          },
+        ],
+      },
+    },
+  })
+
+  // User has paid but we haven't received enough funds
+  const s4 = await prisma.paymentIntent.upsert({
+    where: {id: 'seed-4'},
+    update: {},
+    create: {
+      id: 'seed-4',
+      amount: 10_00_000_000,
+      address: createRandomAddress(),
+      transactions: {
+        create: [
+          {
+            id: 'transaction-3',
+            amount: 10_000_000,
+            confirmations: 6,
+          },
+        ],
+      },
+    },
+  })
 }
 main()
   .then(async () => {
