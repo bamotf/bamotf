@@ -16,6 +16,7 @@ export const columns: ColumnDef<PaymentIntent>[] = [
       })
         .format(amount * 1e-8)
         .replace('$', '₿')
+        .replace(/^(\D+)/, '$1 ')
 
       return <div className="text-right font-medium">{formatted}</div>
     },

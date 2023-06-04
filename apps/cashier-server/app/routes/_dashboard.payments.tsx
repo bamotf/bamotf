@@ -1,9 +1,10 @@
 import type {LoaderArgs, V2_MetaFunction} from '@remix-run/node'
-import {typedjson, useTypedLoaderData} from 'remix-typedjson'
+import {typedjson} from 'remix-typedjson'
 
 import {CalendarDateRangePicker} from '~/components/date-range-picker'
 import {columns} from '~/components/payments/columns'
 import {DataTable} from '~/components/payments/data-table'
+import {useFreshData} from '~/hooks/use-fresh-data'
 import {prisma} from '~/utils/prisma.server'
 
 export const meta: V2_MetaFunction = () => {
@@ -13,12 +14,13 @@ export const meta: V2_MetaFunction = () => {
 export async function loader({params, request}: LoaderArgs) {
   const paymentIntents = await prisma.paymentIntent.findMany({
     include: {transactions: true},
+    orderBy: {createdAt: 'desc'},
   })
   return typedjson({data: paymentIntents})
 }
 
 export default function PaymentsPage() {
-  const {data} = useTypedLoaderData<typeof loader>()
+  const {data} = useFreshData<typeof loader>()
 
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">
