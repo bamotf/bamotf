@@ -1,9 +1,9 @@
 import {test as base} from '@playwright/test'
-import resetDb from './reset-db'
-import resetBitcoinCore from './reset-btc-core'
-import resetQueues from './reset-queues'
 import * as bitcoinCore from '~/utils/bitcoin-core'
-import * as faker from './faker'
+import faker from './faker'
+import resetBitcoinCore from './reset-btc-core'
+import resetDb from './reset-db'
+import resetQueues from './reset-queues'
 
 export type Options = {
   bitcoinCore: typeof bitcoinCore

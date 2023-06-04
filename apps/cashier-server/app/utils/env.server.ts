@@ -1,4 +1,5 @@
-/* eslint-disable import/first */
+import './load-env.server'
+
 import {ConnectionString} from 'connection-string'
 import {z} from './zod'
 

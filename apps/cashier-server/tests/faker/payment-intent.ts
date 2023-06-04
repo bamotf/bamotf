@@ -1,3 +1,4 @@
+import type {CurrencyCode} from '~/config/currency'
 import {prisma} from '~/utils/prisma.server'
 import {createRandomAddress} from './bitcoin'
 
@@ -7,13 +8,15 @@ import {createRandomAddress} from './bitcoin'
 export function createFakePaymentIntent(props?: {
   amount?: number
   address?: string
+  currency?: CurrencyCode
 }) {
-  const {amount = 100, address = createRandomAddress()} = props || {}
+  const {amount = 100, address = createRandomAddress(), ...rest} = props || {}
 
   return prisma.paymentIntent.create({
     data: {
       amount: amount,
       address,
+      ...rest,
     },
   })
 }
