@@ -15,6 +15,8 @@ export const contract = createContract({
       address: true,
       description: true,
       currency: true,
+      confirmations: true,
+      tolerance: true,
     }).partial(),
   },
 })
@@ -31,7 +33,11 @@ export async function loader({params}: LoaderArgs) {
     where: {id},
   })
 
-  return typedjson(paymentIntent)
+  return typedjson({
+    ...paymentIntent,
+    amount: paymentIntent.amount.toNumber(),
+    tolerance: paymentIntent.tolerance.toNumber(),
+  })
 }
 
 /**
@@ -47,5 +53,9 @@ export async function action({request, params}: LoaderArgs) {
     data: body,
   })
 
-  return typedjson(paymentIntent)
+  return typedjson({
+    ...paymentIntent,
+    amount: paymentIntent.amount.toNumber(),
+    tolerance: paymentIntent.tolerance.toNumber(),
+  })
 }

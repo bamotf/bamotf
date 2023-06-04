@@ -1,37 +1,20 @@
-import type {PaymentIntent} from '@prisma/client'
+import type {PaymentIntent, PaymentIntentStatus} from '@prisma/client'
 import type {ColumnDef} from '@tanstack/react-table'
 import {Badge} from '~/components/payments/badge'
-import type {CurrencyCode} from '~/config/currency'
+import {useFormattedAmount} from '~/hooks/use-formatted-amount'
 import {cn} from '~/utils/css'
 
-const useFormattedAmount = ({
-  amount,
-  currency,
-}: {
+type Data = {
+  id: string
   amount: number
-  currency: CurrencyCode
-}) => {
-  const language = 'en-US'
-
-  // format like `₿ 0.00000001`
-  if (currency === 'BTC') {
-    return new Intl.NumberFormat(language, {
-      style: 'currency',
-      currency: 'XBT',
-      maximumSignificantDigits: 8,
-      // minimumSignificantDigits: 0,
-    })
-      .format(amount * 1e-8)
-      .replace('XBT', '₿')
-  }
-
-  return new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency,
-  }).format(amount / 100)
+  address: string
+  status: PaymentIntentStatus
+  currency: string
+  description: string | null
+  createdAt: Date
 }
 
-export const columns: ColumnDef<PaymentIntent>[] = [
+export const columns: ColumnDef<Data>[] = [
   {
     accessorKey: 'amount',
     header: () => <div className="text-right">Amount</div>,

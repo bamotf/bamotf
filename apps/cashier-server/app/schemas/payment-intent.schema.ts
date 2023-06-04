@@ -2,25 +2,39 @@ import type {Schema} from 'zod-prisma-utils'
 import {zpu} from 'zod-prisma-utils'
 import {CURRENCY_CODES} from '~/config/currency'
 import type {PaymentIntent} from '~/utils/prisma.server'
+import {Prisma} from '~/utils/prisma.server'
 import {z} from '~/utils/zod'
-import {AmountSchema} from './amount.schema'
 
 type SchemaType = Schema<PaymentIntent, 'createdAt' | 'updatedAt'>
 
 export const PaymentIntentSchema = z.object({
   /**
-   * @type {string} - The id of the payment intent
+   * The id of the payment intent
    */
   id: z.string(),
   /**
-   * @type {string} - The address the user needs to pay to
+   * The address the user needs to pay to
    */
   address: z.string(),
   /**
-   * @type {bigint} - The amount the user needs to pay in satoshis
+   * The amount the user needs to pay
    */
-  amount: AmountSchema,
-  confirmations: z.number().default(1),
+  amount: z.coerce
+    .number()
+    // TODO: this is a bug in zod-prisma-utils
+    .transform(v => new Prisma.Decimal(v)) as unknown as ReturnType<
+    typeof zpu.decimal
+  >,
+  confirmations: z.coerce.number().default(1),
+  tolerance: z.coerce
+    .number()
+    .min(0)
+    .max(1)
+    .default(0.98)
+    // TODO: this is a bug in zod-prisma-utils
+    .transform(v => new Prisma.Decimal(v)) as unknown as ReturnType<
+    typeof zpu.decimal
+  >,
   currency: z.enum(CURRENCY_CODES).default('BTC'),
   status: z.enum(['pending', 'canceled']),
   description: z.string().nullish(),

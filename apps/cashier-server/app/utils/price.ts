@@ -13,7 +13,7 @@ type BitcoinFeeInfo = {
   btcMinTxFee: number
 }
 
-type DataObject = {
+export type PriceAPIDataObject = {
   coinoneTs: number
   coinoneCount: number
   bitstampTs: number
@@ -62,10 +62,34 @@ export const getBitcoinPrice = async (currencyCode: FiatCurrencyCode) => {
   if (!priceData) {
     throw new Error(`No price data for ${currencyCode}`)
   }
-  return priceData.price
+  return Math.round(priceData.price * 100) / 100
 }
 
-function getData(): Promise<DataObject> {
+function getData(): Promise<PriceAPIDataObject> {
   // TODO: Use the tor url
   return fetch(env.PRICE_DATA_SERVER_CLEARNET_URL).then(res => res.json())
+}
+
+type FiatPrice = {
+  currency: FiatCurrencyCode
+  amount: number
+}
+
+/**
+ * Get the total in BTC of the given amount in fiat.
+ */
+export const getBtcAmountFromFiat = async ({currency, amount}: FiatPrice) => {
+  const price = await getBitcoinPrice(currency)
+  return Math.round((amount / price) * 1e8) / 1e8
+}
+
+/**
+ * Get the total in fiat of the given amount of BTCs.
+ */
+export const getCurrencyValueFromSatoshis = async ({
+  currency,
+  amount,
+}: FiatPrice) => {
+  const price = await getBitcoinPrice(currency)
+  return Math.round(price * amount * 100) / 100
 }

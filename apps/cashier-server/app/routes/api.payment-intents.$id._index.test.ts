@@ -13,7 +13,7 @@ test.describe('[GET] /api/payment-intents/:id', () => {
     expect(await pi.json()).toStrictEqual(
       expect.objectContaining({
         id,
-        amount: amount.toString(),
+        amount: amount.toNumber(),
       }),
     )
   })
@@ -36,7 +36,7 @@ test.describe('[POST] /api/payment-intents/:id', () => {
     expect(await pi.json()).toStrictEqual(
       expect.objectContaining({
         id: expect.any(String),
-        amount: '200',
+        amount: 200,
       }),
     )
   })

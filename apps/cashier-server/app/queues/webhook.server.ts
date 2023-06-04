@@ -11,7 +11,7 @@ type Event = 'payment_intent.succeeded'
 
 type QueueData = {
   paymentIntentId: string
-  events: Event[]
+  event: Event
 }
 
 const QUEUE_ID = 'webhook'
@@ -22,7 +22,7 @@ const QUEUE_ID = 'webhook'
  */
 export const queue = createQueue<QueueData>(QUEUE_ID, async job => {
   const {data: payload} = job
-  const {paymentIntentId} = payload
+  const {paymentIntentId, event} = payload
 
   const log = QueueLog(QUEUE_ID, paymentIntentId)
   log('started')
@@ -43,9 +43,18 @@ export const queue = createQueue<QueueData>(QUEUE_ID, async job => {
   const body = {
     id: uuidv4(),
     idempotenceKey: job.id!,
-    event: 'payment_intent.succeeded',
+    event,
     data: {
-      paymentIntent,
+      paymentIntent: {
+        ...paymentIntent,
+        amount: paymentIntent.amount.toNumber(),
+        tolerance: paymentIntent.tolerance.toNumber(),
+        transactions: paymentIntent.transactions.map(tx => ({
+          ...tx,
+          amount: tx.amount.toNumber(),
+          originalAmount: tx.originalAmount?.toNumber(),
+        })),
+      },
     },
   }
 

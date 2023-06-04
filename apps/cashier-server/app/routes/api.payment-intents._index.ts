@@ -20,6 +20,7 @@ export const contract = createContract({
       address: true,
       confirmations: true,
       currency: true,
+      tolerance: true,
     }),
   },
 })
@@ -36,7 +37,11 @@ export async function loader() {
   ])
 
   return typedjson({
-    data: paymentIntents,
+    data: paymentIntents.map(pi => ({
+      ...pi,
+      amount: pi.amount.toNumber(),
+      tolerance: pi.tolerance.toNumber(),
+    })),
     total,
   })
 }
@@ -78,5 +83,9 @@ export async function action({request}: LoaderArgs) {
     )}) to check if payment (${format.magenta(pi.id)}) was made`,
   )
 
-  return typedjson(pi)
+  return typedjson({
+    ...pi,
+    amount: pi.amount.toNumber(),
+    tolerance: pi.tolerance.toNumber(),
+  })
 }

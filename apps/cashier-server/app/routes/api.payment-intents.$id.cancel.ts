@@ -1,8 +1,8 @@
 import type {LoaderArgs} from '@remix-run/node'
-import {prisma} from '~/utils/prisma.server'
-import {createContract} from '~/utils/contract'
-import {PaymentIntentSchema} from '~/schemas'
 import {typedjson} from 'remix-typedjson'
+import {PaymentIntentSchema} from '~/schemas'
+import {createContract} from '~/utils/contract'
+import {prisma} from '~/utils/prisma.server'
 
 export const contract = createContract({
   action: {
@@ -27,5 +27,9 @@ export async function action({request, params}: LoaderArgs) {
 
   // TODO: cancel the worker
 
-  return typedjson(pi)
+  return typedjson({
+    ...pi,
+    amount: pi.amount.toNumber(),
+    tolerance: pi.tolerance.toNumber(),
+  })
 }

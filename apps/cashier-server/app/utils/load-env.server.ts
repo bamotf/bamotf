@@ -24,4 +24,4 @@ function find() {
   throw new Error('No .env file was found')
 }
 
-config({path: find() + '/.env', debug: true})
+config({path: find() + '/.env'})

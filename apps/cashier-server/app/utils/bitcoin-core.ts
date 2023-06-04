@@ -5,6 +5,7 @@
  * It's a good idea to replace this with a library that supports TypeScript.
  */
 
+import type {Prisma} from '@prisma/client'
 import {fetch} from '@remix-run/node'
 import {format, logger} from 'logger'
 import {env} from './env.server'
@@ -193,14 +194,24 @@ export async function getBalance(wallet: string) {
  */
 export async function simulatePayment({
   address,
-  amount,
+  amount: providedAmount,
 }: {
   address: string
   /**
    * Amount in satoshis
    */
-  amount: number
+  amount: Prisma.Decimal | number
 }) {
+  if (env.NODE_ENV === 'production') {
+    throw new Error('Cannot simulate payment in production')
+  }
+
+  // if amotun is decimal, convert to number
+  const amount =
+    typeof providedAmount === 'number'
+      ? providedAmount
+      : providedAmount.toNumber()
+
   logger.silly(
     `🟠 Simulating payment of ${format.yellow(
       amount,
@@ -209,15 +220,15 @@ export async function simulatePayment({
 
   const wallet = 'test-wallet'
   const balance = await getBalance(wallet)
-  if (amount < balance) {
+  if (amount > balance) {
     // TODO: mine a block in order to get some funds
     throw new Error('Insufficient funds')
   }
 
   logger.silly(
-    `🟠 Sending ${format.yellow(amount)} satoshis to address ${format.magenta(
-      address,
-    )}`,
+    `🟠 Sending ${format.yellow(
+      providedAmount,
+    )} satoshis to address ${format.magenta(address)}`,
   )
 
   await cmd({
@@ -225,7 +236,7 @@ export async function simulatePayment({
     method: 'sendtoaddress',
     params: {
       address,
-      amount: amount / 100_000_000,
+      amount,
       fee_rate: 25,
     },
   })

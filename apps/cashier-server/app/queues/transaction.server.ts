@@ -1,7 +1,10 @@
 import {UnrecoverableError} from 'bullmq'
 import {format, logger} from 'logger'
+import type {FiatCurrencyCode} from '~/config/currency'
 import {listUnspent} from '~/utils/bitcoin-core'
-import {prisma} from '~/utils/prisma.server'
+import {getCurrencyValueFromSatoshis} from '~/utils/price'
+import type {PaymentIntentStatus, Transaction} from '~/utils/prisma.server'
+import {Prisma, prisma} from '~/utils/prisma.server'
 import {QueueLog} from '~/utils/queue-log'
 import {createQueue} from '~/utils/queue.server'
 import {queue as webhookQueue} from './webhook.server'
@@ -51,8 +54,21 @@ export const queue = createQueue<QueueData>(QUEUE_ID, async job => {
 
   // Update the local database with transaction history
   const savedTransactions = await Promise.all(
-    transactions.map(tx => {
-      const amount = BigInt(tx.amount * 1e8)
+    transactions.map(async tx => {
+      const amount = tx.amount
+
+      // If the currency is BTC, we don't need to convert the amount
+      // because it's already in satoshis
+      // Otherwise, we need to convert it to the original currency
+      // so we can determine if the payment was successful in
+      // the original currency
+      const originalAmount =
+        paymentIntent.currency === 'BTC'
+          ? null
+          : await getCurrencyValueFromSatoshis({
+              amount,
+              currency: paymentIntent.currency as FiatCurrencyCode,
+            })
 
       return prisma.transaction.upsert({
         where: {id: tx.txid},
@@ -61,6 +77,7 @@ export const queue = createQueue<QueueData>(QUEUE_ID, async job => {
           amount,
           confirmations: tx.confirmations,
           paymentIntentId: paymentIntent.id,
+          originalAmount,
         },
         update: {
           amount,
@@ -70,54 +87,144 @@ export const queue = createQueue<QueueData>(QUEUE_ID, async job => {
     }),
   )
 
-  const amountReceived = {
-    confirmed: savedTransactions
-      .filter(
-        transaction => transaction.confirmations >= paymentIntent.confirmations,
-      )
-      .reduce((acc, tx) => acc + tx.amount, BigInt(0)),
-    unconfirmed: savedTransactions
-      .filter(
-        transaction => transaction.confirmations < paymentIntent.confirmations,
-      )
-      .reduce((acc, tx) => acc + tx.amount, BigInt(0)),
+  // If there are no transactions, reschedule the job
+  if (!savedTransactions.length) {
+    return log('rescheduled')
+  }
+
+  const amountReceived = getTotalTransferred(
+    savedTransactions,
+    paymentIntent.confirmations,
+  )
+
+  const isPaid = isPaymentIntentPaid({
+    amountReceived,
+    currency: paymentIntent.currency,
+    amountRequested: paymentIntent.amount,
+    tolerance: paymentIntent.tolerance,
+  })
+
+  if (!isPaid) {
+    await updatePaymentIntentStatus(paymentIntentId, 'processing')
+    return log('rescheduled')
+  }
+
+  await updatePaymentIntentStatus(paymentIntentId, 'succeeded')
+
+  // Trigger a webhook for successful payment
+  await webhookQueue.add(
+    'trigger success webhook',
+    {
+      paymentIntentId,
+      event: 'payment_intent.succeeded',
+    },
+    {
+      attempts: 3,
+    },
+  )
+
+  // Remove the job from the queue
+  await queue.removeRepeatableByKey(job.repeatJobKey!)
+
+  return log('completed')
+})
+
+function updatePaymentIntentStatus(
+  paymentIntentId: string,
+  status: PaymentIntentStatus,
+) {
+  return prisma.paymentIntent.update({
+    where: {id: paymentIntentId},
+    data: {
+      status,
+    },
+  })
+}
+
+/**
+ * Get the total amount received in the given transactions.
+ *
+ * @param transactions list of transactions
+ * @param confirmations number of block confirmations required for the payment to be considered confirmed
+ * @returns
+ */
+function getTotalTransferred(
+  transactions: Transaction[],
+  confirmations: number,
+) {
+  const confirmedTransactions = transactions.filter(
+    transaction => transaction.confirmations >= confirmations,
+  )
+
+  const unconfirmedTransactions = transactions.filter(
+    transaction => transaction.confirmations < confirmations,
+  )
+
+  const btc = {
+    confirmed: getTotal(confirmedTransactions),
+    unconfirmed: getTotal(unconfirmedTransactions),
+  }
+
+  const fiat = {
+    confirmed: getTotal(confirmedTransactions, 'originalAmount'),
+    unconfirmed: getTotal(unconfirmedTransactions, 'originalAmount'),
   }
 
   logger.debug(
     `🟠 Amount received: ${format.yellow(
-      amountReceived.confirmed,
+      btc.confirmed,
     )} satoshis (confirmed) + ${format.yellow(
-      amountReceived.unconfirmed,
+      btc.unconfirmed,
     )} satoshis (unconfirmed)`,
   )
 
-  const status =
-    amountReceived.confirmed >= paymentIntent.amount ? 'succeeded' : 'pending'
+  logger.debug(
+    `            FIAT   ${format.yellow(
+      fiat.confirmed,
+    )} (confirmed) + ${format.yellow(fiat.unconfirmed)} (unconfirmed)`,
+  )
 
-  if (status === 'succeeded') {
-    // Update the payment intent status
-    await prisma.paymentIntent.update({
-      where: {id: paymentIntentId},
-      data: {
-        status,
-      },
-    })
+  return {btc, fiat}
+}
 
-    // Trigger a webhook for successful payment
-    await webhookQueue.add(
-      'trigger webhook',
-      {
-        paymentIntentId,
-        events: ['payment_intent.succeeded'],
-      },
-      {
-        attempts: 3,
-      },
-    )
+/**
+ * Simply sums the given key in the given transactions.
+ *
+ * @param transactions
+ * @param key
+ * @returns
+ */
+function getTotal(
+  transactions: Transaction[],
+  key: 'amount' | 'originalAmount' = 'amount',
+) {
+  return transactions.reduce(
+    (acc, tx) => acc.add(tx[key] || 0),
+    new Prisma.Decimal(0),
+  )
+}
 
-    // Remove the job from the queue
-    await queue.removeRepeatableByKey(job.repeatJobKey!)
-
-    return log('completed')
+/**
+ * Check if the payment intent is considered paid.
+ */
+function isPaymentIntentPaid({
+  amountReceived,
+  currency,
+  amountRequested,
+  tolerance,
+}: {
+  amountReceived: ReturnType<typeof getTotalTransferred>
+  currency: string
+  amountRequested: Prisma.Decimal
+  tolerance: Prisma.Decimal
+}) {
+  // If the payment intent is in BTC, we can simply compare the amount received
+  // to the amount requested
+  if (currency === 'BTC') {
+    return amountReceived.btc.confirmed.gte(amountRequested)
   }
-})
+
+  // If the PI is in FIAT, we need check if the amount when user first sent the
+  // payment is somewhat close to the amount requested
+  return amountReceived.fiat.confirmed.gte(amountRequested.mul(tolerance))
+}

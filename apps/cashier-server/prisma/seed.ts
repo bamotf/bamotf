@@ -8,7 +8,7 @@ async function main() {
     update: {},
     create: {
       id: 'seed-1',
-      amount: 100,
+      amount: 1,
       description: 'User has not paid',
       address: createRandomAddress(),
     },
@@ -19,7 +19,7 @@ async function main() {
     update: {},
     create: {
       id: 'seed-2',
-      amount: 420.69 * 1e8,
+      amount: 420.69,
       address: createRandomAddress(),
       status: 'succeeded',
       description: 'User has paid',
@@ -27,7 +27,7 @@ async function main() {
         create: [
           {
             id: 'transaction-1',
-            amount: 420.69 * 1e8,
+            amount: 420.69,
             confirmations: 6,
           },
         ],
@@ -40,7 +40,7 @@ async function main() {
     update: {},
     create: {
       id: 'seed-3',
-      amount: 10_000_000,
+      amount: 0.10_002_001,
       address: createRandomAddress(),
       status: 'pending',
       confirmations: 6,
@@ -49,7 +49,7 @@ async function main() {
         create: [
           {
             id: 'transaction-2',
-            amount: 10_000_000,
+            amount: 0.10_002_001,
             confirmations: 2,
           },
         ],
@@ -62,14 +62,14 @@ async function main() {
     update: {},
     create: {
       id: 'seed-4',
-      amount: 10_00_000_000,
+      amount: 10,
       address: createRandomAddress(),
       description: "User has paid but we haven't received enough funds",
       transactions: {
         create: [
           {
             id: 'transaction-3',
-            amount: 10_000_000,
+            amount: 1,
             confirmations: 6,
           },
         ],
@@ -82,7 +82,7 @@ async function main() {
     update: {},
     create: {
       id: 'seed-5',
-      amount: 10000_00,
+      amount: 10_000,
       address: createRandomAddress(),
       currency: 'USD',
       description: 'Requested in another currency',
@@ -94,18 +94,19 @@ async function main() {
     update: {},
     create: {
       id: 'seed-6',
-      amount: 130_99,
+      amount: 130.99,
       address: createRandomAddress(),
       currency: 'BRL',
       description: 'Payed a PI that requested in another currency',
       status: 'succeeded',
+      tolerance: 0.9,
       transactions: {
         create: [
           {
             id: 'transaction-4',
-            amount: 30_000,
+            amount: 0.00_030_000,
             confirmations: 6,
-            originalAmount: 130_99,
+            originalAmount: 129.99,
           },
         ],
       },
