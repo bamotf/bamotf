@@ -98,6 +98,7 @@ async function main() {
       address: createRandomAddress(),
       currency: 'BRL',
       description: 'Payed a PI that requested in another currency',
+      status: 'succeeded',
       transactions: {
         create: [
           {

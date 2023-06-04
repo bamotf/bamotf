@@ -28,9 +28,7 @@ const useFormattedAmount = ({
   return new Intl.NumberFormat('pt-BR', {
     style: 'currency',
     currency,
-  })
-    .format(amount / 100)
-    .replace(/^(\D+)/, '$1 ')
+  }).format(amount / 100)
 }
 
 export const columns: ColumnDef<PaymentIntent>[] = [
