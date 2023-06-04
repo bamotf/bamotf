@@ -1,6 +1,7 @@
 import type {PaymentIntent} from '@prisma/client'
 import type {ColumnDef} from '@tanstack/react-table'
 import {Badge} from '~/components/payments/badge'
+import {cn} from '~/utils/css'
 
 export const columns: ColumnDef<PaymentIntent>[] = [
   {
@@ -17,13 +18,19 @@ export const columns: ColumnDef<PaymentIntent>[] = [
         .format(amount * 1e-8)
         .replace('$', '₿')
         .replace(/^(\D+)/, '$1 ')
+      const status = row.getValue('status') as PaymentIntent['status']
 
-      return <div className="text-right font-medium">{formatted}</div>
+      return (
+        <div
+          className={cn(
+            'text-right font-medium',
+            status !== 'succeeded' && 'text-muted-foreground',
+          )}
+        >
+          {formatted}
+        </div>
+      )
     },
-  },
-  {
-    accessorKey: 'address',
-    header: 'Address',
   },
   {
     accessorKey: 'status',
@@ -33,6 +40,14 @@ export const columns: ColumnDef<PaymentIntent>[] = [
 
       return <Badge status={status} />
     },
+  },
+  {
+    accessorKey: 'description',
+    header: 'Description',
+  },
+  {
+    accessorKey: 'address',
+    header: 'Address',
   },
   {
     accessorKey: 'createdAt',
