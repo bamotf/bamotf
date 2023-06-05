@@ -13,6 +13,7 @@ test.describe('[POST] /api/payment-intents/:id/cancel', () => {
     expect(await pi.json()).toStrictEqual(
       expect.objectContaining({
         status: 'canceled',
+        canceledAt: expect.any(String),
       }),
     )
   })

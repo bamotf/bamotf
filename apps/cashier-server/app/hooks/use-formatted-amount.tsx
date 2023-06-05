@@ -5,7 +5,7 @@ export const useFormattedAmount = ({
   currency,
 }: {
   amount: number
-  currency: CurrencyCode
+  currency: CurrencyCode | string
 }) => {
   const language = 'en-US'
 

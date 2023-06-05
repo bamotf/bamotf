@@ -1,4 +1,5 @@
 import type {PaymentIntent, PaymentIntentStatus} from '@prisma/client'
+import {Link} from '@remix-run/react'
 import type {ColumnDef} from '@tanstack/react-table'
 import {Badge} from '~/components/payments/badge'
 import {useFormattedAmount} from '~/hooks/use-formatted-amount'
@@ -12,6 +13,14 @@ type Data = {
   currency: string
   description: string | null
   createdAt: Date
+}
+
+function LinkToItem({id, children}: {id: string; children: React.ReactNode}) {
+  return (
+    <Link to={`/payments/${id}`} className="hover:underline">
+      {children}
+    </Link>
+  )
 }
 
 export const columns: ColumnDef<Data>[] = [
@@ -29,14 +38,16 @@ export const columns: ColumnDef<Data>[] = [
       const status = row.getValue('status') as PaymentIntent['status']
 
       return (
-        <div
-          className={cn(
-            'text-right font-medium',
-            status !== 'succeeded' && 'text-muted-foreground',
-          )}
-        >
-          {formatted}
-        </div>
+        <LinkToItem id={row.original.id}>
+          <div
+            className={cn(
+              'text-right font-medium',
+              status !== 'succeeded' && 'text-muted-foreground',
+            )}
+          >
+            {formatted}
+          </div>
+        </LinkToItem>
       )
     },
   },
@@ -46,21 +57,35 @@ export const columns: ColumnDef<Data>[] = [
     cell: ({row}) => {
       const status = row.getValue('status') as PaymentIntent['status']
 
-      return <Badge status={status} />
+      return (
+        <LinkToItem id={row.original.id}>
+          <Badge status={status} />
+        </LinkToItem>
+      )
     },
   },
   {
     accessorKey: 'description',
     header: 'Description',
+    cell: ({row}) => (
+      <LinkToItem id={row.original.id}>
+        {row.getValue('description')}
+      </LinkToItem>
+    ),
   },
   {
     accessorKey: 'address',
     header: 'Address',
+    cell: ({row}) => (
+      <LinkToItem id={row.original.id}>{row.getValue('address')}</LinkToItem>
+    ),
   },
   {
     accessorKey: 'currency',
     header: 'Currency',
-    enableHiding: true,
+    cell: ({row}) => (
+      <LinkToItem id={row.original.id}>{row.getValue('currency')}</LinkToItem>
+    ),
   },
   {
     accessorKey: 'createdAt',

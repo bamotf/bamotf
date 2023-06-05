@@ -42,9 +42,9 @@ async function main() {
       id: 'seed-3',
       amount: 0.10_002_001,
       address: createRandomAddress(),
-      status: 'pending',
       confirmations: 6,
       description: 'Not enough confirmations',
+      status: 'processing',
       transactions: {
         create: [
           {
@@ -65,6 +65,7 @@ async function main() {
       amount: 10,
       address: createRandomAddress(),
       description: "User has paid but we haven't received enough funds",
+      status: 'processing',
       transactions: {
         create: [
           {
@@ -100,6 +101,10 @@ async function main() {
       description: 'Payed a PI that requested in another currency',
       status: 'succeeded',
       tolerance: 0.9,
+      metadata: {
+        cardId: 'card-1',
+        someRandomProp: 'someRandomValue',
+      },
       transactions: {
         create: [
           {
@@ -109,6 +114,26 @@ async function main() {
             originalAmount: 129.99,
           },
         ],
+      },
+    },
+  })
+
+  const s7 = await prisma.paymentIntent.upsert({
+    where: {id: 'seed-7'},
+    update: {},
+    create: {
+      id: 'seed-7',
+      amount: 130000.99,
+      address: createRandomAddress(),
+      currency: 'USD',
+      description: 'Canceled payment intent',
+      status: 'canceled',
+      cancellationReason: 'requested_by_customer',
+      canceledAt: new Date(),
+      tolerance: 0.9,
+      metadata: {
+        cardId: 'card-1',
+        someRandomProp: 'someRandomValue',
       },
     },
   })

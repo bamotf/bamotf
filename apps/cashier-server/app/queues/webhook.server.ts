@@ -3,6 +3,7 @@ import {format, logger} from 'logger'
 import {symmetric} from 'secure-webhooks'
 import {v4 as uuidv4} from 'uuid'
 import {env} from '~/utils/env.server'
+import type {Prisma} from '~/utils/prisma.server'
 import {prisma} from '~/utils/prisma.server'
 import {QueueLog} from '~/utils/queue-log'
 import {createQueue} from '~/utils/queue.server'
@@ -43,6 +44,7 @@ export const queue = createQueue<QueueData>(QUEUE_ID, async job => {
   const body = {
     id: uuidv4(),
     idempotenceKey: job.id!,
+    created: new Date().toISOString(),
     event,
     data: {
       paymentIntent: {
@@ -73,10 +75,27 @@ export const queue = createQueue<QueueData>(QUEUE_ID, async job => {
   })
 
   logger.debug(
-    `⚑ Sending webhook to ${format.magenta(env.CASHIER_WEBHOOK_URL)}}: ${
+    `⚑ Sending webhook to ${format.magenta(env.CASHIER_WEBHOOK_URL)}: ${
       result.ok ? format.green('OK') : format.red('FAILED')
     }`,
   )
+
+  let response
+  try {
+    response = await result.clone().json()
+  } catch (error) {
+    response = await result.text()
+  }
+  await prisma.webhookAttempt.create({
+    data: {
+      event,
+      paymentIntentId,
+      status: result.status,
+      url: env.CASHIER_WEBHOOK_URL,
+      body: body as unknown as Prisma.JsonObject,
+      response,
+    },
+  })
 
   if (!result.ok) {
     throw new Error(

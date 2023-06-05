@@ -34,6 +34,11 @@
     --ring: 215 20.2% 65.1%;
 
     --radius: 0.5rem;
+
+    --json-key: #3fb950;
+    --json-value: #1e7dc4;
+    --json-string: #2e90d1;
+    --json-boolean: #1e7dc4;
   }
 
   .dark {
@@ -67,6 +72,11 @@
     --ring: 216 34% 17%;
 
     --radius: 0.5rem;
+
+    --json-key: #7ee787;
+    --json-value: #79c0ff;
+    --json-string: #a5d6ff;
+    --json-boolean: #79c0ff;
   }
 }
 

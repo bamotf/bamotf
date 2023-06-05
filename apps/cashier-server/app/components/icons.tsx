@@ -5,6 +5,7 @@ import {
   Check,
   ChevronLeft,
   ChevronRight,
+  Clock,
   Command,
   CreditCard,
   File,
@@ -30,6 +31,8 @@ export type Icon = LucideIcon
 export const Icons = {
   Logo: Command,
   Close: X,
+  X: X,
+  Clock: Clock,
   Spinner: Loader2,
   ChevronLeft: ChevronLeft,
   ChevronRight: ChevronRight,
