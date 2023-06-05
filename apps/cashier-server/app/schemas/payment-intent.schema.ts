@@ -30,7 +30,7 @@ export const PaymentIntentSchema = z.object({
     .number()
     .min(0)
     .max(1)
-    .default(0.98)
+    .default(0.02)
     // TODO: this is a bug in zod-prisma-utils
     .transform(v => new Prisma.Decimal(v)) as unknown as ReturnType<
     typeof zpu.decimal

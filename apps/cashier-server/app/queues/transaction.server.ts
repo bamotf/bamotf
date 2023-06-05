@@ -224,7 +224,13 @@ function isPaymentIntentPaid({
     return amountReceived.btc.confirmed.gte(amountRequested)
   }
 
+  // Subtract the tolerance from 1 to get the percentage of the amount requested
+  // that we can consider as paid
+  const acceptablePercentage = new Prisma.Decimal(1).sub(tolerance)
+
   // If the PI is in FIAT, we need check if the amount when user first sent the
   // payment is somewhat close to the amount requested
-  return amountReceived.fiat.confirmed.gte(amountRequested.mul(tolerance))
+  return amountReceived.fiat.confirmed.gte(
+    amountRequested.mul(acceptablePercentage),
+  )
 }

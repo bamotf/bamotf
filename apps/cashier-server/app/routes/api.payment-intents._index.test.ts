@@ -97,7 +97,7 @@ test.describe('[POST] /api/payment-intents', () => {
       const currency = faker.helpers.arrayElement(FIAT_CURRENCY_CODES)
       const address = faker.bitcoin.createRandomAddress()
       const amountInFiat = faker.number.float({min: 1, max: 100, precision: 2})
-      const tolerance = 0.98
+      const tolerance = 0.02
 
       // This is a fairly complex test, so let's break it down:
       // 1. start the server that will receive the webhook from job

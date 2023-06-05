@@ -100,7 +100,7 @@ async function main() {
       currency: 'BRL',
       description: 'Payed a PI that requested in another currency',
       status: 'succeeded',
-      tolerance: 0.9,
+      tolerance: 0.1,
       metadata: {
         cardId: 'card-1',
         someRandomProp: 'someRandomValue',
@@ -130,7 +130,7 @@ async function main() {
       status: 'canceled',
       cancellationReason: 'requested_by_customer',
       canceledAt: new Date(),
-      tolerance: 0.9,
+      tolerance: 1 / 100,
       metadata: {
         cardId: 'card-1',
         someRandomProp: 'someRandomValue',

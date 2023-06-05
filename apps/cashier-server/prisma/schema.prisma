@@ -23,7 +23,7 @@ model PaymentIntent {
   amount             Decimal             @db.Decimal(20, 8)
   status             PaymentIntentStatus @default(pending)
   confirmations      Int                 @default(1) // Number of blocks confirmed required for the transaction to be considered confirmed.
-  tolerance          Decimal             @default(0.98) @db.Decimal(5, 4) // Percentage of the amount that can be lost due to exchange rate fluctuations
+  tolerance          Decimal             @default(0.02) @db.Decimal(5, 4) // Percentage of the amount that can be lost due to exchange rate fluctuations
   currency           String              @default("BTC") @db.VarChar(3) // 3 letter currency code
   canceledAt         DateTime?
   cancellationReason String?

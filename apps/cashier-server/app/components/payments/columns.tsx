@@ -2,8 +2,8 @@ import type {PaymentIntent, PaymentIntentStatus} from '@prisma/client'
 import {Link} from '@remix-run/react'
 import type {ColumnDef} from '@tanstack/react-table'
 import {Badge} from '~/components/payments/badge'
-import {useFormattedAmount} from '~/hooks/use-formatted-amount'
 import {cn} from '~/utils/css'
+import {Formatter} from '../formatter'
 
 type Data = {
   id: string
@@ -28,24 +28,18 @@ export const columns: ColumnDef<Data>[] = [
     accessorKey: 'amount',
     header: () => <div className="text-right">Amount</div>,
     cell: ({row, getValue}) => {
-      const amount = parseFloat(row.getValue('amount'))
-
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      const formatted = useFormattedAmount({
-        amount,
-        currency: row.getValue('currency'),
-      })
-      const status = row.getValue('status') as PaymentIntent['status']
-
       return (
         <LinkToItem id={row.original.id}>
           <div
             className={cn(
               'text-right font-medium',
-              status !== 'succeeded' && 'text-muted-foreground',
+              row.original.status !== 'succeeded' && 'text-muted-foreground',
             )}
           >
-            {formatted}
+            <Formatter
+              amount={row.original.amount}
+              currency={row.original.currency}
+            />
           </div>
         </LinkToItem>
       )

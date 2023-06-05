@@ -1,11 +1,11 @@
 import type {LoaderArgs, V2_MetaFunction} from '@remix-run/node'
 import {typedjson} from 'remix-typedjson'
 
+import {Formatter} from '~/components/formatter'
 import {Icons} from '~/components/icons'
 import {Badge} from '~/components/payments/badge'
 import {Badge as BaseBadge} from '~/components/ui/badge'
 import {Separator} from '~/components/ui/separator'
-import {useFormattedAmount} from '~/hooks/use-formatted-amount'
 import {useFreshData} from '~/hooks/use-fresh-data'
 import {PaymentIntentSchema} from '~/schemas'
 import {createContract} from '~/utils/contract'
@@ -14,6 +14,7 @@ import {prisma} from '~/utils/prisma.server'
 import JSONPretty from 'react-json-pretty'
 // @ts-ignore
 import '~/components/json.css'
+import {cn} from '~/utils/css'
 
 export const meta: V2_MetaFunction = ({params, data}) => {
   return [{title: 'Payment'}]
@@ -71,10 +72,6 @@ export default function PaymentsPage() {
     transactions,
     webhookAttempts,
   } = useFreshData<typeof loader>()
-  const formattedAmount = useFormattedAmount({
-    amount,
-    currency,
-  })
 
   return (
     <div className="flex-1 space-y-12 p-8 pt-6">
@@ -90,7 +87,7 @@ export default function PaymentsPage() {
         <div className="flex items-center justify-between space-y-2">
           <div className="flex items-center">
             <h2 className="text-3xl font-semibold tracking-tight">
-              {formattedAmount}
+              <Formatter amount={amount} currency={currency} />
             </h2>
             <h3 className="text-3xl font-light tracking-tight text-muted-foreground ml-1.5">
               {currency}
@@ -130,13 +127,19 @@ export default function PaymentsPage() {
         <SectionSeparator />
         <Grid>
           <GridLine>
-            <ColumnDetail>Description</ColumnDetail>
-            <ColumnValue>{description}</ColumnValue>
-          </GridLine>
-          <GridLine>
             <ColumnDetail>Amount</ColumnDetail>
-            <ColumnValue>{formattedAmount}</ColumnValue>
+            <ColumnValue>
+              <Formatter amount={amount} currency={currency} />
+            </ColumnValue>
           </GridLine>
+
+          <GridLine>
+            <ColumnDetail>Status</ColumnDetail>
+            <ColumnValue>
+              <span className="capitalize">{status}</span>
+            </ColumnValue>
+          </GridLine>
+
           {currency !== 'BTC' && (
             <GridLine>
               <ColumnDetail>Tolerance</ColumnDetail>
@@ -147,12 +150,7 @@ export default function PaymentsPage() {
             <ColumnDetail>Block confirmations</ColumnDetail>
             <ColumnValue>{confirmations}</ColumnValue>
           </GridLine>
-          <GridLine>
-            <ColumnDetail>Status</ColumnDetail>
-            <ColumnValue>
-              <span className="capitalize">{status}</span>
-            </ColumnValue>
-          </GridLine>
+
           {status === 'canceled' && (
             <>
               <GridLine>
@@ -185,6 +183,10 @@ export default function PaymentsPage() {
               })}
             </ColumnValue>
           </GridLine>
+          <GridLine>
+            <ColumnDetail>Description</ColumnDetail>
+            <ColumnValue>{description}</ColumnValue>
+          </GridLine>
         </Grid>
       </div>
 
@@ -211,37 +213,41 @@ export default function PaymentsPage() {
         <SectionHeader>Logs and events</SectionHeader>
         <SectionSeparator />
         {webhookAttempts.length ? (
-          <Grid>
+          <div>
             {webhookAttempts.map(attempt => (
-              <div key={attempt.id}>
-                <BaseBadge>{attempt.status}</BaseBadge>
+              <div key={attempt.id} className="flex gap-2 justify-between">
+                <div className="">
+                  <p className="text-xs text-muted-foreground">
+                    {attempt.createdAt.toLocaleString('en-US', {
+                      day: 'numeric',
+                      month: 'short',
+                      year: 'numeric',
+                      hour: 'numeric',
+                      minute: 'numeric',
+                    })}
+                  </p>
+                  <span className="">{attempt.url}</span>
+                  <p className="text-sm">{attempt.event}</p>
+                  <WebhookBadge status={attempt.status} />
+                </div>
 
-                {attempt.createdAt.toLocaleString('en-US', {
-                  day: 'numeric',
-                  month: 'short',
-                  year: 'numeric',
-                  hour: 'numeric',
-                  minute: 'numeric',
-                })}
-
-                {attempt.url}
-                {attempt.event}
-
-                <div className="">Event data</div>
-                <JSONPretty
-                  id="json-pretty"
-                  data={attempt.body}
-                  className="font-light text-xs"
-                ></JSONPretty>
-                <div className="">Response</div>
-                <JSONPretty
-                  id="json-pretty"
-                  data={attempt.response}
-                  className="font-light text-xs"
-                ></JSONPretty>
+                <div className="flex flex-col">
+                  <div className="">Event data</div>
+                  <JSONPretty
+                    id="json-pretty"
+                    data={attempt.body}
+                    className="font-light text-xs"
+                  ></JSONPretty>
+                  <div className="">Response</div>
+                  <JSONPretty
+                    id="json-pretty"
+                    data={attempt.response}
+                    className="font-light text-xs"
+                  ></JSONPretty>
+                </div>
               </div>
             ))}
-          </Grid>
+          </div>
         ) : (
           <div className="h-24 text-center flex items-center justify-center">
             No results.
@@ -249,6 +255,22 @@ export default function PaymentsPage() {
         )}
       </div>
     </div>
+  )
+}
+
+function WebhookBadge({status}: {status: number}) {
+  return (
+    <BaseBadge
+      className={cn({
+        'bg-green-100 text-green-900 hover:bg-green-100/80':
+          status > 200 && status < 300,
+        'bg-gray-100 text-gray-900 hover:bg-gray-100/80':
+          status >= 300 && status < 500,
+        'bg-red-100 text-red-900 hover:bg-red-100/80': status >= 500,
+      })}
+    >
+      {status}
+    </BaseBadge>
   )
 }
 
