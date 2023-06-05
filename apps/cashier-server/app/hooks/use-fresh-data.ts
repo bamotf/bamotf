@@ -1,8 +1,8 @@
 import type {AppData} from '@remix-run/node'
-import {useFetcher, useLocation} from '@remix-run/react'
+import {useLocation} from '@remix-run/react'
 import {useEffect, useState} from 'react'
 import type {UseDataFunctionReturn} from 'remix-typedjson'
-import {useTypedLoaderData} from 'remix-typedjson'
+import {useTypedFetcher, useTypedLoaderData} from 'remix-typedjson'
 
 export type UseFreshDataProps = {
   /**
@@ -40,7 +40,7 @@ export function useFreshData<T = AppData>({
   interval = 30_000,
 }: UseFreshDataProps = {}): UseDataFunctionReturn<T> {
   const loaderData = useTypedLoaderData()
-  const fetcher = useFetcher()
+  const fetcher = useTypedFetcher()
   const location = useLocation()
   const currentPage = location?.pathname || '/'
   const page = providedPage || currentPage

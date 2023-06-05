@@ -103,13 +103,7 @@ export default function PaymentsPage() {
               Last update
             </h4>
             <p className="text-sm text-foreground">
-              {updatedAt.toLocaleString('en-US', {
-                day: 'numeric',
-                month: 'short',
-                year: 'numeric',
-                hour: 'numeric',
-                minute: 'numeric',
-              })}
+              <Formatter date={updatedAt} />
             </p>
           </div>
           <Separator orientation="vertical" />
@@ -122,7 +116,7 @@ export default function PaymentsPage() {
         </div>
       </div>
 
-      <div className="">
+      <div>
         <SectionHeader>Payment details</SectionHeader>
         <SectionSeparator />
         <Grid>
@@ -156,13 +150,7 @@ export default function PaymentsPage() {
               <GridLine>
                 <ColumnDetail>Canceled at</ColumnDetail>
                 <ColumnValue>
-                  {canceledAt!.toLocaleString('en-US', {
-                    day: 'numeric',
-                    month: 'short',
-                    year: 'numeric',
-                    hour: 'numeric',
-                    minute: 'numeric',
-                  })}
+                  <Formatter date={canceledAt!} />
                 </ColumnValue>
               </GridLine>
               <GridLine>
@@ -171,26 +159,17 @@ export default function PaymentsPage() {
               </GridLine>
             </>
           )}
-          <GridLine>
-            <ColumnDetail>Created at</ColumnDetail>
-            <ColumnValue>
-              {createdAt.toLocaleString('en-US', {
-                day: 'numeric',
-                month: 'short',
-                year: 'numeric',
-                hour: 'numeric',
-                minute: 'numeric',
-              })}
-            </ColumnValue>
-          </GridLine>
-          <GridLine>
-            <ColumnDetail>Description</ColumnDetail>
-            <ColumnValue>{description}</ColumnValue>
-          </GridLine>
+
+          {description && (
+            <GridLine>
+              <ColumnDetail>Description</ColumnDetail>
+              <ColumnValue>{description}</ColumnValue>
+            </GridLine>
+          )}
         </Grid>
       </div>
 
-      <div className="">
+      <div>
         <SectionHeader>Metadata</SectionHeader>
         <SectionSeparator />
         {metadata ? (
@@ -209,36 +188,30 @@ export default function PaymentsPage() {
         )}
       </div>
 
-      <div className="">
+      <div>
         <SectionHeader>Logs and events</SectionHeader>
         <SectionSeparator />
         {webhookAttempts.length ? (
           <div>
             {webhookAttempts.map(attempt => (
               <div key={attempt.id} className="flex gap-2 justify-between">
-                <div className="">
+                <div>
                   <p className="text-xs text-muted-foreground">
-                    {attempt.createdAt.toLocaleString('en-US', {
-                      day: 'numeric',
-                      month: 'short',
-                      year: 'numeric',
-                      hour: 'numeric',
-                      minute: 'numeric',
-                    })}
+                    <Formatter date={attempt.createdAt} />
                   </p>
-                  <span className="">{attempt.url}</span>
+                  <span>{attempt.url}</span>
                   <p className="text-sm">{attempt.event}</p>
                   <WebhookBadge status={attempt.status} />
                 </div>
 
                 <div className="flex flex-col">
-                  <div className="">Event data</div>
+                  <div>Event data</div>
                   <JSONPretty
                     id="json-pretty"
                     data={attempt.body}
                     className="font-light text-xs"
                   ></JSONPretty>
-                  <div className="">Response</div>
+                  <div>Response</div>
                   <JSONPretty
                     id="json-pretty"
                     data={attempt.response}
