@@ -179,6 +179,9 @@ importers:
       '@types/ioredis':
         specifier: ^4.28.10
         version: 4.28.10
+      '@types/node':
+        specifier: ^20.2.5
+        version: 20.2.5
       '@types/react':
         specifier: ^18.2.8
         version: 18.2.8

@@ -7,10 +7,7 @@ export class WebhookTestServer {
    * Create a simple http server that emits a `webhook` event when a request is received.
    * Good for testing if webhooks are called.
    */
-  readonly server: http.Server<
-    typeof http.IncomingMessage,
-    typeof http.ServerResponse
-  >
+  readonly server: http.Server
 
   constructor() {
     this.server = http.createServer()
