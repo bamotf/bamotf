@@ -16,6 +16,10 @@ storybook-static
 # Db 
 **/prisma/client
 
+# Remix
+**/public/build/**
+**/build/**
+
 # Next.js build output
 **/.next/**
 

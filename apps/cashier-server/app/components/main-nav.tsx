@@ -1,4 +1,5 @@
 import {NavLink} from '@remix-run/react'
+
 import {cn} from '~/utils/css'
 
 const CONFIG = [

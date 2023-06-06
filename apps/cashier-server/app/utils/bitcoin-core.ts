@@ -8,6 +8,7 @@
 import type {Prisma} from '@prisma/client'
 import {fetch} from '@remix-run/node'
 import {format, logger} from 'logger'
+
 import {env} from './env.server'
 
 const BITCOIN_CORE_URL = `${env.BITCOIN_CORE_CONNECTION_STRING.protocol}://${env.BITCOIN_CORE_CONNECTION_STRING.host}`

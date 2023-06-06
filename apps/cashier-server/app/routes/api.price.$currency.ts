@@ -1,5 +1,5 @@
-import type {LoaderArgs} from '@remix-run/node'
-import {json} from '@remix-run/node'
+import {json, type LoaderArgs} from '@remix-run/node'
+
 import {FIAT_CURRENCY_CODES} from '~/config/currency'
 import {createContract} from '~/utils/contract'
 import {getBitcoinPrice} from '~/utils/price'

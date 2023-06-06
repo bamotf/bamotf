@@ -1,4 +1,3 @@
-import type {Icon as LucideIcon, LucideProps} from 'lucide-react'
 import {
   AlertTriangle,
   ArrowRight,
@@ -24,6 +23,8 @@ import {
   Twitter,
   User,
   X,
+  type Icon as LucideIcon,
+  type LucideProps,
 } from 'lucide-react'
 
 export type Icon = LucideIcon

@@ -1,8 +1,11 @@
+import {useEffect, useState} from 'react'
 import type {AppData} from '@remix-run/node'
 import {useLocation} from '@remix-run/react'
-import {useEffect, useState} from 'react'
-import type {UseDataFunctionReturn} from 'remix-typedjson'
-import {useTypedFetcher, useTypedLoaderData} from 'remix-typedjson'
+import {
+  useTypedFetcher,
+  useTypedLoaderData,
+  type UseDataFunctionReturn,
+} from 'remix-typedjson'
 
 export type UseFreshDataProps = {
   /**

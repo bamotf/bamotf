@@ -1,6 +1,7 @@
 import type {PaymentIntent, PaymentIntentStatus} from '@prisma/client'
 import {Link} from '@remix-run/react'
 import type {ColumnDef} from '@tanstack/react-table'
+
 import {Badge} from '~/components/payments/badge'
 import {cn} from '~/utils/css'
 import {Formatter} from '../formatter'

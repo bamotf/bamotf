@@ -1,8 +1,7 @@
+import * as React from 'react'
 import {zodResolver} from '@hookform/resolvers/zod'
 import {useSearchParams} from '@remix-run/react'
-import * as React from 'react'
 import {useForm} from 'react-hook-form'
-import {z} from '~/utils/zod'
 
 import {Icons} from '~/components/icons'
 import {buttonVariants} from '~/components/ui/button'
@@ -10,6 +9,7 @@ import {Input} from '~/components/ui/input'
 import {Label} from '~/components/ui/label'
 import {toast} from '~/components/ui/use-toast'
 import {cn} from '~/utils/css'
+import {z} from '~/utils/zod'
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
