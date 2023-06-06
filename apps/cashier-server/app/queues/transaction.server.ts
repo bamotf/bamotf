@@ -3,7 +3,7 @@ import {format, logger} from 'logger'
 import type {FiatCurrencyCode} from '~/config/currency'
 import {listUnspent} from '~/utils/bitcoin-core'
 import {getCurrencyValueFromSatoshis} from '~/utils/price'
-import type {PaymentIntentStatus, Transaction} from '~/utils/prisma.server'
+import type {Transaction} from '~/utils/prisma.server'
 import {Prisma, prisma} from '~/utils/prisma.server'
 import {QueueLog} from '~/utils/queue-log'
 import {createQueue} from '~/utils/queue.server'
@@ -131,12 +131,19 @@ export const queue = createQueue<QueueData>(QUEUE_ID, async job => {
 
 function updatePaymentIntentStatus(
   paymentIntentId: string,
-  status: PaymentIntentStatus,
+  status: 'processing' | 'succeeded',
 ) {
   return prisma.paymentIntent.update({
     where: {id: paymentIntentId},
     data: {
       status,
+      logs: {
+        create: [
+          {
+            status: `status_${status}`,
+          },
+        ],
+      },
     },
   })
 }

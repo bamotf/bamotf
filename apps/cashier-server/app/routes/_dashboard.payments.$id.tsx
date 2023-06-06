@@ -9,6 +9,7 @@ import {Separator} from '~/components/ui/separator'
 import {useFreshData} from '~/hooks/use-fresh-data'
 import {PaymentIntentSchema} from '~/schemas'
 import {createContract} from '~/utils/contract'
+import type {LogType} from '~/utils/prisma.server'
 import {prisma} from '~/utils/prisma.server'
 import {calculateRiskScore} from '~/utils/risk-score'
 
@@ -40,6 +41,9 @@ export async function loader({params}: LoaderArgs) {
     include: {
       transactions: true,
       webhookAttempts: true,
+      logs: {
+        orderBy: {createdAt: 'desc'},
+      },
     },
   })
 
@@ -77,6 +81,7 @@ export default function PaymentsPage() {
     cancellationReason,
     confirmations,
     description,
+    logs,
     transactions,
     riskScore,
     webhookAttempts,
@@ -140,6 +145,16 @@ export default function PaymentsPage() {
               <RiskScore score={riskScore} />
             </p>
           </div>
+        </div>
+      </div>
+
+      <div>
+        <SectionHeader>Timeline</SectionHeader>
+        <SectionSeparator />
+        <div className="flex flex-col gap-4">
+          {logs.map(log => (
+            <LogItem key={log.id} {...log} />
+          ))}
         </div>
       </div>
 
@@ -258,6 +273,41 @@ export default function PaymentsPage() {
   )
 }
 
+function LogItem({
+  status,
+  message: originalMessage,
+  createdAt,
+}: {
+  status: LogType
+  message: string | null
+  createdAt: Date
+}) {
+  const messages: Record<LogType, string> = {
+    modified: 'Payment modified',
+    note: originalMessage || '',
+    status_canceled: 'Payment canceled',
+    status_created: 'Payment initiated',
+    status_processing: 'A transaction is detected on the blockchain',
+    status_succeeded: 'Payment confirmed',
+  }
+
+  const message = messages[status]
+
+  return (
+    <div className="flex">
+      <div className="flex relative gap-2">
+        <Icons.Clock className="w-3 h-3 -ml-1 mt-1 text-muted-foreground" />
+        <div className="flex flex-col">
+          <span className="text-sm">{message}</span>
+          <span className="text-xs text-muted-foreground">
+            <Formatter date={createdAt} />
+          </span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function WebhookBadge({status}: {status: number}) {
   return (
     <BaseBadge
@@ -306,9 +356,9 @@ function ColumnValue(props: {children: React.ReactNode}) {
 function RiskScore({score}: {score: number}) {
   const MAX_SCORE = 100
   const COLORS = [
-    'bg-green-100 text-green-900',
-    'bg-yellow-100 text-yellow-900',
-    'bg-red-100 text-red-900',
+    'bg-green-100 text-green-900 hover:bg-green-100/80',
+    'bg-yellow-100 text-yellow-900 hover:bg-yellow-100/80',
+    'bg-red-100 text-red-900 hover:bg-red-100/80',
   ]
   const DESCRIPTIONS = [
     'Low risk',

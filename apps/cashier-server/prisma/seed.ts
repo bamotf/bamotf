@@ -115,6 +115,23 @@ async function main() {
           },
         ],
       },
+      logs: {
+        create: [
+          {
+            status: 'status_created',
+          },
+          {
+            status: 'status_processing',
+          },
+          {
+            status: 'status_succeeded',
+          },
+          {
+            status: 'note',
+            message: 'This is a note',
+          },
+        ],
+      },
     },
   })
 

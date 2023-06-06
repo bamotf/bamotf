@@ -79,13 +79,10 @@ export async function calculateRiskScore({
     // For example, if the expected amount is 1 BTC, and the transaction
     // amount is 0.9 BTC, then the risk score is 0.1.
     // If the transaction amount is 0 BTC, then the risk score is 1.
-    console.log('🔥 ~ ', amountInBTC, transaction.amount.toNumber())
-
     const amountDifference = Math.abs(
       amountInBTC - transaction.amount.toNumber(),
     )
     const amountFactor = amountDifference / amountInBTC
-    console.log('🔥 ~ ', {confirmationFactor, amountFactor})
     return {confirmationFactor, amountFactor}
   })
 

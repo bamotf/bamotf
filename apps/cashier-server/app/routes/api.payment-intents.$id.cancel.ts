@@ -22,7 +22,11 @@ export async function action({request, params}: LoaderArgs) {
 
   const pi = await prisma.paymentIntent.update({
     where: {id},
-    data: {status: 'canceled', cancellationReason},
+    data: {
+      status: 'canceled',
+      cancellationReason,
+      logs: {create: [{status: 'status_canceled'}]},
+    },
   })
 
   // TODO: cancel the worker

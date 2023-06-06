@@ -50,7 +50,16 @@ export async function action({request, params}: LoaderArgs) {
 
   const paymentIntent = await prisma.paymentIntent.update({
     where: {id},
-    data: body,
+    data: {
+      ...body,
+      logs: {
+        create: [
+          {
+            status: 'modified',
+          },
+        ],
+      },
+    },
   })
 
   return typedjson({

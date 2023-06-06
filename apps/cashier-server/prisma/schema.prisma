@@ -17,6 +17,15 @@ enum PaymentIntentStatus {
   canceled
 }
 
+enum LogType {
+  status_created
+  status_processing
+  status_succeeded
+  status_canceled
+  modified
+  note
+}
+
 model PaymentIntent {
   id                 String              @id @default(uuid())
   address            String              @unique // Addresses are unique, so we can identify the payment intent by the address
@@ -31,8 +40,19 @@ model PaymentIntent {
   metadata           Json?
   transactions       Transaction[]
   webhookAttempts    WebhookAttempt[]
+  logs               Log[]
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @updatedAt
+}
+
+// Logs are used to track the status of the payment intent and make a timeline of events
+model Log {
+  id              String        @id @default(uuid())
+  paymentIntent   PaymentIntent @relation(fields: [paymentIntentId], references: [id])
+  paymentIntentId String
+  status          LogType
+  message         String?
+  createdAt       DateTime      @default(now())
 }
 
 model Transaction {

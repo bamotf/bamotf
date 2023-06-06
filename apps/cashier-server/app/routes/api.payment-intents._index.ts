@@ -53,7 +53,16 @@ export async function action({request}: LoaderArgs) {
   const {body: data} = await contract.action({request})
 
   const pi = await prisma.paymentIntent.create({
-    data,
+    data: {
+      ...data,
+      logs: {
+        create: [
+          {
+            status: 'status_created',
+          },
+        ],
+      },
+    },
   })
 
   await createWatchOnlyWallet(pi.id)
