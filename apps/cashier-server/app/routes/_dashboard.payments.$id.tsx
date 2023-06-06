@@ -10,6 +10,7 @@ import {useFreshData} from '~/hooks/use-fresh-data'
 import {PaymentIntentSchema} from '~/schemas'
 import {createContract} from '~/utils/contract'
 import {prisma} from '~/utils/prisma.server'
+import {calculateRiskScore} from '~/utils/risk-score'
 
 import JSONPretty from 'react-json-pretty'
 // @ts-ignore
@@ -42,10 +43,18 @@ export async function loader({params}: LoaderArgs) {
     },
   })
 
+  const riskScore = await calculateRiskScore({
+    amount: paymentIntent.amount,
+    confirmations: paymentIntent.confirmations,
+    currency: paymentIntent.currency,
+    transactions: paymentIntent.transactions,
+  })
+
   return typedjson({
     ...paymentIntent,
     amount: paymentIntent.amount.toNumber(),
     tolerance: paymentIntent.tolerance.toNumber(),
+    riskScore,
     transactions: paymentIntent.transactions.map(transaction => ({
       ...transaction,
       amount: transaction.amount.toNumber(),
@@ -67,9 +76,9 @@ export default function PaymentsPage() {
     canceledAt,
     cancellationReason,
     confirmations,
-    createdAt,
     description,
     transactions,
+    riskScore,
     webhookAttempts,
   } = useFreshData<typeof loader>()
 
@@ -98,7 +107,7 @@ export default function PaymentsPage() {
         </div>
         <SectionSeparator />
         <div className="flex h-10 items-center space-x-4 text-sm">
-          <div className="space-y-1">
+          <div className="space-y-2">
             <h4 className="text-sm font-light leading-none text-muted-foreground">
               Last update
             </h4>
@@ -107,11 +116,29 @@ export default function PaymentsPage() {
             </p>
           </div>
           <Separator orientation="vertical" />
-          <div className="space-y-1">
+          <div className="space-y-2">
             <h4 className="text-sm font-light leading-none text-muted-foreground">
               Address
             </h4>
             <p className="text-sm text-foreground">{address}</p>
+          </div>
+          <Separator orientation="vertical" />
+          <div className="space-y-2">
+            <h4 className="text-sm font-light leading-none text-muted-foreground">
+              Risk analysis
+            </h4>
+            {/* 
+              https://bitcoin.org/en/you-need-to-know
+              Confirmations	Lightweight wallets	Bitcoin Core
+              0	Only safe if you trust the person paying you
+              1	Mostly reliable
+              3	Highly reliable
+              6	Minimum recommendation for high-value bitcoin transfers
+              30	Recommendation during emergencies to allow human intervention
+            */}
+            <p className="text-sm text-foreground">
+              <RiskScore score={riskScore} />
+            </p>
           </div>
         </div>
       </div>
@@ -266,7 +293,7 @@ function GridLine(props: {children: React.ReactNode}) {
 function ColumnDetail(props: {children: React.ReactNode}) {
   return (
     <span
-      className="text-sm text-muted-foreground min-w-[180px] max-w-[240px]"
+      className="text-sm font-light text-muted-foreground min-w-[180px] max-w-[240px]"
       {...props}
     />
   )
@@ -274,4 +301,30 @@ function ColumnDetail(props: {children: React.ReactNode}) {
 
 function ColumnValue(props: {children: React.ReactNode}) {
   return <span className="text-sm text-foreground" {...props} />
+}
+
+function RiskScore({score}: {score: number}) {
+  const MAX_SCORE = 100
+  const COLORS = [
+    'bg-green-100 text-green-900',
+    'bg-yellow-100 text-yellow-900',
+    'bg-red-100 text-red-900',
+  ]
+  const DESCRIPTIONS = [
+    'Low risk',
+    'Medium risk',
+    'High risk',
+    'Very high risk',
+  ]
+
+  const color = COLORS[Math.floor((score / MAX_SCORE) * COLORS.length)]
+  const description =
+    DESCRIPTIONS[Math.floor((score / MAX_SCORE) * DESCRIPTIONS.length)]
+
+  return (
+    <div className="flex items-center">
+      <BaseBadge className={cn(color, 'text-xs')}>{score}</BaseBadge>
+      <div className="ml-2">{description}</div>
+    </div>
+  )
 }
