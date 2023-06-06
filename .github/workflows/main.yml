@@ -125,7 +125,7 @@ jobs:
           docker-compose up -d && sleep 3 && pnpm prisma migrate reset --force
           --skip-seed
 
-      - name: 🚦 Run unit tests
+      - name: 🚦 Run integration tests
         run: pnpm test:integration
 
   # E2E tests are executed as if the actual user did the interaction.
