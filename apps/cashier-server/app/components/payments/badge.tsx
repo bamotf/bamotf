@@ -1,4 +1,5 @@
 import type {PaymentIntentStatus} from '@prisma/client'
+
 import type {BadgeProps as BadgeBaseProps} from '~/components/ui/badge'
 import {cn} from '~/utils/css'
 import {Icons} from '../icons'

@@ -1,5 +1,6 @@
 import type {V2_MetaFunction} from '@remix-run/node'
 import {Outlet} from '@remix-run/react'
+
 import {Icons} from '~/components/icons'
 import {MainNav} from '~/components/main-nav'
 import {Search} from '~/components/search'

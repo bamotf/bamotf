@@ -1,6 +1,6 @@
-import {config} from 'dotenv'
 import fs from 'fs'
 import path from 'path'
+import {config} from 'dotenv'
 
 function find() {
   var dirs = process.cwd().split(path.sep)

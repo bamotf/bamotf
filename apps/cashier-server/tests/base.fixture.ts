@@ -1,4 +1,5 @@
 import {test as base} from '@playwright/test'
+
 import * as bitcoinCore from '~/utils/bitcoin-core'
 import faker from './faker'
 import resetBitcoinCore from './reset-btc-core'

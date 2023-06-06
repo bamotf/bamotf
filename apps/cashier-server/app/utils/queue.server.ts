@@ -1,7 +1,11 @@
-import type { Processor} from 'bullmq';
-import {Queue as BullQueue, UnrecoverableError, Worker} from 'bullmq'
-
+import {
+  Queue as BullQueue,
+  UnrecoverableError,
+  Worker,
+  type Processor,
+} from 'bullmq'
 import {logger} from 'logger'
+
 import {redis} from './redis.server'
 
 type RegisteredQueue = {

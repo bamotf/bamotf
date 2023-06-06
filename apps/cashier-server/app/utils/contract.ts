@@ -1,5 +1,5 @@
 import type {LoaderArgs} from '@remix-run/node'
-import type {ZodTypeAny, z} from 'zod'
+import type {z, ZodTypeAny} from 'zod'
 
 export type ApiRoute = {
   summary?: string

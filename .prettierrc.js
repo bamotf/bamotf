@@ -20,12 +20,23 @@ module.exports = {
   useTabs: false,
   // This plugin's options
   importOrder: [
-    '^@core/(.*)$',
-    '^@server/(.*)$',
-    '^@ui/(.*)$',
-    '^[./]',
-    '^~/(.*)$',
+    '^react$',
+    '<BUILTIN_MODULES>', // Node.js built-in modules
+    '<THIRD_PARTY_MODULES>', // Imports not matched by other special words or groups.
+    '',
+    '^~/(.*)$', // absolute imports
+    '^[.]', // relative imports
+    '',
+    '^(?!.*[.]css$)[./].*$',
+    '.css$',
   ],
   importOrderParserPlugins: ['typescript', 'jsx', 'decorators-legacy'],
   importOrderTypeScriptVersion: '5.0.0',
+
+  // pnpm doesn't support plugin autoloading
+  // https://github.com/tailwindlabs/prettier-plugin-tailwindcss#installation
+  plugins: [
+    require('prettier-plugin-tailwindcss'),
+    require('@ianvs/prettier-plugin-sort-imports'),
+  ],
 }

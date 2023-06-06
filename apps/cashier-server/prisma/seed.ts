@@ -1,5 +1,7 @@
 import {PrismaClient} from '@prisma/client'
+
 import {createRandomAddress} from '../tests/faker/bitcoin'
+
 const prisma = new PrismaClient()
 
 async function main() {

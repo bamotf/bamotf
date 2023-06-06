@@ -1,5 +1,5 @@
-import {rest} from 'msw'
-import type {RestHandler, MockedRequest} from 'msw'
+import {rest, type MockedRequest, type RestHandler} from 'msw'
+
 import {logMockedData} from './utils'
 
 export const handlers = [

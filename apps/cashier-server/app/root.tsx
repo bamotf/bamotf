@@ -1,6 +1,5 @@
 import {cssBundleHref} from '@remix-run/css-bundle'
-import type {LinksFunction, SerializeFrom} from '@remix-run/node'
-import {json} from '@remix-run/node'
+import {json, type LinksFunction, type SerializeFrom} from '@remix-run/node'
 import {
   Links,
   LiveReload,
@@ -10,6 +9,7 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from '@remix-run/react'
+
 import {TailwindIndicator} from './components/tailwind-indicator'
 
 import './globals.css'

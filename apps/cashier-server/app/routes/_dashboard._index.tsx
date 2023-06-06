@@ -1,6 +1,6 @@
+import type {V2_MetaFunction} from '@remix-run/node'
 import {Activity, CreditCard, DollarSign, Download, Users} from 'lucide-react'
 
-import type {V2_MetaFunction} from '@remix-run/node'
 import {CalendarDateRangePicker} from '~/components/date-range-picker'
 import {Overview} from '~/components/overview'
 import {RecentSales} from '~/components/recent-sales'

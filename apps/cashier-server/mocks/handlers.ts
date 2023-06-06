@@ -1,7 +1,7 @@
-import {rest} from 'msw'
-import type {RestHandler, MockedRequest} from 'msw'
-import {logMockedData} from './utils'
+import {rest, type MockedRequest, type RestHandler} from 'msw'
+
 import {env} from '../app/utils/env.server'
+import {logMockedData} from './utils'
 
 const BITCOIN_CORE_URL = `${env.BITCOIN_CORE_CONNECTION_STRING.protocol}://${env.BITCOIN_CORE_CONNECTION_STRING.host}`
 

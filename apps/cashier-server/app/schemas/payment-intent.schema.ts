@@ -1,8 +1,7 @@
-import type {Schema} from 'zod-prisma-utils'
-import {zpu} from 'zod-prisma-utils'
+import {zpu, type Schema} from 'zod-prisma-utils'
+
 import {CURRENCY_CODES} from '~/config/currency'
-import type {PaymentIntent} from '~/utils/prisma.server'
-import {Prisma} from '~/utils/prisma.server'
+import {Prisma, type PaymentIntent} from '~/utils/prisma.server'
 import {z} from '~/utils/zod'
 
 type SchemaType = Schema<PaymentIntent, 'createdAt' | 'updatedAt'>

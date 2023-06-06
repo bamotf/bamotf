@@ -1,5 +1,5 @@
-import type {ActionArgs} from '@remix-run/node';
-import { json} from '@remix-run/node'
+import {json, type ActionArgs} from '@remix-run/node'
+
 import {PaymentIntentSchema} from '~/schemas'
 import {simulatePayment} from '~/utils/bitcoin-core'
 import {createContract} from '~/utils/contract'

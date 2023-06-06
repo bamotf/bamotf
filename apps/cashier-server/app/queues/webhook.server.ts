@@ -2,9 +2,9 @@ import {UnrecoverableError} from 'bullmq'
 import {format, logger} from 'logger'
 import {symmetric} from 'secure-webhooks'
 import {v4 as uuidv4} from 'uuid'
+
 import {env} from '~/utils/env.server'
-import type {Prisma} from '~/utils/prisma.server'
-import {prisma} from '~/utils/prisma.server'
+import {prisma, type Prisma} from '~/utils/prisma.server'
 import {QueueLog} from '~/utils/queue-log'
 import {createQueue} from '~/utils/queue.server'
 

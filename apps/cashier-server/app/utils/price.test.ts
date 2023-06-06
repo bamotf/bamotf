@@ -1,9 +1,13 @@
 import {rest} from 'msw'
 import {describe, expect, test} from 'vitest'
+
 import {server} from '../../tests/setup.unit'
 import {env} from './env.server'
-import type {PriceAPIDataObject} from './price'
-import {getBtcAmountFromFiat, getCurrencyValueFromSatoshis} from './price'
+import {
+  getBtcAmountFromFiat,
+  getCurrencyValueFromSatoshis,
+  type PriceAPIDataObject,
+} from './price'
 
 describe('getPriceInSatoshis', () => {
   test.each([

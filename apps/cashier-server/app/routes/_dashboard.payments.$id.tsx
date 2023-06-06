@@ -1,4 +1,5 @@
 import type {LoaderArgs, V2_MetaFunction} from '@remix-run/node'
+import JSONPretty from 'react-json-pretty'
 import {typedjson} from 'remix-typedjson'
 
 import {Formatter} from '~/components/formatter'
@@ -9,14 +10,12 @@ import {Separator} from '~/components/ui/separator'
 import {useFreshData} from '~/hooks/use-fresh-data'
 import {PaymentIntentSchema} from '~/schemas'
 import {createContract} from '~/utils/contract'
-import type {LogType} from '~/utils/prisma.server'
-import {prisma} from '~/utils/prisma.server'
+import {cn} from '~/utils/css'
+import {prisma, type LogType} from '~/utils/prisma.server'
 import {calculateRiskScore} from '~/utils/risk-score'
 
-import JSONPretty from 'react-json-pretty'
 // @ts-ignore
 import '~/components/json.css'
-import {cn} from '~/utils/css'
 
 export const meta: V2_MetaFunction = ({params, data}) => {
   return [{title: 'Payment'}]

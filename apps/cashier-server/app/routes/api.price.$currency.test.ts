@@ -1,4 +1,5 @@
 import {expect, test} from 'tests/base.fixture'
+
 import {FIAT_CURRENCY_CODES} from '~/config/currency'
 
 test.describe('[GET] /api/price/:currency', () => {

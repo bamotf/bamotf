@@ -1,5 +1,5 @@
-import winston from 'winston'
 import format from 'chalk'
+import winston from 'winston'
 
 const logger = winston.createLogger({
   level: process.env.LOG_LEVEL || 'info',

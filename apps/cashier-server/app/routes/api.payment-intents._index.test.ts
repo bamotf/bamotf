@@ -1,4 +1,5 @@
 import {expect, test} from 'tests/base.fixture'
+
 import {FIAT_CURRENCY_CODES} from '~/config/currency'
 import {queue} from '~/queues/transaction.server'
 import {getBtcAmountFromFiat} from '~/utils/price'

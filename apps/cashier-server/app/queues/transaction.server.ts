@@ -1,10 +1,10 @@
 import {UnrecoverableError} from 'bullmq'
 import {format, logger} from 'logger'
+
 import type {FiatCurrencyCode} from '~/config/currency'
 import {listUnspent} from '~/utils/bitcoin-core'
 import {getCurrencyValueFromSatoshis} from '~/utils/price'
-import type {Transaction} from '~/utils/prisma.server'
-import {Prisma, prisma} from '~/utils/prisma.server'
+import {Prisma, prisma, type Transaction} from '~/utils/prisma.server'
 import {QueueLog} from '~/utils/queue-log'
 import {createQueue} from '~/utils/queue.server'
 import {queue as webhookQueue} from './webhook.server'

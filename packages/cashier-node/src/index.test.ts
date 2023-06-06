@@ -1,4 +1,5 @@
 import {expect, test} from 'vitest'
+
 import {CashierClient} from './index'
 
 test('should not have Authorization', async () => {

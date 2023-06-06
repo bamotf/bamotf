@@ -1,5 +1,6 @@
 import type {LoaderArgs} from '@remix-run/node'
 import {typedjson} from 'remix-typedjson'
+
 import {PaymentIntentSchema} from '~/schemas'
 import {createContract} from '~/utils/contract'
 import {prisma} from '~/utils/prisma.server'
