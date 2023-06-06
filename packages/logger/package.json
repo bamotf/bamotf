@@ -3,15 +3,9 @@
   "private": true,
   "version": "0.0.0",
   "sideEffects": false,
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
-  "files": [
-    "dist/**"
-  ],
+  "main": "./index.ts",
+  "types": "./index.ts",
   "scripts": {
-    "build": "tsup src/index.ts --format esm,cjs --dts",
-    "dev": "tsup src/index.ts --format esm,cjs --watch --dts",
     "lint": "eslint .",
     "typecheck": "tsc"
   },
@@ -23,7 +17,6 @@
     "eslint": "8.38.0",
     "eslint-config-custom": "workspace:*",
     "tsconfig": "workspace:*",
-    "tsup": "^6.7.0",
     "typescript": "^5.0.4"
   }
 }
