@@ -10,6 +10,8 @@ export default async () => {
   logger.debug('Resetting database...')
 
   await prisma.$transaction([
+    prisma.log.deleteMany(),
+    prisma.webhookAttempt.deleteMany(),
     prisma.transaction.deleteMany(),
     prisma.paymentIntent.deleteMany(),
     // prisma.user.deleteMany(),
