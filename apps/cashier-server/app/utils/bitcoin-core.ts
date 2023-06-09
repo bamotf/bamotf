@@ -48,6 +48,7 @@ async function cmd({
   const address = `${BITCOIN_CORE_URL}${
     wallet ? `/wallet/${encodeURIComponent(wallet)}` : ''
   }`
+
   const request = await fetch(address, {
     method: 'POST',
     headers: {
@@ -67,6 +68,11 @@ async function cmd({
   })
 
   const data = (await request.json()) as BitcoinCoreResponse
+
+  console.log('🔥 ~ ', {
+    method,
+    params,
+  })
 
   if (data.error) {
     throw new Error(`Failed to ${method}: ${data.error.message}`)

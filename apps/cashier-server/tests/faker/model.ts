@@ -1,10 +1,9 @@
 import type {Prisma} from '@prisma/client'
 
-import type {
-  CurrencyCode} from '~/config/currency';
 import {
   CURRENCY_CODES,
   FIAT_CURRENCY_CODES,
+  type CurrencyCode,
 } from '~/config/currency'
 import faker from './index'
 
@@ -33,8 +32,8 @@ export function paymentIntent(
     // amount in BTC is much less because I haven't implemented the auto-mining when out of funds
     // on the simulatePayment function
     amount = faker.number.float({
-      min: 100,
-      max: 1000,
+      min: 1000,
+      max: 10000,
       precision: 8,
     }) / 1e8,
   } = props
