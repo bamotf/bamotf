@@ -41,3 +41,12 @@ export const PaymentIntentSchema = z.object({
   canceledAt: z.date().optional(),
   cancellationReason: z.string().optional(),
 } satisfies SchemaType)
+
+export const NewPaymentIntentSchema = PaymentIntentSchema.pick({
+  amount: true,
+  description: true,
+  address: true,
+  confirmations: true,
+  currency: true,
+  tolerance: true,
+})

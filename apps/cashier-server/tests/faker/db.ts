@@ -5,7 +5,7 @@ import {createRandomAddress} from './bitcoin'
 /**
  * Create a fake payment intent in the database
  */
-export function createFakePaymentIntent(props?: {
+export function paymentIntent(props?: {
   amount?: number
   address?: string
   currency?: CurrencyCode

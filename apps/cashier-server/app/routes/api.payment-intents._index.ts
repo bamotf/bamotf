@@ -3,7 +3,7 @@ import {format, logger} from 'logger'
 import {typedjson} from 'remix-typedjson'
 
 import {queue} from '~/queues/transaction.server'
-import {PaymentIntentSchema} from '~/schemas'
+import {NewPaymentIntentSchema} from '~/schemas'
 import {
   addWatchOnlyAddress,
   createWatchOnlyWallet,
@@ -15,14 +15,7 @@ import {prisma} from '~/utils/prisma.server'
 
 export const contract = createContract({
   action: {
-    body: PaymentIntentSchema.pick({
-      amount: true,
-      description: true,
-      address: true,
-      confirmations: true,
-      currency: true,
-      tolerance: true,
-    }),
+    body: NewPaymentIntentSchema,
   },
 })
 

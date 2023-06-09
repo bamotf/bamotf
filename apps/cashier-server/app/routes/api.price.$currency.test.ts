@@ -1,11 +1,9 @@
 import {expect, test} from 'tests/base.fixture'
 
-import {FIAT_CURRENCY_CODES} from '~/config/currency'
-
 test.describe('[GET] /api/price/:currency', () => {
   test('should respond with a 200 status code', async ({request, faker}) => {
     // select a random currency
-    const currency = faker.helpers.arrayElement(FIAT_CURRENCY_CODES)
+    const currency = faker.model.fiat()
 
     // get the price
     const pi = await request.get(`/api/price/${currency}`)

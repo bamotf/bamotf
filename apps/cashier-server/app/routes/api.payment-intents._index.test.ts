@@ -1,6 +1,5 @@
 import {expect, test} from 'tests/base.fixture'
 
-import {FIAT_CURRENCY_CODES} from '~/config/currency'
 import {queue} from '~/queues/transaction.server'
 import {getBtcAmountFromFiat} from '~/utils/price'
 import {WebhookTestServer} from '../../tests/webhook-server'
@@ -9,18 +8,18 @@ test.describe('[POST] /api/payment-intents', () => {
   test.describe('when it works', async () => {
     test('should respond with a 200 status code when passed correct data', async ({
       request,
+      faker,
     }) => {
+      const data = faker.model.paymentIntent()
+
       const response = await request.post('/api/payment-intents', {
-        data: {
-          amount: 100,
-          address: 'bcrt1qkg5kdqcxlzecaqws4ha80d2twttle869z0ugjv',
-        },
+        data,
       })
       expect(response.ok()).toBeTruthy()
       expect(await response.json()).toStrictEqual(
         expect.objectContaining({
           id: expect.any(String),
-          amount: 100,
+          ...data,
         }),
       )
     })
@@ -30,8 +29,7 @@ test.describe('[POST] /api/payment-intents', () => {
       bitcoinCore,
       faker,
     }) => {
-      const address = faker.bitcoin.createRandomAddress()
-      const amount = 0.00_001_000
+      const {address, amount} = faker.model.paymentIntent({currency: 'BTC'})
 
       // This is a fairly complex test, so let's break it down:
       // 1. start the server that will receive the webhook from job
@@ -95,10 +93,8 @@ test.describe('[POST] /api/payment-intents', () => {
       bitcoinCore,
       faker,
     }) => {
-      const currency = faker.helpers.arrayElement(FIAT_CURRENCY_CODES)
-      const address = faker.bitcoin.createRandomAddress()
-      const amountInFiat = faker.number.float({min: 1, max: 100, precision: 2})
-      const tolerance = 0.02
+      const currency = faker.model.fiat()
+      const {address, amount, tolerance} = faker.model.paymentIntent({currency})
 
       // This is a fairly complex test, so let's break it down:
       // 1. start the server that will receive the webhook from job
@@ -110,7 +106,7 @@ test.describe('[POST] /api/payment-intents', () => {
       await request.post('/api/payment-intents', {
         data: {
           currency,
-          amount: amountInFiat,
+          amount,
           confirmations: 1,
           address,
           tolerance,
@@ -118,7 +114,7 @@ test.describe('[POST] /api/payment-intents', () => {
       })
 
       const amountToPay = await getBtcAmountFromFiat({
-        amount: amountInFiat,
+        amount,
         currency,
       })
 
@@ -152,7 +148,7 @@ test.describe('[POST] /api/payment-intents', () => {
       expect(
         // @ts-ignore
         payload.data.paymentIntent.transactions[0].originalAmount,
-      ).toBeGreaterThan(amountInFiat * tolerance)
+      ).toBeGreaterThan(amount * tolerance)
     })
   })
 
@@ -176,7 +172,7 @@ test.describe('[POST] /api/payment-intents', () => {
 test.describe('[GET] /api/payment-intents', () => {
   test('should respond with a 200 status code', async ({request, faker}) => {
     // Create a fake payment intent
-    const {amount} = await faker.paymentIntent.createFakePaymentIntent()
+    const {amount} = await faker.db.paymentIntent()
 
     // Get all payment intents
     const pi = await request.get('/api/payment-intents')
