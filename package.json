@@ -17,9 +17,11 @@
     "typecheck": "turbo typecheck",
     "format": "prettier --write \"**/*.{js,jsx,json,yml,yaml,css,ts,tsx,md,mdx}\"",
     "prisma": "cd apps/cashier-server && pnpm prisma",
-    "prepare": "node ./scripts/prepare.js"
+    "prepare": "node ./scripts/prepare.js",
+    "changeset": "changeset"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.26.1",
     "@ianvs/prettier-plugin-sort-imports": "^4.0.2",
     "dotenv": "^16.1.0",
     "dotenv-cli": "^7.0.0",

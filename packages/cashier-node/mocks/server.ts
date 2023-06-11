@@ -1,3 +1,4 @@
+import {logger} from 'logger'
 import {setupServer} from 'msw/node'
 
 import {handlers} from './handlers'
@@ -5,4 +6,4 @@ import {handlers} from './handlers'
 // This configures a request mocking server with the given request handlers.
 export const server = setupServer(...handlers)
 
-console.info('🔶 Mock server installed')
+logger.info('🔶 Mock server installed')

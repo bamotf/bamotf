@@ -1,7 +1,7 @@
 import type {LoaderArgs} from '@remix-run/node'
 import {typedjson} from 'remix-typedjson'
 
-import {PaymentIntentSchema} from '~/schemas'
+import {PaymentIntentSchema, UpdatePaymentIntentSchema} from '~/schemas'
 import {createContract} from '~/utils/contract'
 import {prisma} from '~/utils/prisma.server'
 
@@ -11,14 +11,7 @@ export const contract = createContract({
   },
   action: {
     pathParams: PaymentIntentSchema.pick({id: true}),
-    body: PaymentIntentSchema.pick({
-      amount: true,
-      address: true,
-      description: true,
-      currency: true,
-      confirmations: true,
-      tolerance: true,
-    }).partial(),
+    body: UpdatePaymentIntentSchema,
   },
 })
 

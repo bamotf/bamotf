@@ -32,8 +32,8 @@ export function paymentIntent(
     // amount in BTC is much less because I haven't implemented the auto-mining when out of funds
     // on the simulatePayment function
     amount = faker.number.float({
-      min: 1000,
-      max: 10000,
+      min: 100,
+      max: 1000,
       precision: 8,
     }) / 1e8,
   } = props

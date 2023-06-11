@@ -1,4 +1,4 @@
-import {format} from 'logger'
+import {format, logger} from 'logger'
 import type {
   DefaultBodyType,
   PathParams,
@@ -14,9 +14,9 @@ import type {
  * @param data - Any json object to log.
  */
 export async function logMockedData(message: string, data?: object) {
-  console.info(`🔶 ${format.dim(`mocked ${format.reset.bold(message)}`)}`)
+  logger.info(`🔶 ${format.dim(`mocked ${format.reset.bold(message)}`)}`)
   if (data) {
-    console.debug(
+    logger.debug(
       format.dim(
         `     data ${format.reset.hex('#ff9600')(JSON.stringify(data))}`,
       ),
@@ -36,13 +36,13 @@ export async function skip(
   res: ResponseComposition<DefaultBodyType>,
   ctx: RestContext,
 ) {
-  console.info(`⏩ mock request skipped: ${req.url.href}`)
+  logger.info(`⏩ mock request skipped: ${req.url.href}`)
 
   // Perform an original request to the intercepted request URL
   const originalResponse = await ctx.fetch(req)
   const originalResponseData = await originalResponse.json()
 
-  console.debug('⏩ original response:', originalResponseData)
+  logger.debug('⏩ original response:', originalResponseData)
 
   return res(ctx.status(200), ctx.json(originalResponseData))
 }

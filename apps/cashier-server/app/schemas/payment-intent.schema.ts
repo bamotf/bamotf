@@ -43,10 +43,12 @@ export const PaymentIntentSchema = z.object({
 } satisfies SchemaType)
 
 export const NewPaymentIntentSchema = PaymentIntentSchema.pick({
-  amount: true,
-  description: true,
   address: true,
+  amount: true,
   confirmations: true,
   currency: true,
+  description: true,
   tolerance: true,
 })
+
+export const UpdatePaymentIntentSchema = NewPaymentIntentSchema.partial()

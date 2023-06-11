@@ -1,18 +1,17 @@
 import {expect, test} from 'vitest'
 
-import {CashierClient} from './index'
+import {CashierClient} from './client'
+import {UnauthorizedError} from './errors'
 
 test('should not have Authorization', async () => {
-  const client = new CashierClient('fake-token')
+  const client = new CashierClient('should-fail-token')
 
-  const pi = await client.paymentIntents.create({
-    amount: 9999,
-    address: 'fake-address',
-  })
-
-  expect(pi.status).toBe(401)
-  // @ts-ignore
-  expect(pi.body).toContain('permission')
+  expect(() =>
+    client.paymentIntents.create({
+      amount: 9999,
+      address: 'fake-address',
+    }),
+  ).rejects.toThrow(new UnauthorizedError('Cashier API key is invalid.'))
 })
 
 test('should hit the Payment Intent API', async () => {
@@ -24,7 +23,5 @@ test('should hit the Payment Intent API', async () => {
     address: '1Dg5jKw5bfW8uV1LbiY1YXcx7KjQPK8uV7',
   })
 
-  expect(pi.status).toBe(200)
-  // @ts-ignore
-  expect(pi.body.amount).toBe(9999)
+  expect(pi.amount).toBe(9999)
 })

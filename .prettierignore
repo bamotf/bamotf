@@ -23,4 +23,5 @@ storybook-static
 # Next.js build output
 **/.next/**
 
-
+# Packages
+**/dist/**

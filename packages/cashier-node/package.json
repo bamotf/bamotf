@@ -5,6 +5,7 @@
   "types": "./src/index.ts",
   "license": "MIT",
   "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts --minify --clean --legacy-output",
     "lint": "eslint *.ts*",
     "typecheck": "tsc",
     "test:integration": "vitest run",
@@ -19,9 +20,12 @@
     "logger": "workspace:*",
     "msw": "^1.2.1",
     "tsconfig": "workspace:*",
+    "tsup": "^6.7.0",
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@ts-rest/core": "^3.19.0"
+    "@ts-rest/core": "^3.19.0",
+    "axios": "^1.4.0",
+    "secure-webhooks": "^0.3.0"
   }
 }
