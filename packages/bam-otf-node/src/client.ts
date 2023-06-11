@@ -18,7 +18,7 @@ export class BamOtf {
 
   constructor(apiKey: string, config?: BamOtfConfig) {
     const {
-      baseURL = 'http://localhost:3000',
+      baseURL = 'http://localhost:21000',
       // maxNetworkRetries = 3,
       timeout = 60000,
     } = config || {}

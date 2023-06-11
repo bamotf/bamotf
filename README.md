@@ -1,17 +1,23 @@
 # ⚠️ This is a Work in Progress ⚠️
 
-# _bam-otf_ - Bitcoin Acknowledgement Mechanism - On The Fly
+Do not use this with your bitcoin core. This is not ready for production.
 
-_bam-otf_ is a near zero-config way to accept bitcoins on your application with
-just a few lines of code without having to deal with communication with the
-network. Heavily inspired by [Stripe][stripe]. It's built on top of the [Bitcoin
-Core][bitcoin] and it's made for developers first.
+# _bam-otf_ - Bitcoin Payment Gatewat
 
-## Packages
+Bitcoin Acknowledgement Mechanism Over Time Frame (bam-otf) is a near
+zero-config way to accept bitcoins on your application within just a few lines
+of code without having to deal with communication with the network. Heavily
+inspired by [Stripe][stripe]. Built on top of the [Bitcoin Core][bitcoin] and
+made for developers first.
+
+## Apps
 
 - **bam-otf/server** - A server that exposes a REST API to create and manage
   payments.
-- **[bam-otf/node](./packages/bam-otf-node/README.md)** - A Node.js client to
+
+## Packages
+
+- **[@bam-otf/node](./packages/bam-otf-node/README.md)** - A Node.js client to
 interact with the _bam-otf_ server.
 <!-- - **[bam-otf/react](./packages/bam-otf-react/README.md)** - A React component to
   easily integrate bitcoin payments in your React app. -->
@@ -24,7 +30,7 @@ pnpm install
 pnpm dev
 ```
 
-## TODO:
+### TODO:
 
 - [ ] Dev needs install package from npm
   <!--
@@ -37,7 +43,7 @@ pnpm dev
   - [x] changeset auto publish
   - [x] changeset bot
   - [ ] derive address
-  - [ ] create docs
+  - [x] create docs
 
 - [ ] Dev needs to start the service
 

@@ -1,6 +1,6 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalEnv": ["LOG_LEVEL", "NODE_ENV"],
+  "globalEnv": ["LOG_LEVEL", "NODE_ENV", "VERCEL_URL"],
   "globalDependencies": ["**/.env.*local"],
   "pipeline": {
     "dev": {

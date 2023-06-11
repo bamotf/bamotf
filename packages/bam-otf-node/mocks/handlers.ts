@@ -5,7 +5,7 @@ import {logMockedData} from './utils'
 export const handlers = [
   // Mock a successful POST /api/payment-intents request
   rest.post(
-    'http://localhost:3000/api/payment-intents',
+    'http://localhost:21000/api/payment-intents',
     async (req, res, ctx) => {
       const data = await req.json()
 
@@ -17,7 +17,7 @@ export const handlers = [
       }
 
       await logMockedData(
-        'POST http://localhost:3000/api/payment-intents',
+        'POST http://localhost:21000/api/payment-intents',
         data,
       )
 

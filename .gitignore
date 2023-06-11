@@ -44,3 +44,4 @@ postgres-data
 
 # packages
 dist
+.vercel
