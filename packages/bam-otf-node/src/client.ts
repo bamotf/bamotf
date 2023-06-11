@@ -1,22 +1,22 @@
 import axios, {type AxiosInstance} from 'axios'
 
-import type {CashierConfig} from './config'
+import type {BamOtfConfig} from './config'
 import {UnauthorizedError} from './errors'
 import {parse} from './parse'
 import {PaymentIntents} from './payment-intents'
 
 /**
- * Cashier client class.
+ * *bam-otf* client class.
  * @param apiKey - API key.
- * @param config - Cashier client configuration.
+ * @param config - Client configuration.
  */
 
-export class CashierClient {
+export class BamOtf {
   public paymentIntents: PaymentIntents
-  private config: CashierConfig
+  private config: BamOtfConfig
   private client: AxiosInstance
 
-  constructor(apiKey: string, config?: CashierConfig) {
+  constructor(apiKey: string, config?: BamOtfConfig) {
     const {
       baseURL = 'http://localhost:3000',
       // maxNetworkRetries = 3,
@@ -29,7 +29,7 @@ export class CashierClient {
     }
 
     if (!apiKey) {
-      throw new UnauthorizedError('Cashier API key is required.')
+      throw new UnauthorizedError('bam-otf API key is required.')
     }
 
     this.client = axios.create({
@@ -48,7 +48,7 @@ export class CashierClient {
       },
       error => {
         if (error.response.status === 401) {
-          throw new UnauthorizedError('Cashier API key is invalid.')
+          throw new UnauthorizedError('bam-otf API key is invalid.')
         }
 
         return Promise.reject(error)

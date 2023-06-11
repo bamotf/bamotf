@@ -41,7 +41,7 @@ importers:
         specifier: 0.31.1
         version: 0.31.1
 
-  apps/cashier-server:
+  apps/bam-otf-server:
     dependencies:
       '@hookform/resolvers':
         specifier: ^3.1.0
@@ -222,7 +222,7 @@ importers:
         specifier: ^4.2.0
         version: 4.2.0(typescript@5.0.4)
 
-  packages/cashier-node:
+  packages/bam-otf-node:
     dependencies:
       '@ts-rest/core':
         specifier: ^3.19.0
@@ -240,9 +240,9 @@ importers:
       '@types/react-dom':
         specifier: ^18.0.6
         version: 18.0.7
-      cashier-server:
+      bam-otf-server:
         specifier: workspace:*
-        version: link:../../apps/cashier-server
+        version: link:../../apps/bam-otf-server
       eslint:
         specifier: ^7.32.0
         version: 7.32.0

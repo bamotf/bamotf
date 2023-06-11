@@ -43,16 +43,16 @@ const envSchema = z.object({
 
   /**
    * This is the webhook url that we send events to when some
-   * event happens in the cashier.
+   * event happens in the server.
    * For example, when a payment is received, we send a webhook
    */
-  CASHIER_WEBHOOK_URL: URL_REQUIRED,
+  WEBHOOK_URL: URL_REQUIRED,
 
   /**
    * This is the secret that we use to sign the webhook events
    * that we send to the webhook url.
    */
-  CASHIER_SECRET: STRING_REQUIRED,
+  WEBHOOK_SECRET: STRING_REQUIRED,
 
   /**
    * When running tests, we don't want wait.

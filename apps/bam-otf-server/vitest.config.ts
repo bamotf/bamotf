@@ -6,7 +6,7 @@ process.env.LOG_LEVEL = 'error'
 export default defineProject({
   plugins: [tsconfigPaths()],
   test: {
-    name: 'cashier-server',
+    name: 'bam-otf-server',
     include: ['tests/**/*.test.ts', 'app/**/*.test.ts'],
     exclude: [
       'build/**/*',

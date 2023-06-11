@@ -1,6 +1,6 @@
-export type CashierConfig = {
+export type BamOtfConfig = {
   /**
-   * Hostname of the Cashier server.
+   * Hostname of the *bam-otf* server.
    * @default 'http://localhost:3000'
    */
   baseURL?: string

@@ -37,7 +37,7 @@ export function constructEvent(
 }
 
 /**
- * Generate a test header string so you can mock a webhook event that comes from Cashier server
+ * Generate a test header string so you can mock a webhook event that comes from *bam-otf* server
  *
  * @param payload
  * @param secret
