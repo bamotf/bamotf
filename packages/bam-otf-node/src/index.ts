@@ -23,14 +23,14 @@ type Params<
   TMethod extends MethodsFromObject<TObject>,
 > = APIClient[TObject][TMethod]
 
-export type CashierConfig = {
+export type BamOtfConfig = {
   /**
-   * Hostname of the Cashier server.
+   * Hostname of the *bam-otf* server.
    * @default 'localhost'
    */
   host?: string
   /**
-   * Port of the Cashier server.
+   * Port of the *bam-otf* server.
    * @default 3000
    */
   port?: number
@@ -101,16 +101,16 @@ export class PaymentIntents {
 }
 
 /**
- * Cashier client class.
+ * bam-otf client class.
  * @param apiKey - API key.
- * @param config - Cashier client configuration.
+ * @param config - Client configuration.
  */
-export class CashierClient {
+export class BamOtf {
   public paymentIntents: PaymentIntents
-  private config: CashierConfig
+  private config: BamOtfConfig
   private client: APIClient
 
-  constructor(apiKey: string, config?: CashierConfig) {
+  constructor(apiKey: string, config?: BamOtfConfig) {
     const {
       host = 'localhost',
       port = 3000,
@@ -128,7 +128,7 @@ export class CashierClient {
     }
 
     if (!apiKey) {
-      throw new Error('Cashier API key is required.')
+      throw new Error('bam-otf API key is required.')
     }
 
     // @ts-expect-error
@@ -143,4 +143,4 @@ export class CashierClient {
   }
 }
 
-export default CashierClient
+export default BamOtf

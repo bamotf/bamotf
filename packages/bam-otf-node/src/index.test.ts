@@ -1,9 +1,9 @@
 import {expect, test} from 'vitest'
 
-import {CashierClient} from './index'
+import {BamOtf} from './index'
 
 test('should not have Authorization', async () => {
-  const client = new CashierClient('fake-token')
+  const client = new BamOtf('fake-token')
 
   const pi = await client.paymentIntents.create({
     amount: 9999,
@@ -16,11 +16,10 @@ test('should not have Authorization', async () => {
 })
 
 test('should hit the Payment Intent API', async () => {
-  const client = new CashierClient('test-token')
+  const client = new BamOtf('test-token')
 
   const pi = await client.paymentIntents.create({
     amount: 9999,
-    // fake Bech32 bitcoin address
     address: '1Dg5jKw5bfW8uV1LbiY1YXcx7KjQPK8uV7',
   })
 

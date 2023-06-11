@@ -64,9 +64,9 @@ export const queue = createQueue<QueueData>(QUEUE_ID, async job => {
     body,
     (key, value) => (typeof value === 'bigint' ? value.toString() : value), // return everything else unchanged
   )
-  const signature = symmetric.sign(bodyString, env.CASHIER_SECRET)
+  const signature = symmetric.sign(bodyString, env.WEBHOOK_SECRET)
 
-  const result = await fetch(env.CASHIER_WEBHOOK_URL, {
+  const result = await fetch(env.WEBHOOK_URL, {
     method: 'POST',
     headers: {
       'x-webhook-signature': signature,
@@ -75,7 +75,7 @@ export const queue = createQueue<QueueData>(QUEUE_ID, async job => {
   })
 
   logger.debug(
-    `⚑ Sending webhook to ${format.magenta(env.CASHIER_WEBHOOK_URL)}: ${
+    `⚑ Sending webhook to ${format.magenta(env.WEBHOOK_URL)}: ${
       result.ok ? format.green('OK') : format.red('FAILED')
     }`,
   )
@@ -91,7 +91,7 @@ export const queue = createQueue<QueueData>(QUEUE_ID, async job => {
       event,
       paymentIntentId,
       status: result.status,
-      url: env.CASHIER_WEBHOOK_URL,
+      url: env.WEBHOOK_URL,
       body: body as unknown as Prisma.JsonObject,
       response,
     },

@@ -1,5 +1,5 @@
 {
-  "name": "@wladiston/cashier",
+  "name": "@bam-otf/node",
   "version": "0.0.1",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
@@ -13,7 +13,7 @@
   "devDependencies": {
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
-    "cashier-server": "workspace:*",
+    "bam-otf-server": "workspace:*",
     "eslint": "^7.32.0",
     "eslint-config-custom": "workspace:*",
     "logger": "workspace:*",

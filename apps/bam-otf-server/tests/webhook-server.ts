@@ -19,9 +19,7 @@ export class WebhookTestServer {
    * @param next Function to be called after the server is listening.
    */
   public async listen() {
-    const webhookConnectionString = new ConnectionString(
-      env.CASHIER_WEBHOOK_URL,
-    )
+    const webhookConnectionString = new ConnectionString(env.WEBHOOK_URL)
 
     return new Promise<void>(resolve => {
       this.server.listen(webhookConnectionString.port, async () => {
