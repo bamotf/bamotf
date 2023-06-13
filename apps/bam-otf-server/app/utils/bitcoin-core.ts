@@ -90,6 +90,7 @@ export async function createWatchOnlyWallet(name: string) {
     params: {
       wallet_name: name,
       disable_private_keys: true,
+      load_on_startup: true,
     },
   })
 }
