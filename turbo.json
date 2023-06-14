@@ -1,13 +1,24 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalEnv": ["LOG_LEVEL", "NODE_ENV", "VERCEL_URL"],
-  "globalDependencies": ["**/.env.*local"],
+  "globalDotEnv": [".env"],
   "pipeline": {
     "dev": {
       "persistent": true,
-      "cache": false
+      "cache": false,
+      "dotEnv": [
+        ".env.development.local",
+        ".env.local",
+        ".env.development",
+        ".env"
+      ]
     },
     "build": {
+      "dotEnv": [
+        ".env.production.local",
+        ".env.local",
+        ".env.production",
+        ".env"
+      ],
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
     },
@@ -18,12 +29,15 @@
       "outputs": []
     },
     "test:unit": {
+      "dotEnv": [".env.test.local", ".env.test", ".env"],
       "outputs": []
     },
     "test:integration": {
+      "dotEnv": [".env.test.local", ".env.test", ".env"],
       "outputs": []
     },
     "test:e2e": {
+      "dotEnv": [".env.test.local", ".env.test", ".env"],
       "env": ["CI"],
       "outputs": []
     }

@@ -1,5 +1,6 @@
 import {defineProject} from 'vitest/config'
 
+// eslint-disable-next-line turbo/no-undeclared-env-vars
 process.env.LOG_LEVEL = 'error'
 
 export default defineProject({

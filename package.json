@@ -31,7 +31,7 @@
     "nano-staged": "0.8.0",
     "prettier": "2.8.7",
     "prettier-plugin-tailwindcss": "^0.3.0",
-    "turbo": "1.9.3",
+    "turbo": "1.10.3",
     "vitest": "0.31.1"
   },
   "engines": {
