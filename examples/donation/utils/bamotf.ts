@@ -1,5 +1,8 @@
 import {BamOtf} from '@bam-otf/node'
 
-// @ts-expect-error
-// eslint-disable-next-line turbo/no-undeclared-env-vars
-export const bamotf = new BamOtf(process.env.BAMOTF_API_KEY)
+const apiKey = process.env.BAMOTF_API_KEY
+if (!apiKey) {
+  throw new Error('BAMOTF_API_KEY not set')
+}
+
+export const bamotf = new BamOtf(apiKey)

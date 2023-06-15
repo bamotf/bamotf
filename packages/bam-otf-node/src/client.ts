@@ -4,6 +4,7 @@ import type {BamOtfConfig} from './config'
 import {UnauthorizedError} from './errors'
 import {parse} from './parse'
 import {PaymentIntents} from './payment-intents'
+import * as webhooks from './webhooks'
 
 /**
  * *bam-otf* client class.
@@ -15,6 +16,7 @@ export class BamOtf {
   public paymentIntents: PaymentIntents
   private config: BamOtfConfig
   private client: AxiosInstance
+  public webhooks = webhooks
 
   constructor(apiKey: string, config?: BamOtfConfig) {
     const {
@@ -47,7 +49,7 @@ export class BamOtf {
         return response
       },
       error => {
-        if (error.response.status === 401) {
+        if (error.response?.status === 401) {
           throw new UnauthorizedError('bam-otf API key is invalid.')
         }
 
