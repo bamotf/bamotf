@@ -14,6 +14,5 @@ export default async () => {
     prisma.webhookAttempt.deleteMany(),
     prisma.transaction.deleteMany(),
     prisma.paymentIntent.deleteMany(),
-    // prisma.user.deleteMany(),
   ])
 }
