@@ -36,5 +36,11 @@ yarn-error.log*
 # Docker
 docker/*/data
 
+# TypeScript
 tsconfig.tsbuildinfo
+
+# local Postgres data
 postgres-data
+
+# packages
+dist
