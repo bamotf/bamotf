@@ -69,11 +69,6 @@ async function cmd({
 
   const data = (await request.json()) as BitcoinCoreResponse
 
-  console.log('🔥 ~ ', {
-    method,
-    params,
-  })
-
   if (data.error) {
     throw new Error(`Failed to ${method}: ${data.error.message}`)
   }
