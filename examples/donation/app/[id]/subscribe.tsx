@@ -1,7 +1,7 @@
 'use client'
 
 import React, {useEffect} from 'react'
-import {pusherClient} from '@/utils/pusher'
+import {pusherClient} from '@/utils/pusher.client'
 
 export function Subscribe({id}: {id: string}) {
   useEffect(() => {

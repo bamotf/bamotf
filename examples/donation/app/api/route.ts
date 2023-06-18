@@ -1,21 +1,17 @@
 import {bamotf} from '@/utils/bamotf'
-import {pusherServer} from '@/utils/pusher'
+import {pusherServer} from '@/utils/pusher.server'
 import {format, logger} from 'logger'
 import {NextResponse} from 'next/server'
-
-const secret = process.env.WEBHOOK_SECRET
-if (!secret) {
-  throw new Error('WEBHOOK_SECRET not set')
-}
 
 export async function POST(request: Request) {
   const rawBody = await request.text()
   const signatureHeader = request.headers.get('x-webhook-signature') || ''
 
+  const secret = process.env.WEBHOOK_SECRET!
   const {success, parsed} = bamotf.webhooks.constructEvent(
     rawBody,
     signatureHeader,
-    secret!,
+    secret,
   )
 
   if (!success) {
