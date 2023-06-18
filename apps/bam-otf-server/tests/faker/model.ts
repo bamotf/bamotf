@@ -32,15 +32,19 @@ export function paymentIntent(
     // amount in BTC is much less because I haven't implemented the auto-mining when out of funds
     // on the simulatePayment function
     amount = faker.number.float({
-      min: 100,
-      max: 1000,
+      // btcoind has a minimum of 1000 satoshis
+      min: 1000,
+      max: 10000,
       precision: 8,
     }) / 1e8,
   } = props
 
   if (chosenCurrency !== 'BTC') {
-    chosenCurrency = fiat()
-    amount = faker.number.float({min: 1, max: 100, precision: 2})
+    // FIX: the amount in fiat can be much less than 1000 sats
+    // depending on the currency selected and the payment will fail
+    // chosenCurrency = fiat()
+    chosenCurrency = 'USD'
+    amount = faker.number.float({min: 100, max: 200, precision: 2})
   }
 
   return {

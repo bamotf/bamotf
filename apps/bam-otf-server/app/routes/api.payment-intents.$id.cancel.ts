@@ -26,6 +26,7 @@ export async function action({request, params}: LoaderArgs) {
     data: {
       status: 'canceled',
       cancellationReason,
+      canceledAt: new Date(),
       logs: {create: [{status: 'status_canceled'}]},
     },
   })

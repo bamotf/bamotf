@@ -6,6 +6,24 @@ import {WebhookTestServer} from '../../tests/webhook-server'
 
 test.describe('[POST] /api/payment-intents', () => {
   test.describe('when it works', async () => {
+    let webhook: WebhookTestServer | undefined
+
+    test.beforeEach(async () => {
+      // This is a fairly complex test, so let's break it down:
+      // 1. start the server that will receive the webhook from job
+      // 2. trigger the endpoint that will enqueue the job
+      webhook = new WebhookTestServer()
+      await webhook.listen()
+    })
+
+    test.afterEach(async () => {
+      // wait for the webhook to be called and other stuff to finish
+      await new Promise(resolve => setTimeout(resolve, 1000))
+
+      // Stop the webhook server
+      await webhook?.server.close()
+    })
+
     test('should respond with a 200 status code when passed correct data', async ({
       request,
       faker,
@@ -22,6 +40,7 @@ test.describe('[POST] /api/payment-intents', () => {
           ...data,
         }),
       )
+      expect(webhook?.onServerCalled()).toBeTruthy()
     })
 
     test('should trigger webhook and job has stopped', async ({
@@ -31,12 +50,6 @@ test.describe('[POST] /api/payment-intents', () => {
     }) => {
       const {address, amount} = faker.model.paymentIntent({currency: 'BTC'})
 
-      // This is a fairly complex test, so let's break it down:
-      // 1. start the server that will receive the webhook from job
-      // 2. trigger the endpoint that will enqueue the job
-      const webhook = new WebhookTestServer()
-      await webhook.listen()
-
       // Create a fake payment intent
       const response = await request.post('/api/payment-intents', {
         data: {
@@ -45,9 +58,10 @@ test.describe('[POST] /api/payment-intents', () => {
           address,
         },
       })
+      expect(response.ok()).toBeTruthy()
 
       // Wait for the webhook to be called
-      const receivedPayload = webhook.onServerCalled()
+      const receivedPayload = webhook?.onServerCalled()
 
       // Simulate the payment in the background
       await bitcoinCore.simulatePayment({
@@ -77,12 +91,6 @@ test.describe('[POST] /api/payment-intents', () => {
 
       // Make sure the job has been removed from the queue
       const jobs = await queue.getJobs('completed')
-      expect(jobs).toHaveLength(1)
-
-      if (!response) {
-        throw new Error('Response is undefined')
-      }
-
       const data = await response.json()
       const job = jobs.find(job => job.data.paymentIntentId === data.id)
       expect(job).toBeTruthy()
@@ -95,12 +103,6 @@ test.describe('[POST] /api/payment-intents', () => {
     }) => {
       const currency = faker.model.fiat()
       const {address, amount, tolerance} = faker.model.paymentIntent({currency})
-
-      // This is a fairly complex test, so let's break it down:
-      // 1. start the server that will receive the webhook from job
-      // 2. trigger the endpoint that will enqueue the job
-      const webhook = new WebhookTestServer()
-      await webhook.listen()
 
       // Create a fake payment intent
       await request.post('/api/payment-intents', {
@@ -119,7 +121,7 @@ test.describe('[POST] /api/payment-intents', () => {
       })
 
       // Wait for the webhook to be called
-      const receivedPayload = webhook.onServerCalled()
+      const receivedPayload = webhook?.onServerCalled()
 
       // Simulate the payment in the background
       await bitcoinCore.simulatePayment({

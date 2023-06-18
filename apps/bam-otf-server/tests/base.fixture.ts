@@ -1,4 +1,5 @@
 import {test as base} from '@playwright/test'
+import {logger} from 'logger'
 
 import * as bitcoinCore from '~/utils/bitcoin-core'
 import faker from './faker'
@@ -17,6 +18,8 @@ export const test = base.extend<Options>({
 })
 
 test.beforeEach(async () => {
+  logger.debug('Resetting all services...')
+
   await resetDb()
   await resetQueues()
   await resetBitcoinCore()
