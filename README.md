@@ -16,13 +16,10 @@ interact with the _bam-otf_ server.
 <!-- - **[bam-otf/react](./packages/bam-otf-react/README.md)** - A React component to
   easily integrate bitcoin payments in your React app. -->
 
-## Development
+## Contributing
 
-```bash
-docker-compose up -d
-pnpm install
-pnpm dev
-```
+Read [CONTRIBUTING.md](./CONTRIBUTING.md) for more information on how to get
+started.
 
 ## TODO:
 
