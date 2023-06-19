@@ -5,7 +5,9 @@
 import type {PaymentIntentStatus} from '@prisma/client'
 import type {CurrencyCode} from 'bam-otf-server/app/config/currency'
 
-type PaymentIntent = {
+export {PaymentIntentStatus}
+
+export type PaymentIntent = {
   id: string
   amount: number
   tolerance: number

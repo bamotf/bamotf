@@ -1,23 +1,43 @@
 'use client'
 
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {pusherClient} from '@/utils/pusher.client'
+import type {PaymentIntent, PaymentIntentStatus} from '@bam-otf/node'
 
-export function Subscribe({id}: {id: string}) {
+import {PaymentInformation} from './payment-information'
+
+export function Subscribe({
+  paymentIntent: pi,
+  redirectUrl,
+}: {
+  paymentIntent: PaymentIntent
+  redirectUrl: string
+}) {
+  const [status, setStatus] = useState<PaymentIntentStatus>(pi.status)
+
   useEffect(() => {
     const onPaymentIntentSucceeded = (data: any) => {
       console.log('🔥 ~ from webhook', {data})
     }
 
-    pusherClient.subscribe(id)
+    console.log('🔥 ~ subscribed', pi.id)
+    pusherClient.subscribe(pi.id)
     pusherClient.bind('payment_intent.succeeded', onPaymentIntentSucceeded)
 
     return () => {
       // cleanup
-      pusherClient.unsubscribe(id)
+      pusherClient.unsubscribe(pi.id)
       pusherClient.unbind('payment_intent.succeeded', onPaymentIntentSucceeded)
     }
-  }, [id])
+  }, [pi.id])
 
-  return <div>Subscribe</div>
+  const views = {
+    // @ts-ignore - Async component
+    pending: <PaymentInformation {...pi} redirectUrl={redirectUrl} />,
+    processing: <>processing</>,
+    succeeded: <>succeeded</>,
+    canceled: <>canceled</>,
+  }
+
+  return <div>{views[status]}</div>
 }

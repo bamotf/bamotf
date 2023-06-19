@@ -60,11 +60,9 @@ export const queue = createQueue<QueueData>(QUEUE_ID, async job => {
     },
   }
 
-  const bodyString = JSON.stringify(
-    body,
-    (key, value) => (typeof value === 'bigint' ? value.toString() : value), // return everything else unchanged
-  )
+  const bodyString = JSON.stringify(body)
   const signature = symmetric.sign(bodyString, env.WEBHOOK_SECRET)
+  console.log('🔥 ~ ', {secret: env.WEBHOOK_SECRET, signature, bodyString})
 
   const result = await fetch(env.WEBHOOK_URL, {
     method: 'POST',

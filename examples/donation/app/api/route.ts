@@ -4,8 +4,10 @@ import {format, logger} from 'logger'
 import {NextResponse} from 'next/server'
 
 export async function POST(request: Request) {
+  // FIX: rawBody is not raw exactly
   const rawBody = await request.text()
   const signatureHeader = request.headers.get('x-webhook-signature') || ''
+  logger.info(`🫡 Webhook triggered`, {signatureHeader, rawBody})
 
   const secret = process.env.WEBHOOK_SECRET!
   const {success, parsed} = bamotf.webhooks.constructEvent(
@@ -20,6 +22,8 @@ export async function POST(request: Request) {
       {status: 401, statusText: 'Unauthorized'},
     )
   }
+
+  logger.debug(`- parsed data`, parsed)
 
   const {
     event,
