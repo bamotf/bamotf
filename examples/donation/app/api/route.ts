@@ -7,7 +7,7 @@ export async function POST(request: Request) {
   // FIX: rawBody is not raw exactly
   const rawBody = await request.text()
   const signatureHeader = request.headers.get('x-webhook-signature') || ''
-  logger.info(`🫡 Webhook triggered`, {signatureHeader, rawBody})
+  logger.info(`🫡 Webhook triggered`)
 
   const secret = process.env.WEBHOOK_SECRET!
   const {success, parsed} = bamotf.webhooks.constructEvent(
@@ -33,7 +33,7 @@ export async function POST(request: Request) {
   switch (event) {
     case 'payment_intent.succeeded':
       // Trigger an event on the client
-      pusherServer.trigger(paymentIntent.id, event, {
+      await pusherServer.trigger(paymentIntent.id, event, {
         ok: true,
       })
 
