@@ -218,7 +218,7 @@ export async function simulatePayment({
   logger.silly(
     `🟠 Simulating payment of ${format.yellow(
       amount,
-    )} satoshis to address ${format.magenta(address)}`,
+    )} satoshis to address ${format.cyan(address)}`,
   )
 
   const wallet = 'test-wallet'
@@ -231,7 +231,7 @@ export async function simulatePayment({
   logger.silly(
     `🟠 Sending ${format.yellow(
       providedAmount,
-    )} satoshis to address ${format.magenta(address)}`,
+    )} satoshis to address ${format.cyan(address)}`,
   )
 
   await cmd({

@@ -5,7 +5,6 @@ import type {FiatCurrencyCode} from '~/config/currency'
 import {listUnspent} from '~/utils/bitcoin-core'
 import {getCurrencyValueFromSatoshis} from '~/utils/price'
 import {Prisma, prisma, type Transaction} from '~/utils/prisma.server'
-import {QueueLog} from '~/utils/queue-log'
 import {createQueue} from '~/utils/queue.server'
 import {queue as webhookQueue} from './webhook.server'
 
@@ -19,115 +18,116 @@ const QUEUE_ID = 'transaction'
  * This queue checks if the wallet has a new transaction and updates the database accordingly.
  * It also triggers a webhook if the payment was successful.
  */
-export const queue = createQueue<QueueData>(QUEUE_ID, async job => {
-  const {data: payload} = job
-  const {paymentIntentId} = payload
+export const queue = createQueue<QueueData>(
+  QUEUE_ID,
+  async job => {
+    const {data: payload} = job
+    const {paymentIntentId} = payload
 
-  const log = QueueLog(QUEUE_ID, paymentIntentId)
-  log('started')
+    const [transactions, paymentIntent] = await Promise.all([
+      // Check if the payment was made
+      listUnspent(paymentIntentId),
+      prisma.paymentIntent.findFirst({
+        where: {id: paymentIntentId},
+      }),
+    ])
 
-  const [transactions, paymentIntent] = await Promise.all([
-    // Check if the payment was made
-    listUnspent(paymentIntentId),
-    prisma.paymentIntent.findFirst({
-      where: {id: paymentIntentId},
-    }),
-  ])
+    if (!paymentIntent) {
+      throw new UnrecoverableError(
+        `Payment intent not found: ${format.red(paymentIntentId)}`,
+      )
+    }
 
-  if (!paymentIntent) {
-    throw new UnrecoverableError(
-      `Payment intent not found: ${format.red(paymentIntentId)}`,
+    if (paymentIntent.status === 'canceled') {
+      throw new UnrecoverableError(
+        `Payment intent was canceled ${format.red(paymentIntentId)}`,
+      )
+    }
+
+    logger.debug(
+      `🟠 Address: ${format.cyan(paymentIntent.address)} has ${format.yellow(
+        transactions.length,
+      )} transactions`,
     )
-  }
 
-  if (paymentIntent.status === 'canceled') {
-    throw new UnrecoverableError(
-      `Payment intent was canceled ${format.red(paymentIntentId)}`,
+    // Update the local database with transaction history
+    const savedTransactions = await Promise.all(
+      transactions.map(async tx => {
+        const amount = tx.amount
+
+        // If the currency is BTC, we don't need to convert the amount
+        // because it's already in satoshis
+        // Otherwise, we need to convert it to the original currency
+        // so we can determine if the payment was successful in
+        // the original currency
+        const originalAmount =
+          paymentIntent.currency === 'BTC'
+            ? null
+            : await getCurrencyValueFromSatoshis({
+                amount,
+                currency: paymentIntent.currency as FiatCurrencyCode,
+              })
+
+        return prisma.transaction.upsert({
+          where: {id: tx.txid},
+          create: {
+            id: tx.txid,
+            amount,
+            confirmations: tx.confirmations,
+            paymentIntentId: paymentIntent.id,
+            originalAmount,
+          },
+          update: {
+            amount,
+            confirmations: tx.confirmations,
+          },
+        })
+      }),
     )
-  }
 
-  logger.debug(
-    `🟠 Payment intent: ${format.magenta(paymentIntentId)} has ${format.yellow(
-      transactions.length,
-    )} transactions`,
-  )
+    // If there are no transactions, reschedule the job
+    if (!savedTransactions.length) {
+      throw new Error('No transactions found')
+    }
 
-  // Update the local database with transaction history
-  const savedTransactions = await Promise.all(
-    transactions.map(async tx => {
-      const amount = tx.amount
+    const amountReceived = getTotalTransferred(
+      savedTransactions,
+      paymentIntent.confirmations,
+    )
 
-      // If the currency is BTC, we don't need to convert the amount
-      // because it's already in satoshis
-      // Otherwise, we need to convert it to the original currency
-      // so we can determine if the payment was successful in
-      // the original currency
-      const originalAmount =
-        paymentIntent.currency === 'BTC'
-          ? null
-          : await getCurrencyValueFromSatoshis({
-              amount,
-              currency: paymentIntent.currency as FiatCurrencyCode,
-            })
+    const isPaid = isPaymentIntentPaid({
+      amountReceived,
+      currency: paymentIntent.currency,
+      amountRequested: paymentIntent.amount,
+      tolerance: paymentIntent.tolerance,
+    })
 
-      return prisma.transaction.upsert({
-        where: {id: tx.txid},
-        create: {
-          id: tx.txid,
-          amount,
-          confirmations: tx.confirmations,
-          paymentIntentId: paymentIntent.id,
-          originalAmount,
-        },
-        update: {
-          amount,
-          confirmations: tx.confirmations,
-        },
-      })
-    }),
-  )
+    if (!isPaid) {
+      await updatePaymentIntentStatus(paymentIntentId, 'processing')
+      throw new Error('Payment not made yet')
+    }
 
-  // If there are no transactions, reschedule the job
-  if (!savedTransactions.length) {
-    return log('rescheduled')
-  }
+    await updatePaymentIntentStatus(paymentIntentId, 'succeeded')
 
-  const amountReceived = getTotalTransferred(
-    savedTransactions,
-    paymentIntent.confirmations,
-  )
-
-  const isPaid = isPaymentIntentPaid({
-    amountReceived,
-    currency: paymentIntent.currency,
-    amountRequested: paymentIntent.amount,
-    tolerance: paymentIntent.tolerance,
-  })
-
-  if (!isPaid) {
-    await updatePaymentIntentStatus(paymentIntentId, 'processing')
-    return log('rescheduled')
-  }
-
-  await updatePaymentIntentStatus(paymentIntentId, 'succeeded')
-
-  // Trigger a webhook for successful payment
-  await webhookQueue.add(
-    'trigger success webhook',
-    {
+    // Trigger a webhook for successful payment
+    await webhookQueue.add('trigger success webhook', {
       paymentIntentId,
       event: 'payment_intent.succeeded',
+    })
+  },
+  {
+    queue: {
+      defaultJobOptions: {
+        attempts: Number.MAX_SAFE_INTEGER,
+        backoff: {
+          // delay: 1000 * 60 * 5, // 5 minutes
+          delay: 1000, // 1 second
+          type: 'fixed',
+        },
+      },
     },
-    {
-      attempts: 3,
-    },
-  )
-
-  // Remove the job from the queue
-  await queue.removeRepeatableByKey(job.repeatJobKey!)
-
-  return log('completed')
-})
+  },
+)
 
 function updatePaymentIntentStatus(
   paymentIntentId: string,

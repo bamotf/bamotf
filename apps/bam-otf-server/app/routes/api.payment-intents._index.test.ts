@@ -43,7 +43,7 @@ test.describe('[POST] /api/payment-intents', () => {
       expect(webhook?.onServerCalled()).toBeTruthy()
     })
 
-    test('should trigger webhook and job has stopped', async ({
+    test('should trigger webhook and stop job', async ({
       request,
       bitcoinCore,
       faker,
@@ -151,6 +151,60 @@ test.describe('[POST] /api/payment-intents', () => {
         // @ts-ignore
         payload.data.paymentIntent.transactions[0].originalAmount,
       ).toBeGreaterThan(amount * tolerance)
+    })
+
+    test('should accept payments after some payments have not been completed', async ({
+      request,
+      bitcoinCore,
+      faker,
+    }) => {
+      const paymentIntents = [
+        faker.model.paymentIntent({currency: 'BTC'}),
+        faker.model.paymentIntent({currency: 'BTC'}),
+        faker.model.paymentIntent({currency: 'BTC'}),
+      ]
+
+      // Create all payment intents
+      for (const pi of paymentIntents) {
+        const response = await request.post('/api/payment-intents', {
+          data: {
+            ...pi,
+            confirmations: 1,
+          },
+        })
+        expect(response.ok()).toBeTruthy()
+      }
+
+      // Wait for the webhook to be called
+      const receivedPayload = webhook?.onServerCalled()
+
+      // Simulate the payment to the last payment intent
+      const lastPaymentIntent = paymentIntents[paymentIntents.length - 1]
+      await bitcoinCore.simulatePayment({
+        address: lastPaymentIntent.address,
+        amount: lastPaymentIntent.amount,
+      })
+
+      expect(await receivedPayload).toStrictEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          idempotenceKey: expect.any(String),
+          event: 'payment_intent.succeeded',
+          data: expect.objectContaining({
+            paymentIntent: expect.objectContaining({
+              id: expect.any(String),
+              status: 'succeeded',
+              transactions: expect.arrayContaining([
+                expect.objectContaining({
+                  id: expect.any(String),
+                  amount: lastPaymentIntent.amount,
+                  confirmations: 1,
+                }),
+              ]),
+            }),
+          }),
+        }),
+      )
     })
   })
 
