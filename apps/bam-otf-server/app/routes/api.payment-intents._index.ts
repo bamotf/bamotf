@@ -66,19 +66,9 @@ export async function action({request}: LoaderArgs) {
     descriptor,
   })
 
-  const job = await queue.add(
-    'check if payment was made',
-    {
-      paymentIntentId: pi.id,
-    },
-    {
-      repeat: {
-        pattern: env.RUNNING_TESTS
-          ? '*/1 * * * * *' // every 1 seconds
-          : '*/10 * * * * *', // every 10 seconds
-      },
-    },
-  )
+  const job = await queue.add('check if payment was made', {
+    paymentIntentId: pi.id,
+  })
 
   logger.info(
     `Adding job (${format.magenta(
