@@ -265,6 +265,18 @@ importers:
         specifier: ^5.0.4
         version: 5.0.4
 
+  packages/bam-otf-utils:
+    devDependencies:
+      eslint-config-custom:
+        specifier: workspace:*
+        version: link:../eslint-config-custom
+      tsconfig:
+        specifier: workspace:*
+        version: link:../tsconfig
+      tsup:
+        specifier: ^6.7.0
+        version: 6.7.0(typescript@5.0.4)
+
   packages/eslint-config-custom:
     dependencies:
       '@remix-run/eslint-config':
