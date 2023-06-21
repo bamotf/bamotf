@@ -1,0 +1,42 @@
+{
+  "name": "@bam-otf/react",
+  "version": "0.0.0",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./styles.css": "./dist/styles.css"
+  },
+  "license": "MIT",
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "lint": "eslint \"src/**/*.ts*\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "@bam-otf/utils": "workspace:*",
+    "react": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.5",
+    "eslint": "^7.32.0",
+    "eslint-config-custom": "workspace:*",
+    "postcss": "^8.4.20",
+    "react": "^18.2.0",
+    "tailwind-config": "workspace:*",
+    "tsconfig": "workspace:*",
+    "tsup": "^6.1.3",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "@bam-otf/utils": "workspace:^"
+  }
+}
