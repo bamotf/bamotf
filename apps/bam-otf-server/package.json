@@ -16,6 +16,7 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
+    "@bam-otf/utils": "workspace:*",
     "@hookform/resolvers": "^3.1.0",
     "@prisma/client": "^4.12.0",
     "@radix-ui/react-avatar": "^1.0.3",
@@ -53,8 +54,8 @@
     "recharts": "^2.6.2",
     "remix-typedjson": "^0.1.7",
     "secure-webhooks": "^0.3.0",
+    "tailwind-config": "workspace:*",
     "tailwind-merge": "^1.13.0",
-    "tailwindcss-animate": "^1.0.5",
     "tiny-secp256k1": "^2.2.1",
     "uuid": "^9.0.0",
     "zod": "^3.21.4",
