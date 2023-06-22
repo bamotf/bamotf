@@ -25,7 +25,7 @@ const envSchema = z.object({
   /**
    * Connection string for prisma.
    */
-  DATABASE_URL: URL_REQUIRED,
+  POSTGRES_URL: URL_REQUIRED,
 
   /**
    * Connection string for bullmq.
