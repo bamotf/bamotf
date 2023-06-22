@@ -35,7 +35,7 @@ const envSchema = z.object({
   /**
    * The bitcoin core we use to check for payments.
    */
-  BITCOIN_CORE_CONNECTION_STRING: URL_REQUIRED.transform(url => {
+  BITCOIN_CORE_URL: URL_REQUIRED.transform(url => {
     return new ConnectionString(url, {
       protocol: 'http',
     })
