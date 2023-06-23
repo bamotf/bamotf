@@ -13,7 +13,7 @@ services:
       - WEBHOOK_URL=http://localhost:4000
       - WEBHOOK_SECRET=my-secret
     ports:
-      - 21210:3000
+      - 42000:21000
     depends_on:
       - postgres
       - redis
