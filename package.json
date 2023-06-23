@@ -20,6 +20,7 @@
     "prisma": "cd apps/bam-otf-server && pnpm prisma",
     "prepare": "node ./scripts/prepare.js",
     "changeset": "changeset",
+    "release": "turbo build && changeset publish",
     "validate": "turbo test:unit lint typecheck build",
     "setup": "docker-compose up -d && pnpm install && pnpm prisma migrate reset --force && pnpm validate && pnpm test:e2e:install && turbo test:integration test:e2e"
   },
