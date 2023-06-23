@@ -30,8 +30,7 @@ instructions:
 > error. See more: https://github.com/remix-run/remix/issues/4371
 
 1.  Fork and clone the repo
-2.  To start the services run `docker-compose up -d` in the root of the project.
-    This will start the database and additional services.
+2.  Copy .env.example into .env
 3.  Run `pnpm setup` to install dependencies and run validation
 4.  Create a branch for your PR with `git checkout -b pr/your-branch-name`
 
@@ -56,11 +55,10 @@ If the setup script doesn't work, you can try to run the commands manually:
 git clone <your-fork>
 cd ./bam-otf
 
-# TODO: should those dev environments be committed to the repo?
 # copy the .env.example to .env
 #   everything's mocked out during development so you shouldn't need to
 #   change any of these values unless you want to hit real environments.
-# cp .env.example .env
+cp .env.example .env
 
 # Install deps
 pnpm install

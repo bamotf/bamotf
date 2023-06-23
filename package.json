@@ -21,13 +21,12 @@
     "prepare": "node ./scripts/prepare.js",
     "changeset": "changeset",
     "validate": "turbo test:unit lint typecheck build",
-    "setup": "pnpm install && pnpm prisma migrate reset --force && pnpm validate && pnpm test:e2e:install && turbo test:integration test:e2e"
+    "setup": "docker-compose up -d && pnpm install && pnpm prisma migrate reset --force && pnpm validate && pnpm test:e2e:install && turbo test:integration test:e2e"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.1",
     "@ianvs/prettier-plugin-sort-imports": "^4.0.2",
     "dotenv": "^16.1.0",
-    "dotenv-cli": "^7.0.0",
     "eslint": "8.35.0",
     "eslint-config-custom": "workspace:*",
     "husky": "8.0.3",

@@ -1,13 +1,14 @@
 {
   "cSpell.words": [
+    "backoff",
+    "CLEARNET",
     "hookform",
     "Lucide",
     "nvmrc",
     "Quirrel",
     "satoshis",
     "txid",
-    "typedjson",
-    "backoff"
+    "typedjson"
   ],
   "vitest.exclude": [
     "**/node_modules/**",

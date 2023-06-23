@@ -13,9 +13,6 @@ importers:
       dotenv:
         specifier: ^16.1.0
         version: 16.1.0
-      dotenv-cli:
-        specifier: ^7.0.0
-        version: 7.2.1
       eslint:
         specifier: 8.35.0
         version: 8.35.0
@@ -5826,21 +5823,6 @@ packages:
     dependencies:
       '@babel/runtime': 7.21.0
     dev: false
-
-  /dotenv-cli@7.2.1:
-    resolution: {integrity: sha512-ODHbGTskqRtXAzZapDPvgNuDVQApu4oKX8lZW7Y0+9hKA6le1ZJlyRS687oU9FXjOVEDU/VFV6zI125HzhM1UQ==}
-    hasBin: true
-    dependencies:
-      cross-spawn: 7.0.3
-      dotenv: 16.1.0
-      dotenv-expand: 10.0.0
-      minimist: 1.2.8
-    dev: true
-
-  /dotenv-expand@10.0.0:
-    resolution: {integrity: sha512-GopVGCpVS1UKH75VKHGuQFqS1Gusej0z4FyQkPdwjil2gNIv+LNsqBlboOzpJFZKVT95GkCyWJbBSdFEFUWI2A==}
-    engines: {node: '>=12'}
-    dev: true
 
   /dotenv@16.1.0:
     resolution: {integrity: sha512-XiwP/4cqatBNLEnKe169vPZCrovUmYngyVA4DgZ3uIVLJfZaBgr4uT0EF2TrEQqgWDDlekGo0muEYme5SR78Ww==}

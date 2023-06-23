@@ -3,17 +3,15 @@
   "private": true,
   "sideEffects": false,
   "scripts": {
-    "build": "pnpm with-env remix build",
-    "dev": "pnpm with-env remix dev",
-    "start": "pnpm with-env remix-serve build",
+    "build": "remix build",
+    "dev": "remix dev",
+    "start": "remix-serve build",
     "typecheck": "tsc",
     "lint": "eslint .",
-    "test:unit": "pnpm with-env vitest run",
-    "test:unit:watch": "pnpm with-env vitest",
-    "test:integration": "pnpm with-env playwright test",
-    "postinstall": "pnpm prisma generate",
-    "prisma": "pnpm with-env prisma",
-    "with-env": "dotenv -e ../../.env --"
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest",
+    "test:integration": "playwright test",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@bam-otf/utils": "workspace:*",
