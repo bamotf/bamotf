@@ -1,5 +1,3 @@
-import './load-env.server'
-
 import {ConnectionString} from 'connection-string'
 
 import {z} from './zod'
@@ -63,13 +61,19 @@ const envSchema = z.object({
    * The url of the price data server.
    * This is used to get the price of bitcoin.
    */
-  PRICE_DATA_SERVER_TOR_URL: URL_REQUIRED,
+  PRICE_DATA_SERVER_TOR_URL: z
+    .string()
+    .default(
+      'http://wizpriceje6q5tdrxkyiazsgu7irquiqjy2dptezqhrtu7l2qelqktid.onion/getAllMarketPrices',
+    ),
 
   /**
    * The url of the price data server.
    * This is used to get the price of bitcoin.
    */
-  PRICE_DATA_SERVER_CLEARNET_URL: URL_REQUIRED,
+  PRICE_DATA_SERVER_CLEARNET_URL: z
+    .string()
+    .default('https://price.bisq.wiz.biz/getAllMarketPrices'),
 })
 
 /**
