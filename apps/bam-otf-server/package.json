@@ -4,8 +4,8 @@
   "sideEffects": false,
   "scripts": {
     "build": "remix build",
-    "dev": "remix dev --port 21000",
-    "start": "remix-serve build --port 21000",
+    "dev": "remix dev",
+    "start": "remix-serve build",
     "typecheck": "tsc",
     "lint": "eslint .",
     "test:unit": "vitest run",
