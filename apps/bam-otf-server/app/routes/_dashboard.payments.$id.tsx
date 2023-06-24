@@ -1,9 +1,9 @@
 import type {LoaderArgs, V2_MetaFunction} from '@remix-run/node'
-import JSONPretty from 'react-json-pretty'
 import {typedjson} from 'remix-typedjson'
 
 import {Formatter} from '~/components/formatter'
 import {Icons} from '~/components/icons'
+import {Json} from '~/components/json'
 import {Badge} from '~/components/payments/badge'
 import {Badge as BaseBadge} from '~/components/ui/badge'
 import {Separator} from '~/components/ui/separator'
@@ -13,9 +13,6 @@ import {createContract} from '~/utils/contract'
 import {cn} from '~/utils/css'
 import {prisma, type LogType} from '~/utils/prisma.server'
 import {calculateRiskScore} from '~/utils/risk-score'
-
-// @ts-ignore
-import '~/components/json.css'
 
 export const meta: V2_MetaFunction = ({params, data}) => {
   return [{title: 'Payment'}]
@@ -247,17 +244,9 @@ export default function PaymentsPage() {
 
                 <div className="flex flex-col">
                   <div>Event data</div>
-                  <JSONPretty
-                    id="json-pretty"
-                    data={attempt.body}
-                    className="font-light text-xs"
-                  ></JSONPretty>
+                  <Json data={attempt.body} />
                   <div>Response</div>
-                  <JSONPretty
-                    id="json-pretty"
-                    data={attempt.response}
-                    className="font-light text-xs"
-                  ></JSONPretty>
+                  <Json data={attempt.response} />
                 </div>
               </div>
             ))}
