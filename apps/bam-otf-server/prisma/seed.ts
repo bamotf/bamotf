@@ -1,5 +1,6 @@
 import {PrismaClient} from '@prisma/client'
 
+import {getPasswordHash} from '~/utils/auth.server'
 import {createRandomAddress} from '../tests/faker/bitcoin'
 
 const prisma = new PrismaClient()
@@ -19,14 +20,22 @@ async function main() {
     },
   })
   console.timeEnd(`👑 Created admin role/permission...`)
-  console.time(`👾 Created "root" user with admin role`)
-  await prisma.user.create({
-    data: {
-      username: 'root',
+  console.time(`👾 Created "satoshi" user with admin role`)
+  await prisma.user.upsert({
+    where: {username: 'satoshi'},
+    update: {},
+    create: {
+      name: 'Satoshi Nakamoto',
+      username: 'satoshi',
       roles: {connect: {id: adminRole.id}},
+      password: {
+        create: {
+          hash: await getPasswordHash(''),
+        },
+      },
     },
   })
-  console.timeEnd(`👾 Created "root" user with admin role`)
+  console.timeEnd(`👾 Created "satoshi" user with admin role`)
 
   // eslint-disable-next-line turbo/no-undeclared-env-vars
   if (process.env.NODE_ENV === 'production') {
