@@ -20,7 +20,7 @@ async function main() {
     },
   })
   console.timeEnd(`👑 Created admin role/permission...`)
-  console.time(`👾 Created "satoshi" user with admin role`)
+  console.time(`👾 Created "satoshi" user with no password and admin role`)
   await prisma.user.upsert({
     where: {username: 'satoshi'},
     update: {},
@@ -35,7 +35,7 @@ async function main() {
       },
     },
   })
-  console.timeEnd(`👾 Created "satoshi" user with admin role`)
+  console.timeEnd(`👾 Created "satoshi" user with no password and admin role`)
 
   // eslint-disable-next-line turbo/no-undeclared-env-vars
   if (process.env.NODE_ENV === 'production') {
