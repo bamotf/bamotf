@@ -74,6 +74,12 @@ const envSchema = z.object({
   PRICE_DATA_SERVER_CLEARNET_URL: z
     .string()
     .default('https://price.bisq.wiz.biz/getAllMarketPrices'),
+
+  /**
+   * The secret that we use to sign the the session cookie.
+   * This is used to prevent people from tampering with the session cookie.
+   */
+  SESSION_SECRET: z.string().default('not-a-secret'), // FIX: should be randomly generated
 })
 
 /**
