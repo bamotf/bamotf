@@ -6,6 +6,8 @@ import {Button as ButtonBase, type ButtonProps} from '~/components/ui/button'
 import {Checkbox} from '~/components/ui/checkbox'
 import {Input} from '~/components/ui/input'
 import {Label} from '~/components/ui/label'
+import {cn} from '~/utils/css'
+import {Icons} from './icons'
 
 export type ListOfErrors = Array<string | null | undefined> | null | undefined
 
@@ -15,7 +17,7 @@ export function ErrorList({id, errors}: {errors?: ListOfErrors; id?: string}) {
   return (
     <ul id={id} className="space-y-1">
       {errorsToRender.map(e => (
-        <li key={e} className="text-[10px] text-danger">
+        <li key={e} className="text-xs text-destructive">
           {e}
         </li>
       ))}
@@ -38,18 +40,25 @@ export function Field({
   const id = inputProps.id ?? fallbackId
   const errorId = errors?.length ? `${id}-error` : undefined
   return (
-    <div className={twMerge(className)}>
+    <div className={twMerge('mb-4', className)}>
+      <Label
+        htmlFor={id}
+        {...labelProps}
+        className={cn('mb-2 block', {
+          'text-destructive': errorId,
+        })}
+      />
       <Input
         id={id}
         aria-invalid={errorId ? true : undefined}
         aria-describedby={errorId}
         {...inputProps}
       />
-      {/* the label comes after the input so we can use the sibling selector in the CSS to give us animated label control in CSS only */}
-      <Label htmlFor={id} {...labelProps} />
-      <div className="px-4 pb-3 pt-1">
-        {errorId ? <ErrorList id={errorId} errors={errors} /> : null}
-      </div>
+      {errorId ? (
+        <div className="mt-1">
+          <ErrorList id={errorId} errors={errors} />
+        </div>
+      ) : null}
     </div>
   )
 }
@@ -69,7 +78,8 @@ export function TextareaField({
   const id = textareaProps.id ?? textareaProps.name ?? fallbackId
   const errorId = errors?.length ? `${id}-error` : undefined
   return (
-    <div className={twMerge(className)}>
+    <div className={twMerge('mb-4', className)}>
+      <label htmlFor={id} {...labelProps} />
       <textarea
         id={id}
         aria-invalid={errorId ? true : undefined}
@@ -78,11 +88,11 @@ export function TextareaField({
         {...textareaProps}
         className="h-48 w-full rounded-lg border border-night-400 bg-night-700 px-4 pt-8 text-body-xs caret-white outline-none focus:border-brand-primary disabled:bg-night-400"
       />
-      {/* the label comes after the input so we can use the sibling selector in the CSS to give us animated label control in CSS only */}
-      <label htmlFor={id} {...labelProps} />
-      <div className="px-4 pb-3 pt-1">
-        {errorId ? <ErrorList id={errorId} errors={errors} /> : null}
-      </div>
+      {errorId ? (
+        <div className="mt-1">
+          <ErrorList id={errorId} errors={errors} />
+        </div>
+      ) : null}
     </div>
   )
 }
@@ -92,7 +102,7 @@ export function CheckboxField({
   buttonProps,
   errors,
 }: {
-  labelProps: Omit<typeof Label, 'className'>
+  labelProps: Omit<React.ComponentPropsWithoutRef<typeof Label>, 'className'>
   buttonProps: Omit<
     React.ComponentPropsWithoutRef<typeof Checkbox>,
     'type' | 'className'
@@ -115,7 +125,7 @@ export function CheckboxField({
   const id = buttonProps.id ?? buttonProps.name ?? fallbackId
   const errorId = errors?.length ? `${id}-error` : undefined
   return (
-    <div>
+    <div className="pb-4">
       <div className="flex gap-2">
         <Checkbox
           id={id}
@@ -139,9 +149,11 @@ export function CheckboxField({
         />
         <Label htmlFor={id} {...labelProps} />
       </div>
-      <div className="px-4 pb-3 pt-1">
-        {errorId ? <ErrorList id={errorId} errors={errors} /> : null}
-      </div>
+      {errorId ? (
+        <div className="mt-1">
+          <ErrorList id={errorId} errors={errors} />
+        </div>
+      ) : null}
     </div>
   )
 }
@@ -155,9 +167,9 @@ export function Button({
   status?: 'pending' | 'success' | 'error' | 'idle'
 }) {
   const companion = {
-    pending: <span className="inline-block animate-spin">🌀</span>,
-    success: <span>✅</span>,
-    error: <span>❌</span>,
+    pending: <Icons.Spinner className="ml-2 h-4 w-4 animate-spin" />,
+    success: <Icons.Check className="ml-2 h-4 w-4" />,
+    error: <Icons.X className="ml-2 h-4 w-4 text-destructive" />,
     idle: null,
   }[status]
 
