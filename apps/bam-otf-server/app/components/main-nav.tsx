@@ -3,10 +3,11 @@ import {NavLink} from '@remix-run/react'
 import {cn} from '~/utils/css'
 
 const CONFIG = [
-  {
-    name: 'Overview',
-    href: '/',
-  },
+  // TODO: revisit this
+  // {
+  //   name: 'Overview',
+  //   href: '/',
+  // },
   {
     name: 'Payments',
     href: '/payments',
