@@ -4,6 +4,8 @@
 
 @layer base {
   :root {
+    --font-sans: 'Inter';
+
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
@@ -65,6 +67,12 @@
     --destructive-foreground: 0 85.7% 97.3%;
 
     --ring: 217.2 32.6% 17.5%;
+  }
+
+  @supports (font-variation-settings: normal) {
+    :root {
+      --font-sans: 'Inter var';
+    }
   }
 }
 
