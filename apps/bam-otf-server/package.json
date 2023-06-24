@@ -15,6 +15,8 @@
   },
   "dependencies": {
     "@bam-otf/utils": "workspace:*",
+    "@conform-to/react": "^0.7.1",
+    "@conform-to/zod": "^0.7.1",
     "@hookform/resolvers": "^3.1.0",
     "@prisma/client": "^4.12.0",
     "@radix-ui/react-avatar": "^1.0.3",
@@ -50,6 +52,7 @@
     "react-hook-form": "^7.44.3",
     "react-json-pretty": "^2.2.0",
     "recharts": "^2.6.2",
+    "remix-auth": "^3.4.0",
     "remix-typedjson": "^0.1.7",
     "secure-webhooks": "^0.3.0",
     "tailwind-config": "workspace:*",
