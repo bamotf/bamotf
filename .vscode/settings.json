@@ -1,12 +1,19 @@
 {
   "cSpell.words": [
     "backoff",
+    "bitcoinjs",
     "CLEARNET",
+    "clsx",
+    "cmdk",
+    "ecpair",
     "hookform",
+    "isbot",
     "Lucide",
     "nvmrc",
     "Quirrel",
     "satoshis",
+    "secp",
+    "tanstack",
     "treeshake",
     "txid",
     "typedjson"
