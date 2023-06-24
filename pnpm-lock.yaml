@@ -160,6 +160,9 @@ importers:
       remix-auth:
         specifier: ^3.4.0
         version: 3.4.0(@remix-run/react@1.16.1)(@remix-run/server-runtime@1.16.1)
+      remix-auth-form:
+        specifier: ^1.3.0
+        version: 1.3.0(@remix-run/server-runtime@1.16.1)(remix-auth@3.4.0)
       remix-typedjson:
         specifier: ^0.1.7
         version: 0.1.7(@remix-run/react@1.16.1)(@remix-run/server-runtime@1.16.1)(react@18.2.0)
@@ -10287,6 +10290,16 @@ packages:
       '@types/mdast': 3.0.11
       mdast-util-to-hast: 11.3.0
       unified: 10.1.2
+
+  /remix-auth-form@1.3.0(@remix-run/server-runtime@1.16.1)(remix-auth@3.4.0):
+    resolution: {integrity: sha512-m+pwFJM61+qGPIvROHmN7LANJMbpL2QgYen/wY8wnJfwwannWt2+7zEoGWF7NbxMnoxCib75EGlPZpyyvwtBXQ==}
+    peerDependencies:
+      '@remix-run/server-runtime': ^1.0.0
+      remix-auth: ^3.4.0
+    dependencies:
+      '@remix-run/server-runtime': 1.16.1
+      remix-auth: 3.4.0(@remix-run/react@1.16.1)(@remix-run/server-runtime@1.16.1)
+    dev: false
 
   /remix-auth@3.4.0(@remix-run/react@1.16.1)(@remix-run/server-runtime@1.16.1):
     resolution: {integrity: sha512-VRliJo9VRAS4sSYgMjYbi7rYRixPWU2Tb8PFZb06OIj0nONK/1KRzHf2+Y6VGZeIacepLVgan6g2IUJjayE2rQ==}
