@@ -1,10 +1,33 @@
-import type {V2_MetaFunction} from '@remix-run/node'
-import {Link} from '@remix-run/react'
+import {
+  json,
+  type DataFunctionArgs,
+  type V2_MetaFunction,
+} from '@remix-run/node'
+import {Link, useLoaderData, useSearchParams} from '@remix-run/react'
 
+import {GeneralErrorBoundary} from '~/components/error-boundary'
 import {Icons} from '~/components/icons'
-import {buttonVariants} from '~/components/ui/button'
-import {UserAuthForm} from '~/components/user-auth-form'
-import {cn} from '~/utils/css'
+import {authenticator, requireAnonymous} from '~/utils/auth.server'
+import {commitSession, getSession} from '~/utils/session.server'
+import {UserAuthForm} from './resources.login'
+
+export async function loader({request}: DataFunctionArgs) {
+  await requireAnonymous(request)
+  const session = await getSession(request.headers.get('cookie'))
+  const error = session.get(authenticator.sessionErrorKey)
+  let errorMessage: string | null = null
+  if (typeof error?.message === 'string') {
+    errorMessage = error.message
+  }
+  return json(
+    {formError: errorMessage},
+    {
+      headers: {
+        'Set-Cookie': await commitSession(session),
+      },
+    },
+  )
+}
 
 export const meta: V2_MetaFunction = () => {
   return [
@@ -14,40 +37,37 @@ export const meta: V2_MetaFunction = () => {
 }
 
 export default function LoginPage() {
+  const [searchParams] = useSearchParams()
+  const data = useLoaderData<typeof loader>()
+
+  const redirectTo = searchParams.get('redirectTo') || '/'
+
   return (
     <div className="container flex h-screen w-screen flex-col items-center justify-center">
-      <Link
-        to="/"
-        className={cn(
-          buttonVariants({variant: 'ghost'}),
-          'absolute left-4 top-4 md:left-8 md:top-8',
-        )}
-      >
-        <>
-          <Icons.ChevronLeft className="mr-2 h-4 w-4" />
-          Back
-        </>
-      </Link>
       <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
         <div className="flex flex-col space-y-2 text-center">
-          <Icons.Logo className="mx-auto h-6 w-6" />
+          <Icons.Logo className="mx-auto mb-6" />
           <h1 className="text-2xl font-semibold tracking-tight">
             Welcome back
           </h1>
           <p className="text-sm text-muted-foreground">
-            Enter your email to sign in to your account
+            Enter your details to sign in to your account
           </p>
         </div>
-        <UserAuthForm />
-        <p className="px-8 text-center text-sm text-muted-foreground">
+        <UserAuthForm redirectTo={redirectTo} formError={data.formError} />
+        {/* <p className="px-8 text-center text-sm text-muted-foreground">
           <Link
             to="/register"
             className="hover:text-brand underline underline-offset-4"
           >
             Don&apos;t have an account? Sign Up
           </Link>
-        </p>
+        </p> */}
       </div>
     </div>
   )
+}
+
+export function ErrorBoundary() {
+  return <GeneralErrorBoundary />
 }

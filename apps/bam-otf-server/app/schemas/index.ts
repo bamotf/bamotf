@@ -1,3 +1,5 @@
 export * from './address.schema'
 export * from './extended-public-key.schema'
 export * from './payment-intent.schema'
+export * from './user.schema'
+export * from './checkbox.schema'

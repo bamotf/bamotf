@@ -9,6 +9,7 @@ import {Badge as BaseBadge} from '~/components/ui/badge'
 import {Separator} from '~/components/ui/separator'
 import {useFreshData} from '~/hooks/use-fresh-data'
 import {PaymentIntentSchema} from '~/schemas'
+import {requireUserId} from '~/utils/auth.server'
 import {createContract} from '~/utils/contract'
 import {cn} from '~/utils/css'
 import {prisma, type LogType} from '~/utils/prisma.server'
@@ -27,7 +28,8 @@ export const contract = createContract({
 /**
  * Retrieves a PaymentIntent object.
  */
-export async function loader({params}: LoaderArgs) {
+export async function loader({params, request}: LoaderArgs) {
+  await requireUserId(request)
   const {path} = await contract.loader({params})
 
   const {id} = path
