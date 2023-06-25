@@ -1,10 +1,9 @@
-import type {Prisma} from '@prisma/client'
-
 import {
   CURRENCY_CODES,
   FIAT_CURRENCY_CODES,
   type CurrencyCode,
 } from '~/config/currency'
+import type {Prisma} from '~/utils/prisma.server'
 import faker from './index'
 
 export function currency() {

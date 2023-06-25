@@ -3,6 +3,10 @@
 
 generator client {
   provider = "prisma-client-js"
+
+  // pnpm doesn't generate the client in the right place, so we need to override the output
+  // https://github.com/prisma/prisma/issues/6603#issuecomment-1054227614
+  output = "../node_modules/.prisma/client" // <-- generate in your package node_modules, not the root
 }
 
 datasource db {

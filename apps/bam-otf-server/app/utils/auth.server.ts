@@ -1,11 +1,10 @@
-import {type Password, type User} from '@prisma/client'
 import {redirect} from '@remix-run/node'
 import bcrypt from 'bcryptjs'
 import {Authenticator} from 'remix-auth'
 import {FormStrategy} from 'remix-auth-form'
 import invariant from 'tiny-invariant'
 
-import {prisma} from '~/utils/prisma.server'
+import {prisma, type Password, type User} from '~/utils/prisma.server'
 import {sessionStorage} from './session.server'
 
 export type {User}
