@@ -13,7 +13,7 @@ export function Badge({status, className, ...props}: BadgeProps) {
     succeeded: 'bg-green-100 text-green-900 hover:bg-green-100/80',
     canceled: 'bg-red-100 text-red-900 hover:bg-red-100/80',
     pending: 'bg-gray-100 text-gray-900 hover:bg-gray-100/80',
-    processing: 'bg-gray-100 text-gray-900 hover:bg-gray-100/80',
+    processing: 'bg-yellow-100 text-yellow-900 hover:bg-yellow-100/80',
   }
 
   const content = {
