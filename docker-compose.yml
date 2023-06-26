@@ -18,11 +18,11 @@ services:
       - POSTGRES_USER=johndoe
       - POSTGRES_PASSWORD=randompassword
     ports:
-      - '25432:5432'
+      - 5432:5432
     volumes:
       - ./docker/postgres/data:/var/lib/postgresql/data
 
   redis:
     image: redis
     ports:
-      - '26379:6379'
+      - 6379:6379
