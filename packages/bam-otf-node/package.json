@@ -12,8 +12,6 @@
     "test:integration:watch": "vitest"
   },
   "devDependencies": {
-    "@types/react": "^18.0.17",
-    "@types/react-dom": "^18.0.6",
     "bam-otf-server": "workspace:*",
     "eslint": "^7.32.0",
     "eslint-config-custom": "workspace:*",
