@@ -1,6 +1,7 @@
 import React from 'react'
 import type {PaymentIntentStatus} from '@bam-otf/node'
 import {QRCodeSVG} from 'qrcode.react'
+import {CopyToClipboard} from 'react-copy-to-clipboard'
 
 export async function PaymentInformation({
   amount,
@@ -50,9 +51,9 @@ export async function PaymentInformation({
         Address:
         <div>
           {address}{' '}
-          <button onClick={() => navigator.clipboard.writeText(address)}>
-            Copy
-          </button>
+          <CopyToClipboard text={address}>
+            <span>Copy</span>
+          </CopyToClipboard>
         </div>
       </div>
 
@@ -60,11 +61,9 @@ export async function PaymentInformation({
         Amount in BTC:
         <div>
           {btcAmount}{' '}
-          <button
-            onClick={() => navigator.clipboard.writeText(btcAmount.toString())}
-          >
-            Copy
-          </button>
+          <CopyToClipboard text={btcAmount.toString()}>
+            <span>Copy</span>
+          </CopyToClipboard>
         </div>
       </div>
     </>
