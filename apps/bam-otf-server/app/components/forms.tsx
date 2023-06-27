@@ -42,7 +42,7 @@ export function Field({
   const id = inputProps.id ?? fallbackId
   const errorId = errors?.length ? `${id}-error` : undefined
   return (
-    <div className={twMerge('space-y-2 mb-4', className)}>
+    <div className={twMerge('space-y-2', className)}>
       <Label
         htmlFor={id}
         {...labelProps}
@@ -81,7 +81,7 @@ export function TextareaField({
   const id = textareaProps.id ?? textareaProps.name ?? fallbackId
   const errorId = errors?.length ? `${id}-error` : undefined
   return (
-    <div className={twMerge('space-y-2 mb-4', className)}>
+    <div className={twMerge('space-y-2', className)}>
       <label htmlFor={id} {...labelProps} />
       <textarea
         id={id}
@@ -124,7 +124,7 @@ export function CheckboxField({
   const id = buttonProps.id ?? buttonProps.name ?? fallbackId
   const errorId = errors?.length ? `${id}-error` : undefined
   return (
-    <div className="pb-4">
+    <div className="">
       <div className="flex gap-2">
         <Checkbox
           id={id}
