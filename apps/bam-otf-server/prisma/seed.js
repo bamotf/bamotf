@@ -17,7 +17,9 @@ async function main() {
     },
   })
   console.timeEnd(`👑 Created admin role/permission...`)
-  console.time(`👾 Created "satoshi" user with no password and admin role`)
+  console.time(
+    `👾 Created "satoshi" user with password "satoshi" and admin role`,
+  )
   await prisma.user.upsert({
     where: {username: 'satoshi'},
     update: {},
@@ -27,12 +29,19 @@ async function main() {
       roles: {connect: {id: adminRole.id}},
       password: {
         create: {
-          hash: '$2a$10$pbhQQBL4wbSk1zuf/K7Wl.fqdCZHizmZtgmx/veQHRprfUp529cTa', // empty string
+          // Currently, the default user is being created after running the seed script during production.
+          // Probably this is not a good idea because I had to make this script JS instead of TS to make it work.
+          // Maybe we should create a default user in the migration file instead?
+
+          // It's "satoshi":
+          hash: '$2a$10$4Medc9f4b2gOmHTTcoLzA.PcLJcmKHcoD2zeGVdaAm8VPZel5Stim',
         },
       },
     },
   })
-  console.timeEnd(`👾 Created "satoshi" user with no password and admin role`)
+  console.timeEnd(
+    `👾 Created "satoshi" user with password "satoshi" and admin role`,
+  )
 
   // eslint-disable-next-line turbo/no-undeclared-env-vars
   if (process.env.NODE_ENV === 'production') {
