@@ -16,7 +16,7 @@ import {prisma, type LogType} from '~/utils/prisma.server'
 import {calculateRiskScore} from '~/utils/risk-score'
 
 export const meta: V2_MetaFunction = ({params, data}) => {
-  return [{title: 'Payment'}]
+  return [{title: `Payment ${params.id}`}]
 }
 
 export const contract = createContract({
