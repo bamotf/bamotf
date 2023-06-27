@@ -28,11 +28,13 @@ export function ErrorList({id, errors}: {errors?: ListOfErrors; id?: string}) {
 export function Field({
   labelProps,
   inputProps,
+  description,
   errors,
   className,
 }: {
   labelProps: React.ComponentPropsWithoutRef<typeof Label>
   inputProps: React.ComponentPropsWithoutRef<typeof Input>
+  description?: React.ReactNode
   errors?: ListOfErrors
   className?: string
 }) {
@@ -40,11 +42,11 @@ export function Field({
   const id = inputProps.id ?? fallbackId
   const errorId = errors?.length ? `${id}-error` : undefined
   return (
-    <div className={twMerge('mb-4', className)}>
+    <div className={twMerge('space-y-2 mb-4', className)}>
       <Label
         htmlFor={id}
         {...labelProps}
-        className={cn('mb-2 block', {
+        className={cn('block', {
           'text-destructive': errorId,
         })}
       />
@@ -54,11 +56,12 @@ export function Field({
         aria-describedby={errorId}
         {...inputProps}
       />
-      {errorId ? (
-        <div className="mt-1">
-          <ErrorList id={errorId} errors={errors} />
-        </div>
+
+      {description ? (
+        <div className="text-[0.8rem] text-muted-foreground">{description}</div>
       ) : null}
+
+      {errorId ? <ErrorList id={errorId} errors={errors} /> : null}
     </div>
   )
 }
@@ -78,7 +81,7 @@ export function TextareaField({
   const id = textareaProps.id ?? textareaProps.name ?? fallbackId
   const errorId = errors?.length ? `${id}-error` : undefined
   return (
-    <div className={twMerge('mb-4', className)}>
+    <div className={twMerge('space-y-2 mb-4', className)}>
       <label htmlFor={id} {...labelProps} />
       <textarea
         id={id}
@@ -88,11 +91,7 @@ export function TextareaField({
         {...textareaProps}
         className="h-48 w-full rounded-lg border border-night-400 bg-night-700 px-4 pt-8 text-body-xs caret-white outline-none focus:border-brand-primary disabled:bg-night-400"
       />
-      {errorId ? (
-        <div className="mt-1">
-          <ErrorList id={errorId} errors={errors} />
-        </div>
-      ) : null}
+      {errorId ? <ErrorList id={errorId} errors={errors} /> : null}
     </div>
   )
 }
