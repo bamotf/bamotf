@@ -8,7 +8,7 @@ import invariant from 'tiny-invariant'
 import {z} from 'zod'
 
 import {Button, CheckboxField, ErrorList, Field} from '~/components/forms'
-import {usernameSchema} from '~/schemas'
+import {passwordSchema, usernameSchema} from '~/schemas'
 import {checkboxSchema} from '~/schemas/checkbox.schema'
 import {authenticator} from '~/utils/auth.server'
 import {safeRedirect} from '~/utils/misc'
@@ -19,7 +19,7 @@ const ROUTE_PATH = '/resources/login'
 
 export const loginFormSchema = z.object({
   username: usernameSchema,
-  password: z.string().optional(),
+  password: passwordSchema,
   redirectTo: z.string().optional(),
   remember: checkboxSchema(),
 })

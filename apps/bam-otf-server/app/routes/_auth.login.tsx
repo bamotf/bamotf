@@ -3,7 +3,7 @@ import {
   type DataFunctionArgs,
   type V2_MetaFunction,
 } from '@remix-run/node'
-import {Link, useLoaderData, useSearchParams} from '@remix-run/react'
+import {useLoaderData, useSearchParams} from '@remix-run/react'
 
 import {GeneralErrorBoundary} from '~/components/error-boundary'
 import {Icons} from '~/components/icons'
