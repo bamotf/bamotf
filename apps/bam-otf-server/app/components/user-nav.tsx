@@ -43,13 +43,13 @@ export function UserNav() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem asChild>
-            <Link to="/profile">
+          {/* <DropdownMenuItem asChild>
+            <Link to="/settings/profile">
               <User className="mr-2 h-4 w-4" />
               <span>Profile</span>
-              {/* <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut> */}
+              <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
             </Link>
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
           <DropdownMenuItem asChild>
             <Link to="/settings">
               <Settings className="mr-2 h-4 w-4" />
