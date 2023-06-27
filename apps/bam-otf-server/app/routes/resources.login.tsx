@@ -124,6 +124,7 @@ export function UserAuthForm({
           {...form.props}
         >
           <Field
+            className="mb-4"
             labelProps={{
               htmlFor: fields.username.id,
               children: 'Username',
@@ -133,6 +134,7 @@ export function UserAuthForm({
           />
 
           <Field
+            className="mb-4"
             labelProps={{
               htmlFor: fields.password.id,
               children: 'Password',
@@ -141,7 +143,7 @@ export function UserAuthForm({
             errors={fields.password.errors}
           />
 
-          <div className="flex justify-between">
+          <div className="flex justify-between pb-4">
             <CheckboxField
               labelProps={{
                 htmlFor: fields.remember.id,
