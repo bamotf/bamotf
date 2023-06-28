@@ -17,6 +17,7 @@ import {
   MoreVertical,
   Pizza,
   Plus,
+  Scan,
   Settings,
   SunMedium,
   Trash,
@@ -27,10 +28,21 @@ import {
   type LucideProps,
 } from 'lucide-react'
 
+import {cn} from '~/utils/css'
+
 export type Icon = LucideIcon
 
 export const Icons = {
-  Logo: Command,
+  Logo: ({
+    size = 'default',
+    className,
+    ...props
+  }: {size?: 'default'} & JSX.IntrinsicElements['div']) => (
+    <div {...props} className={cn('flex items-center space-x-2', className)}>
+      <Scan strokeWidth={2} className="h-6 w-6" />
+      <span className="font-bold font-inter">bam-otf</span>
+    </div>
+  ),
   Close: X,
   X: X,
   Clock: Clock,

@@ -1,3 +1,17 @@
+:root {
+  --json-key: #3fb950;
+  --json-value: #1e7dc4;
+  --json-string: #2e90d1;
+  --json-boolean: #1e7dc4;
+}
+
+.dark {
+  --json-key: #7ee787;
+  --json-value: #79c0ff;
+  --json-string: #a5d6ff;
+  --json-boolean: #79c0ff;
+}
+
 .__json-pretty__ {
   line-height: 1.75;
   color: hsl(var(--foreground));

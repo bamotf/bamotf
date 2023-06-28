@@ -1,6 +1,5 @@
-import type {Prisma} from '@prisma/client'
-
 import type {CurrencyCode, FiatCurrencyCode} from '~/config/currency'
+import type {Prisma} from '~/utils/prisma.server'
 import {getBtcAmountFromFiat} from './price'
 
 interface BitcoinTransaction {

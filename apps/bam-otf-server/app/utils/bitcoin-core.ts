@@ -5,13 +5,13 @@
  * It's a good idea to replace this with a library that supports TypeScript.
  */
 
-import type {Prisma} from '@prisma/client'
 import {fetch} from '@remix-run/node'
 import {format, logger} from 'logger'
 
+import type {Prisma} from '~/utils/prisma.server'
 import {env} from './env.server'
 
-const BITCOIN_CORE_URL = `${env.BITCOIN_CORE_CONNECTION_STRING.protocol}://${env.BITCOIN_CORE_CONNECTION_STRING.host}`
+const BITCOIN_CORE_URL = `${env.BITCOIN_CORE_URL.protocol}://${env.BITCOIN_CORE_URL.host}`
 
 type BitcoinCoreResponse =
   | {
@@ -54,9 +54,7 @@ async function cmd({
       'Content-Type': 'application/json',
       Authorization:
         'Basic ' +
-        btoa(
-          `${env.BITCOIN_CORE_CONNECTION_STRING.user}:${env.BITCOIN_CORE_CONNECTION_STRING.password}`,
-        ),
+        btoa(`${env.BITCOIN_CORE_URL.user}:${env.BITCOIN_CORE_URL.password}`),
     },
     body: JSON.stringify({
       jsonrpc: '1.0',

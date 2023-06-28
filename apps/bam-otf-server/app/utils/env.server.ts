@@ -1,5 +1,3 @@
-import './load-env.server'
-
 import {ConnectionString} from 'connection-string'
 
 import {z} from './zod'
@@ -25,7 +23,7 @@ const envSchema = z.object({
   /**
    * Connection string for prisma.
    */
-  DATABASE_CONNECTION_STRING: URL_REQUIRED,
+  POSTGRES_URL: URL_REQUIRED,
 
   /**
    * Connection string for bullmq.
@@ -35,7 +33,7 @@ const envSchema = z.object({
   /**
    * The bitcoin core we use to check for payments.
    */
-  BITCOIN_CORE_CONNECTION_STRING: URL_REQUIRED.transform(url => {
+  BITCOIN_CORE_URL: URL_REQUIRED.transform(url => {
     return new ConnectionString(url, {
       protocol: 'http',
     })
@@ -63,13 +61,25 @@ const envSchema = z.object({
    * The url of the price data server.
    * This is used to get the price of bitcoin.
    */
-  PRICE_DATA_SERVER_TOR_URL: URL_REQUIRED,
+  PRICE_DATA_SERVER_TOR_URL: z
+    .string()
+    .default(
+      'http://wizpriceje6q5tdrxkyiazsgu7irquiqjy2dptezqhrtu7l2qelqktid.onion/getAllMarketPrices',
+    ),
 
   /**
    * The url of the price data server.
    * This is used to get the price of bitcoin.
    */
-  PRICE_DATA_SERVER_CLEARNET_URL: URL_REQUIRED,
+  PRICE_DATA_SERVER_CLEARNET_URL: z
+    .string()
+    .default('https://price.bisq.wiz.biz/getAllMarketPrices'),
+
+  /**
+   * The secret that we use to sign the the session cookie.
+   * This is used to prevent people from tampering with the session cookie.
+   */
+  SESSION_SECRET: z.string().default('not-a-secret'), // FIX: should be randomly generated
 })
 
 /**
