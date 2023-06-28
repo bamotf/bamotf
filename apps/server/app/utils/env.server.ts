@@ -65,7 +65,7 @@ const envSchema = z.object({
   /**
    * When running tests, we don't want wait.
    */
-  RUNNING_TESTS: z.coerce.boolean().default(false),
+  RUNNING_E2E: z.coerce.boolean().default(false),
 
   /**
    * The url of the price data server.

@@ -1,6 +1,8 @@
 import {PrismaClient} from '@prisma/client'
 import {format, logger} from 'logger'
 
+import {env} from './env.server'
+
 // export all types from from prisma client
 export * from '@prisma/client'
 
@@ -26,12 +28,14 @@ export const prisma = getClient(() => {
   logger.info(`Connecting to database...`)
 
   const client = new PrismaClient({
-    log: [
-      {emit: 'event', level: 'query'},
-      {emit: 'stdout', level: 'error'},
-      {emit: 'stdout', level: 'info'},
-      {emit: 'stdout', level: 'warn'},
-    ],
+    log: env.RUNNING_E2E
+      ? [{emit: 'stdout', level: 'error'}]
+      : [
+          {emit: 'event', level: 'query'},
+          {emit: 'stdout', level: 'error'},
+          {emit: 'stdout', level: 'info'},
+          {emit: 'stdout', level: 'warn'},
+        ],
   })
 
   client.$on('query', e => {
