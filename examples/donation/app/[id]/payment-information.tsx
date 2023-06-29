@@ -1,7 +1,28 @@
-import React from 'react'
+import React, {useState} from 'react'
 import type {PaymentIntentStatus} from '@bam-otf/node'
 import {QRCodeSVG} from 'qrcode.react'
-import {CopyToClipboard} from 'react-copy-to-clipboard'
+
+interface CopyButtonProps {
+  text: string
+}
+
+function CopyButton({text}: CopyButtonProps) {
+  const [copied, setCopied] = useState(false)
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(text)
+    setCopied(true)
+    setTimeout(() => {
+      setCopied(false)
+    }, 5000)
+  }
+
+  return (
+    <span onClick={handleCopy} className="cursor-pointer">
+      {copied ? 'Copied! ✅' : 'Copy'}
+    </span>
+  )
+}
 
 export async function PaymentInformation({
   amount,
@@ -50,20 +71,14 @@ export async function PaymentInformation({
       <div className="">
         Address:
         <div>
-          {address}{' '}
-          <CopyToClipboard text={address}>
-            <span>Copy</span>
-          </CopyToClipboard>
+          {address} <CopyButton text={address} />
         </div>
       </div>
 
       <div className="">
         Amount in BTC:
         <div>
-          {btcAmount}{' '}
-          <CopyToClipboard text={btcAmount.toString()}>
-            <span>Copy</span>
-          </CopyToClipboard>
+          {btcAmount} <CopyButton text={btcAmount.toString()} />
         </div>
       </div>
     </>
