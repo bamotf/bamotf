@@ -25,10 +25,7 @@ authenticator.use(
     invariant(username.length > 0, 'username must not be empty')
 
     invariant(typeof password === 'string', 'password must be a string')
-    invariant(
-      password.length === 0 || password.length > 6,
-      'password must be at least 6 characters',
-    )
+    invariant(password.length >= 6, 'password must be at least 6 characters')
 
     const user = await verifyLogin(username, password)
     if (!user) {
