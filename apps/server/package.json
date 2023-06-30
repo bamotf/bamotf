@@ -10,9 +10,10 @@
     "typecheck": "tsc",
     "lint": "eslint .",
     "prisma": "prisma",
-    "test:unit": "vitest run",
-    "test:unit:watch": "vitest",
-    "test:integration": "playwright test",
+    "test:unit": "vitest -c vitest.config.unit.ts run",
+    "test:unit:watch": "vitest -c vitest.config.unit.ts",
+    "test:integration": "vitest -c vitest.config.integration.ts run",
+    "test:integration:watch": "vitest -c vitest.config.integration.ts",
     "test:e2e": "playwright test",
     "postinstall": "prisma generate"
   },
