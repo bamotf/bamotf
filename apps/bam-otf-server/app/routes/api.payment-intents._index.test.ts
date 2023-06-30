@@ -27,11 +27,13 @@ test.describe('[POST] /api/payment-intents', () => {
     test('should respond with a 200 status code when passed correct data', async ({
       request,
       faker,
+      headers,
     }) => {
       const data = faker.model.paymentIntent()
 
       const response = await request.post('/api/payment-intents', {
         data,
+        headers,
       })
       expect(response.ok()).toBeTruthy()
       expect(await response.json()).toStrictEqual(
@@ -47,6 +49,7 @@ test.describe('[POST] /api/payment-intents', () => {
       request,
       bitcoinCore,
       faker,
+      headers,
     }) => {
       const {address, amount} = faker.model.paymentIntent({currency: 'BTC'})
 
@@ -57,6 +60,7 @@ test.describe('[POST] /api/payment-intents', () => {
           confirmations: 1,
           address,
         },
+        headers,
       })
       expect(response.ok()).toBeTruthy()
 
@@ -100,6 +104,7 @@ test.describe('[POST] /api/payment-intents', () => {
       request,
       bitcoinCore,
       faker,
+      headers,
     }) => {
       const currency = faker.model.fiat()
       const {address, amount, tolerance} = faker.model.paymentIntent({currency})
@@ -113,6 +118,7 @@ test.describe('[POST] /api/payment-intents', () => {
           address,
           tolerance,
         },
+        headers,
       })
 
       const amountToPay = await getBtcAmountFromFiat({
@@ -157,6 +163,7 @@ test.describe('[POST] /api/payment-intents', () => {
       request,
       bitcoinCore,
       faker,
+      headers,
     }) => {
       const paymentIntents = [
         faker.model.paymentIntent({currency: 'BTC'}),
@@ -171,6 +178,7 @@ test.describe('[POST] /api/payment-intents', () => {
             ...pi,
             confirmations: 1,
           },
+          headers,
         })
         expect(response.ok()).toBeTruthy()
       }
@@ -210,11 +218,13 @@ test.describe('[POST] /api/payment-intents', () => {
 
   test('should respond with a 400 status code if an invalid request body is provided', async ({
     request,
+    headers,
   }) => {
     const pi = await request.post('/api/payment-intents', {
       data: {
         amount: -1,
       },
+      headers,
     })
     expect(pi.status()).toBe(400)
     expect(await pi.json()).toStrictEqual(
@@ -226,12 +236,18 @@ test.describe('[POST] /api/payment-intents', () => {
 })
 
 test.describe('[GET] /api/payment-intents', () => {
-  test('should respond with a 200 status code', async ({request, faker}) => {
+  test('should respond with a 200 status code', async ({
+    request,
+    faker,
+    headers,
+  }) => {
     // Create a fake payment intent
     const {amount} = await faker.db.paymentIntent()
 
     // Get all payment intents
-    const pi = await request.get('/api/payment-intents')
+    const pi = await request.get('/api/payment-intents', {
+      headers,
+    })
 
     // Check that the response is correct
     expect(pi.ok()).toBeTruthy()
