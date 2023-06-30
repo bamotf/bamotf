@@ -1,3 +1,5 @@
+// TODO: move this to a config file
+
 type Currency =
   | 'BTC'
   | 'USD'
@@ -49,12 +51,11 @@ type FormatOpts = {
 
 export function format(locale: string, opts: FormatOpts): string {
   const {amount, currency} = opts
-
+  const fractions = getFractionDigits(currency)
   const formatter = new Intl.NumberFormat(locale, {
     style: 'currency',
     currency,
-    minimumFractionDigits: getFractionDigits(currency).minimumFractionDigits,
-    maximumFractionDigits: getFractionDigits(currency).maximumFractionDigits,
+    ...fractions,
   })
 
   const formattedAmount = formatter.format(
@@ -69,7 +70,7 @@ type FractionOpts = {
   currency: Currency
 }
 
-export function toFraction(opts: FractionOpts): bigint {
+export function toFraction(opts: FractionOpts) {
   const {amount, currency} = opts
   const {maximumFractionDigits} = getFractionDigits(currency)
 
@@ -83,44 +84,6 @@ export function getFractionDigits(currency: Currency): {
   const currenciesWithZeroDecimals: Currency[] = ['JPY', 'MMK', 'VND']
   const currenciesWithThreeDecimals: Currency[] = ['BDT']
   const currenciesWithVariableDecimals: Currency[] = ['KWD']
-  const currenciesWithTwoDecimals: Currency[] = [
-    'AED',
-    'AUD',
-    'BHD',
-    'BMD',
-    'BRL',
-    'CAD',
-    'CHF',
-    'CLP',
-    'CZK',
-    'DKK',
-    'EUR',
-    'GBP',
-    'HKD',
-    'HUF',
-    'IDR',
-    'ILS',
-    'INR',
-    'KRW',
-    'LKR',
-    'MXN',
-    'MYR',
-    'NGN',
-    'NOK',
-    'NZD',
-    'PHP',
-    'PKR',
-    'PLN',
-    'RUB',
-    'SAR',
-    'SEK',
-    'SGD',
-    'THB',
-    'TRY',
-    'TWD',
-    'USD',
-    'ZAR',
-  ]
 
   if (currenciesWithZeroDecimals.includes(currency)) {
     return {
@@ -143,6 +106,7 @@ export function getFractionDigits(currency: Currency): {
     }
   }
 
+  // Default to 2 decimals
   return {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
