@@ -80,6 +80,12 @@ const envSchema = z.object({
    * This is used to prevent people from tampering with the session cookie.
    */
   SESSION_SECRET: z.string().default('not-a-secret'), // FIX: should be randomly generated
+
+  /**
+   * This is the API key that the server will use to authenticate clients
+   * that want to use the API.
+   */
+  API_KEY: STRING_REQUIRED,
 })
 
 /**
