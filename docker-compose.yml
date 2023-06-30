@@ -1,6 +1,7 @@
+# Services used for development
+
 version: '3.8'
 services:
-  # Bitcoin-core for development
   bitcoin-core:
     build:
       context: ./docker/bitcoin-core

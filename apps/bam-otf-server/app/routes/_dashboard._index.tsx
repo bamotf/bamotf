@@ -1,4 +1,4 @@
-import type {V2_MetaFunction} from '@remix-run/node'
+import {redirect, type V2_MetaFunction} from '@remix-run/node'
 import {Activity, CreditCard, DollarSign, Download, Users} from 'lucide-react'
 
 import {CalendarDateRangePicker} from '~/components/date-range-picker'
@@ -16,6 +16,11 @@ import {Tabs, TabsContent, TabsList, TabsTrigger} from '~/components/ui/tabs'
 
 export const meta: V2_MetaFunction = () => {
   return [{title: 'Dashboard'}]
+}
+
+export async function loader() {
+  // TODO: this page should display at least some general info about the payments
+  return redirect('/payments')
 }
 
 export default function DashboardPage() {

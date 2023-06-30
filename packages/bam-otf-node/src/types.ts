@@ -2,10 +2,17 @@
 // import type * as specific from 'bam-otf-server/app/routes/api.payment-intents.$id._index'
 // import type * as cancel from 'bam-otf-server/app/routes/api.payment-intents.$id.cancel'
 
-import type {PaymentIntentStatus} from '@prisma/client'
 import type {CurrencyCode} from 'bam-otf-server/app/config/currency'
 
-export {PaymentIntentStatus}
+export const paymentIntentStatus = {
+  pending: 'pending',
+  processing: 'processing',
+  succeeded: 'succeeded',
+  canceled: 'canceled',
+}
+
+export type PaymentIntentStatus =
+  (typeof paymentIntentStatus)[keyof typeof paymentIntentStatus]
 
 export type PaymentIntent = {
   id: string

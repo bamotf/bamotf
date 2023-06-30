@@ -1,7 +1,8 @@
 /* eslint-disable turbo/no-undeclared-env-vars */
 /* eslint-disable import/no-anonymous-default-export */
-import {PrismaClient} from '@prisma/client'
 import {logger} from 'logger'
+
+import {PrismaClient} from '~/utils/prisma.server'
 
 const prisma = new PrismaClient()
 

@@ -23,12 +23,7 @@ export const contract = createContract({
  * Shows a list of all PaymentIntent objects.
  */
 export async function loader() {
-  const [paymentIntents, total] = await Promise.all([
-    prisma.paymentIntent.findMany({
-      orderBy: {createdAt: 'desc'},
-    }),
-    prisma.paymentIntent.count(),
-  ])
+  const [paymentIntents, total] = await listPaymentIntents()
 
   return typedjson({
     data: paymentIntents.map(pi => ({
@@ -38,6 +33,15 @@ export async function loader() {
     })),
     total,
   })
+}
+
+export async function listPaymentIntents() {
+  return await Promise.all([
+    prisma.paymentIntent.findMany({
+      orderBy: {createdAt: 'desc'},
+    }),
+    prisma.paymentIntent.count(),
+  ])
 }
 
 /**

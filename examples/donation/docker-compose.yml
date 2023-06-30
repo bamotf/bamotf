@@ -1,0 +1,40 @@
+# 🟠 This is example docker-compose.yml file for running bam-otf-server in development mode.
+
+version: '3.8'
+services:
+  bam-otf-server:
+    image: bam-otf-server:latest
+    container_name: bam-otf-server
+    restart: always
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - POSTGRES_URL=postgresql://johndoe:randompassword@postgres:5432
+      - BITCOIN_CORE_URL=http://username:wc7eFmVwEeZCDYTMaOqxRnLWSR7aI76bGmHl6pRFtAU@bitcoin-core:18443
+      - WEBHOOK_URL=http://localhost:4000
+      - WEBHOOK_SECRET=my-secret
+    ports:
+      - 21000:21000
+    depends_on:
+      - postgres
+      - redis
+      - bitcoin-core
+
+  # Bitcoin-core for development
+  bitcoin-core:
+    build:
+      context: ../../docker/bitcoin-core
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./bitcoin-core:/home/bitcoin/.bitcoin
+
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_USER=johndoe
+      - POSTGRES_PASSWORD=randompassword
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:latest

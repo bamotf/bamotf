@@ -14,6 +14,6 @@ export default defineProject({
       // If you want to test a route, you are probably looking for an integration test.
       'app/routes/**/*.test.ts',
     ],
-    setupFiles: ['./tests/setup.unit.ts'],
+    setupFiles: ['dotenv/config', './tests/setup.unit.ts'],
   },
 })
