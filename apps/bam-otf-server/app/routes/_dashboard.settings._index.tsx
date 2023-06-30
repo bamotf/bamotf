@@ -13,6 +13,7 @@ import {
   useLoaderData,
   useNavigation,
 } from '@remix-run/react'
+import {badRequest} from 'remix-utils'
 import {z} from 'zod'
 
 import {Button, ErrorList, Field} from '~/components/forms'
@@ -102,13 +103,10 @@ export async function action({request}: DataFunctionArgs) {
     return json({status: 'idle', submission} as const)
   }
   if (!submission.value) {
-    return json(
-      {
-        status: 'error',
-        submission,
-      } as const,
-      {status: 400},
-    )
+    throw badRequest({
+      status: 'error',
+      submission,
+    } as const)
   }
   const {name, username, newPassword} = submission.value
 

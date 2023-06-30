@@ -1,4 +1,5 @@
 import type {LoaderArgs} from '@remix-run/node'
+import {badRequest} from 'remix-utils'
 import type {z, ZodTypeAny} from 'zod'
 
 export type ApiRoute = {
@@ -61,13 +62,7 @@ function parseSchema<T extends ZodTypeAny>({
       name,
       issues: parsed.error.issues,
     })
-    throw new Response(result, {
-      status: 400,
-      statusText: `Invalid ${name} params`,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    throw badRequest(result)
   }
   return parsed
 }

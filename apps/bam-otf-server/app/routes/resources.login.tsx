@@ -4,6 +4,7 @@ import {json, redirect, type DataFunctionArgs} from '@remix-run/node'
 import {useFetcher} from '@remix-run/react'
 import {AuthorizationError} from 'remix-auth'
 import {FormStrategy} from 'remix-auth-form'
+import {badRequest} from 'remix-utils'
 import invariant from 'tiny-invariant'
 import {z} from 'zod'
 
@@ -13,6 +14,7 @@ import {checkboxSchema} from '~/schemas/checkbox.schema'
 import {authenticator} from '~/utils/auth.server'
 import {safeRedirect} from '~/utils/misc'
 import {prisma} from '~/utils/prisma.server'
+import {requireRateLimit} from '~/utils/ratelimiter.server'
 import {commitSession, getSession} from '~/utils/session.server'
 
 const ROUTE_PATH = '/resources/login'
@@ -25,6 +27,8 @@ export const loginFormSchema = z.object({
 })
 
 export async function action({request}: DataFunctionArgs) {
+  await requireRateLimit(request)
+
   const formData = await request.formData()
   const submission = parse(formData, {
     schema: loginFormSchema,
@@ -34,13 +38,10 @@ export async function action({request}: DataFunctionArgs) {
     return json({status: 'idle', submission} as const)
   }
   if (!submission.value) {
-    return json(
-      {
-        status: 'error',
-        submission,
-      } as const,
-      {status: 400},
-    )
+    return badRequest({
+      status: 'error',
+      submission,
+    } as const)
   }
 
   let sessionId: string | null = null
@@ -51,19 +52,16 @@ export async function action({request}: DataFunctionArgs) {
     })
   } catch (error) {
     if (error instanceof AuthorizationError) {
-      return json(
-        {
-          status: 'error',
-          submission: {
-            ...submission,
-            error: {
-              // show authorization error as a form level error message.
-              '': error.message,
-            },
+      return badRequest({
+        status: 'error',
+        submission: {
+          ...submission,
+          error: {
+            // show authorization error as a form level error message.
+            '': error.message,
           },
-        } as const,
-        {status: 400},
-      )
+        },
+      } as const)
     }
     throw error
   }

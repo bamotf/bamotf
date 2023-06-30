@@ -11,6 +11,8 @@
     "Lucide",
     "nvmrc",
     "Quirrel",
+    "ratelimit",
+    "ratelimiter",
     "satoshis",
     "secp",
     "tanstack",
