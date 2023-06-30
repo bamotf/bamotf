@@ -11,7 +11,7 @@ config()
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: 'app/routes',
+  testDir: 'e2e',
   fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
