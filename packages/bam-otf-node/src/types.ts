@@ -11,8 +11,7 @@ export const paymentIntentStatus = {
   canceled: 'canceled',
 }
 
-export type PaymentIntentStatus =
-  (typeof paymentIntentStatus)[keyof typeof paymentIntentStatus]
+export type PaymentIntentStatus = keyof typeof paymentIntentStatus
 
 export type PaymentIntent = {
   id: string
