@@ -1,10 +1,11 @@
-import {redirect} from '@remix-run/node'
+import {json, redirect} from '@remix-run/node'
 import bcrypt from 'bcryptjs'
 import {Authenticator} from 'remix-auth'
 import {FormStrategy} from 'remix-auth-form'
 import invariant from 'tiny-invariant'
 
 import {prisma, type Password, type User} from '~/utils/prisma.server'
+import {env} from './env.server'
 import {sessionStorage} from './session.server'
 
 export type {User}
@@ -24,10 +25,7 @@ authenticator.use(
     invariant(username.length > 0, 'username must not be empty')
 
     invariant(typeof password === 'string', 'password must be a string')
-    invariant(
-      password.length === 0 || password.length > 6,
-      'password must be at least 6 characters',
-    )
+    invariant(password.length >= 6, 'password must be at least 6 characters')
 
     const user = await verifyLogin(username, password)
     if (!user) {
@@ -171,4 +169,19 @@ export async function verifyLogin(
   }
 
   return {id: userWithPassword.id}
+}
+
+export async function requireToken(request: Request) {
+  // Get the bearer token from the request
+  const bearerToken = request.headers.get('Authorization')?.split(' ')[1]
+
+  // If there is no bearer token or the token doesn't match the settings, throw an error
+  if (!bearerToken || bearerToken !== env.API_KEY) {
+    throw json("You don't have permission to access this resource.", {
+      status: 401,
+      statusText: 'Unauthorized',
+    })
+  }
+
+  return
 }
