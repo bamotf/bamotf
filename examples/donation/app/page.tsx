@@ -1,8 +1,8 @@
 import {bamotf} from '@/utils/bamotf'
-import {deriveAddress} from '@/utils/derive'
 import {kv} from '@vercel/kv'
 import {redirect} from 'next/navigation'
 
+import {deriveAddress} from '../../../packages/bam-otf-utils/src/derive'
 import {Submit} from './submit'
 
 async function donate(formData: FormData) {
