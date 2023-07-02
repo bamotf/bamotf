@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import type {PaymentIntentStatus} from '@bam-otf/node'
-
-import {PaymentIntent} from './payment-intent'
+import {PaymentIntent} from '@bam-otf/react'
 
 export async function PaymentInformation({
   amount,
@@ -22,7 +21,7 @@ export async function PaymentInformation({
 }) {
   const response = await fetch(`http://localhost:3000/api/price/${currency}`)
   const {price} = await response.json()
-
+  console.log('🤬', response)
   return (
     <PaymentIntent
       intent={{amount, currency, status, address, label, message, redirectUrl}}

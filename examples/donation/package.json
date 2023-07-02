@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@bam-otf/node": "workspace:*",
+    "@bam-otf/react": "workspace:*",
     "@types/node": "^20.2.5",
     "@types/react": "18.2.11",
     "@types/react-dom": "18.2.4",

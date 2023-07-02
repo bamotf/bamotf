@@ -3,3 +3,9 @@
 
 // components
 export * from './button'
+export * from './copy-button'
+export * from './qr-code'
+export * from './address-info'
+export * from './amount-info'
+export * from './donation-info'
+export * from './payment-intent'

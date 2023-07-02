@@ -11,6 +11,7 @@ export const paymentIntentStatus = {
   canceled: 'canceled',
 }
 
+// TODO
 export type PaymentIntentStatus = keyof typeof paymentIntentStatus
 
 export type PaymentIntent = {
