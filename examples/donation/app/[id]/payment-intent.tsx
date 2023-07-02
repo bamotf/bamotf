@@ -4,9 +4,10 @@ import {QRCodeSVG} from 'qrcode.react'
 
 interface CopyButtonProps {
   text: string
+  onCopied: () => void
 }
 
-function CopyButton({text}: CopyButtonProps) {
+function CopyButton({text, onCopied}: CopyButtonProps) {
   const [copied, setCopied] = useState(false)
 
   const handleCopy = () => {
@@ -14,6 +15,7 @@ function CopyButton({text}: CopyButtonProps) {
     setCopied(true)
     setTimeout(() => {
       setCopied(false)
+      onCopied()
     }, 5000)
   }
 
@@ -64,6 +66,12 @@ export function PaymentIntent({intent, price}: PaymentIntentProps) {
 
   const qrCodeValue = `bitcoin:${address}?${urlParams.toString()}&r=${redirectUrl}/success`
 
+  const handleCopied = () => {
+    // Lógica a ser executada quando o endereço for copiado
+    console.log('Address copied!')
+    // ...
+  }
+
   return (
     <>
       <div className="">
@@ -77,14 +85,15 @@ export function PaymentIntent({intent, price}: PaymentIntentProps) {
       <div className="">
         Address:
         <div>
-          {address} <CopyButton text={address} />
+          {address} <CopyButton text={address} onCopied={handleCopied} />
         </div>
       </div>
 
       <div className="">
         Amount in BTC:
         <div>
-          {btcAmount} <CopyButton text={btcAmount.toString()} />
+          {btcAmount}{' '}
+          <CopyButton text={btcAmount.toString()} onCopied={handleCopied} />
         </div>
       </div>
     </>

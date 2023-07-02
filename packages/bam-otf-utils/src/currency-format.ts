@@ -70,11 +70,15 @@ type FractionOpts = {
   currency: Currency
 }
 
-export function toFraction(opts: FractionOpts) {
+export function toFraction(opts: FractionOpts): number {
   const {amount, currency} = opts
   const {maximumFractionDigits} = getFractionDigits(currency)
 
-  return amount / BigInt(10) ** BigInt(maximumFractionDigits)
+  const fractionMultiplier = BigInt(10) ** BigInt(maximumFractionDigits)
+  const fraction =
+    Number(amount.toString()) / Number(fractionMultiplier.toString())
+
+  return fraction
 }
 
 export function getFractionDigits(currency: Currency): {
