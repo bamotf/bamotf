@@ -49,7 +49,7 @@ type FormatOpts = {
   currency: Currency
 }
 
-export function format(locale: string, opts: FormatOpts): string {
+export function format(opts: FormatOpts, locale?: string): string {
   const {amount, currency} = opts
   const fractions = getFractionDigits(currency)
   const formatter = new Intl.NumberFormat(locale, {
