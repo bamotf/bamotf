@@ -10,17 +10,25 @@ export function Subscribe({paymentIntent: pi}: {paymentIntent: PaymentIntent}) {
   const [status, setStatus] = useState<PaymentIntentStatus>(pi.status)
 
   useEffect(() => {
-    const onPaymentIntentSucceeded = (data: any) => {
-      console.log('🔥 ~ from webhook', {data})
+    const onPaymentIntentProcessing = (data: any) => {
+      setStatus('processing')
     }
 
-    console.log('🔥 ~ subscribed', pi.id)
+    const onPaymentIntentSucceeded = (data: any) => {
+      setStatus('succeeded')
+    }
+
     pusherClient.subscribe(pi.id)
+    pusherClient.bind('payment_intent.processing', onPaymentIntentProcessing)
     pusherClient.bind('payment_intent.succeeded', onPaymentIntentSucceeded)
 
     return () => {
       // cleanup
       pusherClient.unsubscribe(pi.id)
+      pusherClient.unbind(
+        'payment_intent.processing',
+        onPaymentIntentProcessing,
+      )
       pusherClient.unbind('payment_intent.succeeded', onPaymentIntentSucceeded)
     }
   }, [pi.id])

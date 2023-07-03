@@ -20,7 +20,6 @@ export async function PaymentInformation({
 
   const response = await fetch(`http://localhost:3000/api/price/${currency}`)
   const {price} = await response.json()
-  console.log('🤬', response)
   return (
     <PaymentIntent
       intent={{amount, currency, address}}
