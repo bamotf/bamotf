@@ -1,5 +1,5 @@
 import type {FiatCurrencyCode} from '~/config/currency'
-import {env} from './env.server'
+import {env} from '../../../../env/env'
 
 type CurrencyData = {
   currencyCode: FiatCurrencyCode

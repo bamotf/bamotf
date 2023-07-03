@@ -3,13 +3,15 @@ import {pusherServer} from '@/utils/pusher.server'
 import {format, logger} from 'logger'
 import {NextResponse} from 'next/server'
 
+import {env} from '../../../../env/env'
+
 export async function POST(request: Request) {
   // FIX: rawBody is not raw exactly
   const rawBody = await request.text()
   const signatureHeader = request.headers.get('x-webhook-signature') || ''
   logger.info(`🫡 Webhook triggered`)
 
-  const secret = process.env.WEBHOOK_SECRET!
+  const secret = env.WEBHOOK_SECRET!
   const {success, parsed} = bamotf.webhooks.constructEvent(
     rawBody,
     signatureHeader,
