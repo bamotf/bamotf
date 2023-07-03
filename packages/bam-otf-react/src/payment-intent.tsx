@@ -1,11 +1,10 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 
-import {AddressInfo} from './address-info'
-import {AmountInfo} from './amount-info'
-import {CopyButton} from './copy-button'
-import {DonationInfo} from './donation-info'
-import {QRCode} from './qr-code'
+import {CopyableAddress} from './copyable-address'
+import {CopyableAmount} from './copyable-amount'
+import {QRCode, type QRCodeProps} from './qr-code'
 
+// TODO: there are duplicate types of this
 export const paymentIntentStatus = {
   pending: 'pending',
   processing: 'processing',
@@ -16,71 +15,60 @@ export const paymentIntentStatus = {
 export type PaymentIntentStatus = keyof typeof paymentIntentStatus
 
 interface PaymentIntentProps {
+  /**
+   * The payment intent
+   */
   intent: {
-    amount: number
-    currency: string
-    status: PaymentIntentStatus
     address: string
-    label?: string
-    message?: string
-    redirectUrl: string
+    amount: bigint
+    currency: string
   }
+
+  /**
+   * The current price of the bitcoin
+   */
   price: number
+
+  /**
+   * Props to pass to the QRCode component
+   */
+  qrCodeProps?: Pick<QRCodeProps, 'label' | 'message' | 'redirectUrl'>
 }
 
-const fetchBtcAmount = async (
-  amount: number,
-  currency: string,
-  price: number,
-) => {
-  const response = await fetch(`http://localhost:3000/api/price/${currency}`)
-  const {price: fetchedPrice} = await response.json()
-  const btcAmount = Math.ceil((amount / fetchedPrice) * 1e8) / 1e8 // Convert satoshis to BTC with 8 decimal places
-  return btcAmount
-}
+export function PaymentIntent({
+  intent,
+  price,
+  qrCodeProps,
+}: PaymentIntentProps) {
+  const {amount, currency, address} = intent
 
-export function PaymentIntent({intent, price}: PaymentIntentProps) {
-  const {amount, currency, status, address, label, message, redirectUrl} =
-    intent
-  const [btcAmount, setBtcAmount] = useState(0)
+  let amountInBTC = amount
 
-  useEffect(() => {
-    const fetchAmount = async () => {
-      const btcAmount = await fetchBtcAmount(amount, currency, price)
-      setBtcAmount(btcAmount)
-    }
-
-    fetchAmount()
-  }, [amount, currency, price])
-
-  const urlParams = new URLSearchParams({
-    amount: btcAmount.toString(),
-    label: label ? encodeURIComponent(label) : '',
-    message: message ? encodeURIComponent(message) : '',
-  })
-
-  const qrCodeValue = `bitcoin:${address}?${urlParams.toString()}&r=${redirectUrl}/success`
-
-  const handleCopied = () => {
-    console.log('Address copied!')
+  if (currency !== 'BTC') {
+    // TODO: this should be probably getting the price from the endpoint instead of
+    // receiving it as a prop
+    // amountInBTC = amount / price
   }
 
   return (
-    <>
-      <DonationInfo
-        amount={amount}
-        currency={currency}
-        price={price}
-        btcAmount={btcAmount}
-      />
+    <div className="payment-intent">
+      <QRCode address={address} amount={amountInBTC} {...qrCodeProps} />
 
-      <QRCode bgColor="#FFFFFF00" fgColor="#FFFFFFF0" value={qrCodeValue} />
+      <div className="copyable-field">
+        <label>Address</label>
+        <CopyableAddress address={address} />
+      </div>
 
-      <AddressInfo address={address} handleCopied={handleCopied} />
+      <div className="copyable-field">
+        <label>Amount</label>
+        <CopyableAmount amount={amountInBTC} />
+      </div>
 
-      <AmountInfo btcAmount={btcAmount} handleCopied={handleCopied} />
-
-      <CopyButton text={address} onCopied={handleCopied} />
-    </>
+      {/* 
+       TODO: implement this
+      <button>
+        Open in wallet
+      </button> */}
+    </div>
   )
 }
