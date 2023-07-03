@@ -1,4 +1,5 @@
 import {bamotf} from '@/utils/bamotf'
+import {env} from '@/utils/env'
 import {pusherServer} from '@/utils/pusher.server'
 import {format, logger} from 'logger'
 import {NextResponse} from 'next/server'
@@ -9,7 +10,7 @@ export async function POST(request: Request) {
   const signatureHeader = request.headers.get('x-webhook-signature') || ''
   logger.info(`🫡 Webhook triggered`)
 
-  const secret = process.env.WEBHOOK_SECRET!
+  const secret = env.WEBHOOK_SECRET!
   const {success, parsed} = bamotf.webhooks.constructEvent(
     rawBody,
     signatureHeader,
