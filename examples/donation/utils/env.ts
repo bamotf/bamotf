@@ -12,9 +12,9 @@ export const env = createEnv({
       .enum(['development', 'production', 'test'])
       .default('development'),
     PUSHER_APP_ID: STRING_REQUIRED,
-    PUSHER_APP_SECRET: STRING_REQUIRED,
+    PUSHER_SECRET: STRING_REQUIRED,
     VERCEL_ENV: z.string(),
-    VERCEL_URL: STRING_REQUIRED.url(),
+    VERCEL_URL: z.string().optional(),
     XPUB_DONATION: STRING_REQUIRED,
     WEBHOOK_SECRET: STRING_REQUIRED,
   },
