@@ -2,6 +2,7 @@ import type {LoaderArgs} from '@remix-run/node'
 import {typedjson} from 'remix-typedjson'
 
 import {PaymentIntentSchema} from '~/schemas'
+import {requireToken} from '~/utils/auth.server'
 import {createContract} from '~/utils/contract'
 import {prisma} from '~/utils/prisma.server'
 
@@ -16,6 +17,8 @@ export const contract = createContract({
  * Cancels a PaymentIntent object.
  */
 export async function action({request, params}: LoaderArgs) {
+  await requireToken(request)
+
   const {path, body} = await contract.action({request, params})
 
   const {id} = path
