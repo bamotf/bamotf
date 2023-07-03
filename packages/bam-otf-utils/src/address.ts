@@ -1,8 +1,9 @@
 import * as bitcoin from 'bitcoinjs-lib'
 import HDKey from 'hdkey'
 
-export function deriveAddress(xpub: string, index: number): string {
-  const network = bitcoin.networks.regtest // Use bitcoin.networks.testnet for testnet
+export function derive(xpub: string, index: number): string {
+  // FIX: Use bitcoin.networks.testnet for testnet
+  const network = bitcoin.networks.regtest
   const hdNode = HDKey.fromExtendedKey(xpub)
   const childNode = hdNode.derive(`m/${index}`)
 
