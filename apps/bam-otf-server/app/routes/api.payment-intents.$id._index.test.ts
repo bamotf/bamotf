@@ -1,12 +1,18 @@
 import {expect, test} from 'tests/base.fixture'
 
 test.describe('[GET] /api/payment-intents/:id', () => {
-  test('should respond with a 200 status code', async ({request, faker}) => {
+  test('should respond with a 200 status code', async ({
+    request,
+    faker,
+    headers,
+  }) => {
     // Create a fake payment intent
     const {id, amount} = await faker.db.paymentIntent()
 
     // Update the payment intent
-    const pi = await request.get(`/api/payment-intents/${id}`)
+    const pi = await request.get(`/api/payment-intents/${id}`, {
+      headers,
+    })
 
     // Check that the response is correct
     expect(pi.ok()).toBeTruthy()
@@ -20,7 +26,11 @@ test.describe('[GET] /api/payment-intents/:id', () => {
 })
 
 test.describe('[POST] /api/payment-intents/:id', () => {
-  test('should respond with a 200 status code', async ({request, faker}) => {
+  test('should respond with a 200 status code', async ({
+    request,
+    faker,
+    headers,
+  }) => {
     // Create a fake payment intent
     const {id} = await faker.db.paymentIntent()
 
@@ -29,6 +39,7 @@ test.describe('[POST] /api/payment-intents/:id', () => {
       data: {
         amount: 200,
       },
+      headers,
     })
 
     // Check that the response is correct

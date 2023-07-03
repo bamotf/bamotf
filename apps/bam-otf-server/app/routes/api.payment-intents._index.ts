@@ -4,6 +4,7 @@ import {typedjson} from 'remix-typedjson'
 
 import {queue} from '~/queues/transaction.server'
 import {NewPaymentIntentSchema} from '~/schemas'
+import {requireToken} from '~/utils/auth.server'
 import {
   addWatchOnlyAddress,
   createWatchOnlyWallet,
@@ -22,7 +23,9 @@ export const contract = createContract({
 /**
  * Shows a list of all PaymentIntent objects.
  */
-export async function loader() {
+export async function loader({request}: LoaderArgs) {
+  await requireToken(request)
+
   const [paymentIntents, total] = await listPaymentIntents()
 
   return typedjson({
@@ -48,6 +51,8 @@ export async function listPaymentIntents() {
  * Creates a PaymentIntent object.
  */
 export async function action({request}: LoaderArgs) {
+  await requireToken(request)
+
   const {body: data} = await contract.action({request})
 
   const pi = await prisma.paymentIntent.create({

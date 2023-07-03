@@ -139,9 +139,9 @@ export default function PaymentsPage() {
               6	Minimum recommendation for high-value bitcoin transfers
               30	Recommendation during emergencies to allow human intervention
             */}
-            <p className="text-sm text-foreground">
+            <div className="text-sm text-foreground">
               <RiskScore score={riskScore} />
-            </p>
+            </div>
           </div>
         </div>
       </div>

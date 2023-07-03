@@ -1,4 +1,5 @@
 import type {LoaderArgs, V2_MetaFunction} from '@remix-run/node'
+import {useNavigate} from '@remix-run/react'
 import {typedjson} from 'remix-typedjson'
 
 import {CalendarDateRangePicker} from '~/components/date-range-picker'
@@ -28,7 +29,7 @@ export async function loader({request}: LoaderArgs) {
 
 export default function PaymentsPage() {
   const {data} = useFreshData<typeof loader>()
-
+  const navigate = useNavigate()
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">
       <div className="flex items-center justify-between space-y-2">
@@ -39,7 +40,11 @@ export default function PaymentsPage() {
         </div>
       </div>
 
-      <DataTable columns={columns} data={data} />
+      <DataTable
+        columns={columns}
+        data={data}
+        onRowClick={row => navigate(`/payments/${row.id}`)}
+      />
     </div>
   )
 }
