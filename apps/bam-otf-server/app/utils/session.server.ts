@@ -1,6 +1,6 @@
 import {createCookieSessionStorage} from '@remix-run/node'
 
-import {env} from './env.server'
+import {env} from '../../../../env/env'
 
 export const sessionStorage = createCookieSessionStorage({
   cookie: {

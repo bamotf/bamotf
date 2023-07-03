@@ -1,8 +1,10 @@
 import tsconfigPaths from 'vite-tsconfig-paths'
 import {defineProject} from 'vitest/config'
 
+import {env} from '../../env/env'
+
 // eslint-disable-next-line turbo/no-undeclared-env-vars
-process.env.LOG_LEVEL = 'error'
+env.LOG_LEVEL = 'error'
 
 export default defineProject({
   plugins: [tsconfigPaths()],

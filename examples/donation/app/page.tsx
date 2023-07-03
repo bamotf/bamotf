@@ -3,6 +3,8 @@ import {address as addressBase} from '@bam-otf/utils'
 import {kv} from '@vercel/kv'
 import {redirect} from 'next/navigation'
 
+import {env} from '../../../env/env'
+import {deriveAddress} from '../../../packages/bam-otf-utils/src/derive'
 import {Submit} from './submit'
 
 async function donate(formData: FormData) {
@@ -13,7 +15,7 @@ async function donate(formData: FormData) {
   if (!donate) return
 
   // eslint-disable-next-line turbo/no-undeclared-env-vars
-  let xpub = process.env.XPUB_DONATION || ''
+  let xpub = env.XPUB_DONATION || ''
   if (!xpub) {
     throw new Error('XPUB_DONATION is not set')
   }

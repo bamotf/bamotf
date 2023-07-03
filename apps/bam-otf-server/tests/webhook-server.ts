@@ -1,7 +1,7 @@
 import http from 'http'
 import {ConnectionString} from 'connection-string'
 
-import {env} from '~/utils/env.server'
+import {env} from '../../../env/env'
 
 export class WebhookTestServer {
   /**

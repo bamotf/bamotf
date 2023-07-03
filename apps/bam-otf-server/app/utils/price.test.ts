@@ -1,8 +1,8 @@
 import {rest} from 'msw'
 import {describe, expect, test} from 'vitest'
 
+import {env} from '../../../../env/env'
 import {server} from '../../tests/setup.unit'
-import {env} from './env.server'
 import {
   getBtcAmountFromFiat,
   getCurrencyValueFromSatoshis,

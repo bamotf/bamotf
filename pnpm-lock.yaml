@@ -10,6 +10,12 @@ importers:
       '@ianvs/prettier-plugin-sort-imports':
         specifier: ^4.0.2
         version: 4.0.2(prettier@2.8.7)
+      '@t3-oss/env-core':
+        specifier: ^0.6.0
+        version: 0.6.0(typescript@5.0.4)(zod@3.21.4)
+      connection-string:
+        specifier: ^4.3.6
+        version: 4.3.6
       dotenv:
         specifier: ^16.1.0
         version: 16.1.0
@@ -37,6 +43,9 @@ importers:
       vitest:
         specifier: 0.31.1
         version: 0.31.1
+      zod:
+        specifier: ^3.21.4
+        version: 3.21.4
 
   apps/bam-otf-server:
     dependencies:
@@ -329,7 +338,7 @@ importers:
     dependencies:
       '@ts-rest/core':
         specifier: ^3.19.0
-        version: 3.19.0
+        version: 3.19.0(zod@3.21.4)
       axios:
         specifier: ^1.4.0
         version: 1.4.0
@@ -4286,6 +4295,16 @@ packages:
       defer-to-connect: 2.0.1
     dev: true
 
+  /@t3-oss/env-core@0.6.0(typescript@5.0.4)(zod@3.21.4):
+    resolution: {integrity: sha512-3FkPAba069WRZVVab/sB1m3eSGn/rZeypx5k+sWEu1d+k0OQdRDnvFS+7MtxYgqVrwaRk3b7yVnX2dgSPVmWPQ==}
+    peerDependencies:
+      typescript: '>=4.7.2'
+      zod: ^3.0.0
+    dependencies:
+      typescript: 5.0.4
+      zod: 3.21.4
+    dev: true
+
   /@tanstack/react-table@8.9.1(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-yHs2m6lk5J5RNcu2dNtsDGux66wNXZjEgzxos6MRCX8gL+nqxeW3ZglqP6eANN0bGElPnjvqiUHGQvdACOr3Cw==}
     engines: {node: '>=12'}
@@ -4322,13 +4341,15 @@ packages:
     engines: {node: '>= 6'}
     dev: true
 
-  /@ts-rest/core@3.19.0:
+  /@ts-rest/core@3.19.0(zod@3.21.4):
     resolution: {integrity: sha512-ZWXH+g3Hp5poAxMh5Mx6NW9Dw3F3cc5+X3j5Igz0fRYULzBeUx83KUAEqHPmVXIU0Qurzc31qXoyrysm0sVYug==}
     peerDependencies:
       zod: ^3.0.0
     peerDependenciesMeta:
       zod:
         optional: true
+    dependencies:
+      zod: 3.21.4
     dev: false
 
   /@types/acorn@4.0.6:
@@ -5783,7 +5804,6 @@ packages:
   /connection-string@4.3.6:
     resolution: {integrity: sha512-dwaq4BMeiIIWry/oQxjstPB7Xp0K1nGjaY8p6PHQB+J9ZJuIvNp7ux3Noupq0hMd/dqEHXkfdmmGFOKTbGKWmw==}
     engines: {node: '>=12', npm: '>=6'}
-    dev: false
 
   /content-disposition@0.5.4:
     resolution: {integrity: sha512-FveZTNuGw04cxlAiWbzi6zTAL/lhehaWbTtgluJh4/E95DqMwTmha3KZN1aAWA8cFIhHzMZUvLevkw5Rqk+tSQ==}
@@ -12848,7 +12868,6 @@ packages:
 
   /zod@3.21.4:
     resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}
-    dev: false
 
   /zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}

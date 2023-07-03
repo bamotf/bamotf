@@ -1,6 +1,6 @@
 import Redis, {type RedisOptions, type Redis as RedisType} from 'ioredis'
 
-import {env} from './env.server'
+import {env} from '../../../../env/env'
 
 let redis: RedisType
 

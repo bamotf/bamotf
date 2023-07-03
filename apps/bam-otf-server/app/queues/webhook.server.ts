@@ -3,9 +3,9 @@ import {format, logger} from 'logger'
 import {symmetric} from 'secure-webhooks'
 import {v4 as uuidv4} from 'uuid'
 
-import {env} from '~/utils/env.server'
 import {prisma, type Prisma} from '~/utils/prisma.server'
 import {createQueue} from '~/utils/queue.server'
+import {env} from '../../../../env/env'
 
 type Event = 'payment_intent.succeeded'
 
