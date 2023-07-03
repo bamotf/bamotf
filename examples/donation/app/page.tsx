@@ -1,8 +1,8 @@
 import {bamotf} from '@/utils/bamotf'
+import {address as addressBase} from '@bam-otf/utils'
 import {kv} from '@vercel/kv'
 import {redirect} from 'next/navigation'
 
-import {deriveAddress} from '../../../packages/bam-otf-utils/src/derive'
 import {Submit} from './submit'
 
 async function donate(formData: FormData) {
@@ -19,7 +19,7 @@ async function donate(formData: FormData) {
   }
 
   let index = await kv.incr(`donations-index`)
-  let address = deriveAddress(xpub, index)
+  let address = addressBase.derive(xpub, index)
   let amount = Number.parseFloat(donate.toString())
 
   const pi = await bamotf.paymentIntents.create({

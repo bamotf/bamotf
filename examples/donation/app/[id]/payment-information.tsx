@@ -1,31 +1,30 @@
-import React, {useEffect, useState} from 'react'
-import type {PaymentIntentStatus} from '@bam-otf/node'
+import React from 'react'
 import {PaymentIntent} from '@bam-otf/react'
 
 export async function PaymentInformation({
+  id,
   amount,
   currency,
-  status,
   address,
-  label,
-  message,
-  redirectUrl,
 }: {
-  amount: number
+  id: string
+  amount: bigint
   address: string
-  status: PaymentIntentStatus
   currency: string
-  label?: string
-  message?: string
-  redirectUrl: string
 }) {
+  const developmentUrl = `http://localhost:4000/${id}`
+  const productionUrl = `${process.env.VERCEL_URL!}/${id}`
+  const redirectUrl =
+    process.env.VERCEL_ENV === 'development' ? developmentUrl : productionUrl
+
   const response = await fetch(`http://localhost:3000/api/price/${currency}`)
   const {price} = await response.json()
-  console.log('🤬', response)
+
   return (
     <PaymentIntent
-      intent={{amount, currency, status, address, label, message, redirectUrl}}
+      intent={{amount, currency, address}}
       price={price}
+      qrCodeProps={{label: '', message: '', redirectUrl}}
     />
   )
 }

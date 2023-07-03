@@ -6,13 +6,7 @@ import type {PaymentIntent, PaymentIntentStatus} from '@bam-otf/node'
 
 import {PaymentInformation} from './payment-information'
 
-export function Subscribe({
-  paymentIntent: pi,
-  redirectUrl,
-}: {
-  paymentIntent: PaymentIntent
-  redirectUrl: string
-}) {
+export function Subscribe({paymentIntent: pi}: {paymentIntent: PaymentIntent}) {
   const [status, setStatus] = useState<PaymentIntentStatus>(pi.status)
 
   useEffect(() => {
@@ -33,7 +27,7 @@ export function Subscribe({
 
   const views = {
     // @ts-ignore - Async component
-    pending: <PaymentInformation {...pi} redirectUrl={redirectUrl} />,
+    pending: <PaymentInformation {...pi} />,
     processing: <>processing</>,
     succeeded: <>succeeded</>,
     canceled: <>canceled</>,
