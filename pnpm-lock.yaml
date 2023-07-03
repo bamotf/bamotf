@@ -1,9 +1,5 @@
 lockfileVersion: '6.0'
 
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
-
 importers:
 
   .:
@@ -14,12 +10,6 @@ importers:
       '@ianvs/prettier-plugin-sort-imports':
         specifier: ^4.0.2
         version: 4.0.2(prettier@2.8.7)
-      '@t3-oss/env-core':
-        specifier: ^0.6.0
-        version: 0.6.0(typescript@5.0.4)(zod@3.21.4)
-      connection-string:
-        specifier: ^4.3.6
-        version: 4.3.6
       dotenv:
         specifier: ^16.1.0
         version: 16.1.0
@@ -47,9 +37,6 @@ importers:
       vitest:
         specifier: 0.31.1
         version: 0.31.1
-      zod:
-        specifier: ^3.21.4
-        version: 3.21.4
 
   apps/bam-otf-server:
     dependencies:
@@ -267,6 +254,12 @@ importers:
       '@bam-otf/react':
         specifier: workspace:*
         version: link:../../packages/bam-otf-react
+      '@bam-otf/utils':
+        specifier: workspace:^
+        version: link:../../packages/bam-otf-utils
+      '@t3-oss/env-nextjs':
+        specifier: ^0.6.0
+        version: 0.6.0(typescript@5.0.4)(zod@3.21.4)
       '@types/node':
         specifier: ^20.2.5
         version: 20.2.5
@@ -330,6 +323,9 @@ importers:
       typescript:
         specifier: ^5.0.4
         version: 5.0.4
+      zod:
+        specifier: ^3.21.4
+        version: 3.21.4
     devDependencies:
       '@types/hdkey':
         specifier: ^2.0.1
@@ -339,7 +335,7 @@ importers:
     dependencies:
       '@ts-rest/core':
         specifier: ^3.19.0
-        version: 3.19.0(zod@3.21.4)
+        version: 3.19.0
       axios:
         specifier: ^1.4.0
         version: 1.4.0
@@ -367,7 +363,7 @@ importers:
         version: link:../tsconfig
       tsup:
         specifier: ^6.7.0
-        version: 6.7.0(typescript@5.0.4)
+        version: 6.7.0(postcss@8.4.21)(typescript@4.9.4)
       typescript:
         specifier: ^5.0.4
         version: 5.0.4
@@ -437,7 +433,7 @@ importers:
         version: link:../tsconfig
       tsup:
         specifier: ^6.7.0
-        version: 6.7.0(typescript@5.0.4)
+        version: 6.7.0(postcss@8.4.21)(typescript@4.9.4)
 
   packages/eslint-config-custom:
     dependencies:
@@ -4304,7 +4300,18 @@ packages:
     dependencies:
       typescript: 5.0.4
       zod: 3.21.4
-    dev: true
+    dev: false
+
+  /@t3-oss/env-nextjs@0.6.0(typescript@5.0.4)(zod@3.21.4):
+    resolution: {integrity: sha512-SpzcGNIbUYcQw4zPPFeRJqCC1560zL7QmB0puIqOnuCsmykPkqHPX+n9CNZLXVQerboHzfvb7Kd+jAdouk72Vw==}
+    peerDependencies:
+      typescript: '>=4.7.2'
+      zod: ^3.0.0
+    dependencies:
+      '@t3-oss/env-core': 0.6.0(typescript@5.0.4)(zod@3.21.4)
+      typescript: 5.0.4
+      zod: 3.21.4
+    dev: false
 
   /@tanstack/react-table@8.9.1(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-yHs2m6lk5J5RNcu2dNtsDGux66wNXZjEgzxos6MRCX8gL+nqxeW3ZglqP6eANN0bGElPnjvqiUHGQvdACOr3Cw==}
@@ -4342,15 +4349,13 @@ packages:
     engines: {node: '>= 6'}
     dev: true
 
-  /@ts-rest/core@3.19.0(zod@3.21.4):
+  /@ts-rest/core@3.19.0:
     resolution: {integrity: sha512-ZWXH+g3Hp5poAxMh5Mx6NW9Dw3F3cc5+X3j5Igz0fRYULzBeUx83KUAEqHPmVXIU0Qurzc31qXoyrysm0sVYug==}
     peerDependencies:
       zod: ^3.0.0
     peerDependenciesMeta:
       zod:
         optional: true
-    dependencies:
-      zod: 3.21.4
     dev: false
 
   /@types/acorn@4.0.6:
@@ -5805,6 +5810,7 @@ packages:
   /connection-string@4.3.6:
     resolution: {integrity: sha512-dwaq4BMeiIIWry/oQxjstPB7Xp0K1nGjaY8p6PHQB+J9ZJuIvNp7ux3Noupq0hMd/dqEHXkfdmmGFOKTbGKWmw==}
     engines: {node: '>=12', npm: '>=6'}
+    dev: false
 
   /content-disposition@0.5.4:
     resolution: {integrity: sha512-FveZTNuGw04cxlAiWbzi6zTAL/lhehaWbTtgluJh4/E95DqMwTmha3KZN1aAWA8cFIhHzMZUvLevkw5Rqk+tSQ==}
@@ -11936,42 +11942,6 @@ packages:
       - ts-node
     dev: true
 
-  /tsup@6.7.0(typescript@5.0.4):
-    resolution: {integrity: sha512-L3o8hGkaHnu5TdJns+mCqFsDBo83bJ44rlK7e6VdanIvpea4ArPcU3swWGsLVbXak1PqQx/V+SSmFPujBK+zEQ==}
-    engines: {node: '>=14.18'}
-    hasBin: true
-    peerDependencies:
-      '@swc/core': ^1
-      postcss: ^8.4.12
-      typescript: '>=4.1.0'
-    peerDependenciesMeta:
-      '@swc/core':
-        optional: true
-      postcss:
-        optional: true
-      typescript:
-        optional: true
-    dependencies:
-      bundle-require: 4.0.1(esbuild@0.17.15)
-      cac: 6.7.14
-      chokidar: 3.5.3
-      debug: 4.3.4
-      esbuild: 0.17.15
-      execa: 5.1.1
-      globby: 11.1.0
-      joycon: 3.1.1
-      postcss-load-config: 3.1.4(postcss@8.4.21)
-      resolve-from: 5.0.0
-      rollup: 3.20.2
-      source-map: 0.8.0-beta.0
-      sucrase: 3.32.0
-      tree-kill: 1.2.2
-      typescript: 5.0.4
-    transitivePeerDependencies:
-      - supports-color
-      - ts-node
-    dev: true
-
   /tsutils@3.21.0(typescript@5.0.4):
     resolution: {integrity: sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==}
     engines: {node: '>= 6'}
@@ -12905,7 +12875,12 @@ packages:
 
   /zod@3.21.4:
     resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}
+    dev: false
 
   /zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
     dev: true
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false

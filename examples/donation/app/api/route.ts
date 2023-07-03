@@ -1,9 +1,8 @@
 import {bamotf} from '@/utils/bamotf'
+import {env} from '@/utils/env'
 import {pusherServer} from '@/utils/pusher.server'
 import {format, logger} from 'logger'
 import {NextResponse} from 'next/server'
-
-import {env} from '../../../../env/env'
 
 export async function POST(request: Request) {
   // FIX: rawBody is not raw exactly

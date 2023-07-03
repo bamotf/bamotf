@@ -49,7 +49,12 @@ type FormatOpts = {
   currency: Currency
 }
 
-export function format(opts: FormatOpts, locale?: string): string {
+export function format(locale: string, opts: FormatOpts): string
+export function format(opts: FormatOpts): string
+
+export function format(x: any, y?: any): string {
+  const locale = typeof x === 'string' ? x : 'en-US'
+  const opts = typeof x === 'string' ? y : x
   const {amount, currency} = opts
   const fractions = getFractionDigits(currency)
   const formatter = new Intl.NumberFormat(locale, {
@@ -58,9 +63,7 @@ export function format(opts: FormatOpts, locale?: string): string {
     ...fractions,
   })
 
-  const formattedAmount = formatter.format(
-    Number(toFraction({amount, currency})),
-  )
+  const formattedAmount = formatter.format(toFraction({amount, currency}))
 
   return formattedAmount
 }
@@ -70,13 +73,18 @@ type FractionOpts = {
   currency: Currency
 }
 
-export function toFraction(opts: FractionOpts): number {
+/**
+ * Converts a bigint amount to a fraction based on the currency decimal places
+ *
+ * @param opts
+ * @returns
+ */
+export function toFraction(opts: FractionOpts) {
   const {amount, currency} = opts
   const {maximumFractionDigits} = getFractionDigits(currency)
 
-  const fractionMultiplier = BigInt(10) ** BigInt(maximumFractionDigits)
-  const fraction =
-    Number(amount.toString()) / Number(fractionMultiplier.toString())
+  const fractionMultiplier = 10 ** maximumFractionDigits
+  const fraction = Number(amount.toString()) / fractionMultiplier
 
   return fraction
 }
