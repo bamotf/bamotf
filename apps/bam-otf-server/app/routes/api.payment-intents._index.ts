@@ -10,8 +10,8 @@ import {
   getDescriptor,
 } from '~/utils/bitcoin-core'
 import {createContract} from '~/utils/contract'
+import {env} from '~/utils/env.server'
 import {prisma} from '~/utils/prisma.server'
-import {env} from '../../../../env/env'
 
 export const contract = createContract({
   action: {

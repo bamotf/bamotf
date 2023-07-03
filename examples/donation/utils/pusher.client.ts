@@ -1,8 +1,9 @@
 /* eslint-disable turbo/no-undeclared-env-vars */
 import PusherClient from 'pusher-js'
 
-import {env} from '../../../env/env'
-
-export const pusherClient = new PusherClient(env.NEXT_PUBLIC_PUSHER_KEY!, {
-  cluster: env.NEXT_PUBLIC_PUSHER_CLUSTER!,
-})
+export const pusherClient = new PusherClient(
+  process.env.NEXT_PUBLIC_PUSHER_KEY!,
+  {
+    cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
+  },
+)

@@ -85,4 +85,4 @@ const envSchema = z.object({
 /**
  * Environment variables that are required for the server to run
  */
-const env = envSchema.parse(process.env)
+export const env = envSchema.parse(process.env)

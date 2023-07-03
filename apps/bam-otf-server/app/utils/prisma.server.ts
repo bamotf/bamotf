@@ -1,6 +1,6 @@
 import {format, logger} from 'logger'
 
-import {env} from '../../../../env/env'
+import {env} from './env.server'
 import {PrismaClient} from '.prisma/client'
 
 // export all types from from prisma client
