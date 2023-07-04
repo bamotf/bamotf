@@ -254,39 +254,18 @@ importers:
       '@t3-oss/env-nextjs':
         specifier: ^0.6.0
         version: 0.6.0(typescript@5.0.4)(zod@3.21.4)
-      '@types/node':
-        specifier: ^20.2.5
-        version: 20.2.5
-      '@types/react':
-        specifier: 18.2.11
-        version: 18.2.11
-      '@types/react-dom':
-        specifier: 18.2.4
-        version: 18.2.4
       '@vercel/kv':
         specifier: ^0.2.1
         version: 0.2.1(encoding@0.1.13)
       autoprefixer:
         specifier: 10.4.14
         version: 10.4.14(postcss@8.4.24)
-      bip32:
-        specifier: ^4.0.0
-        version: 4.0.0
-      bitcoinjs-lib:
-        specifier: ^6.1.1
-        version: 6.1.1
-      bs58:
-        specifier: ^5.0.0
-        version: 5.0.0
       encoding:
         specifier: ^0.1.13
         version: 0.1.13
       eslint-config-custom:
         specifier: workspace:*
         version: link:../../packages/eslint-config-custom
-      hdkey:
-        specifier: ^2.1.0
-        version: 2.1.0
       logger:
         specifier: workspace:*
         version: link:../../packages/logger
@@ -302,9 +281,6 @@ importers:
       pusher-js:
         specifier: ^8.1.0
         version: 8.1.0
-      qrcode.react:
-        specifier: ^3.1.0
-        version: 3.1.0(react@18.2.0)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -321,9 +297,15 @@ importers:
         specifier: ^3.21.4
         version: 3.21.4
     devDependencies:
-      '@types/hdkey':
-        specifier: ^2.0.1
-        version: 2.0.1
+      '@types/node':
+        specifier: ^20.2.5
+        version: 20.2.5
+      '@types/react':
+        specifier: 18.2.11
+        version: 18.2.11
+      '@types/react-dom':
+        specifier: 18.2.4
+        version: 18.2.4
 
   packages/bam-otf-node:
     dependencies:
@@ -4248,10 +4230,6 @@ packages:
     resolution: {integrity: sha512-sXo/qW2/pAcmT43VoRKOJbDOfV3cYpq3szSVfIThQXNt+E4DfKj361vaAt3c88U5tPUxzEswam7GW48PJqtKAg==}
     dev: false
 
-  /@scure/base@1.1.1:
-    resolution: {integrity: sha512-ZxOhsSyxYwLJj3pLZCefNitxsj093tb2vq90mp2txoYeBqbcjDjqFhyM8eUjq/uFm6zJ+mUuqxlS2FkuSY1MTA==}
-    dev: false
-
   /@sindresorhus/is@4.6.0:
     resolution: {integrity: sha512-t09vSN3MdfsyCHoFcTRCH/iUtG7OJ0CsjzB8cjAmKc/va/kIgeDI/TxsigdncE/4be734m0cvIYwNaV4i2XqAw==}
     engines: {node: '>=10'}
@@ -5234,16 +5212,6 @@ packages:
   /bip174@2.1.0:
     resolution: {integrity: sha512-lkc0XyiX9E9KiVAS1ZiOqK1xfiwvf4FXDDdkDq5crcDzOq+xGytY+14qCsqz7kCiy8rpN1CRNfacRhf9G3JNSA==}
     engines: {node: '>=8.0.0'}
-    dev: false
-
-  /bip32@4.0.0:
-    resolution: {integrity: sha512-aOGy88DDlVUhspIXJN+dVEtclhIsfAUppD43V0j40cPTld3pv/0X/MlrZSZ6jowIaQQzFwP8M6rFU2z2mVYjDQ==}
-    engines: {node: '>=6.0.0'}
-    dependencies:
-      '@noble/hashes': 1.3.0
-      '@scure/base': 1.1.1
-      typeforce: 1.18.0
-      wif: 2.0.6
     dev: false
 
   /bitcoinjs-lib@6.1.1:
@@ -10507,6 +10475,7 @@ packages:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
       react: 18.2.0
+    dev: true
 
   /qs@6.11.0:
     resolution: {integrity: sha512-MvjoMCJwEarSbUYk5O+nmoSzSutSsTwF85zcHPQ9OrlFoZOYIjaqBAJIqIXjptyD5vThxGq52Xu/MaJzRkIk4Q==}
