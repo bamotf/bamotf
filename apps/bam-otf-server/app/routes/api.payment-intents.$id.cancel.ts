@@ -38,7 +38,6 @@ export async function action({request, params}: LoaderArgs) {
 
   return typedjson({
     ...pi,
-    amount: pi.amount.toNumber(),
     tolerance: pi.tolerance.toNumber(),
   })
 }

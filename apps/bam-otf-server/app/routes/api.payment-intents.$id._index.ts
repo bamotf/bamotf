@@ -32,7 +32,6 @@ export async function loader({request, params}: LoaderArgs) {
 
   return typedjson({
     ...paymentIntent,
-    amount: paymentIntent.amount.toNumber(),
     tolerance: paymentIntent.tolerance.toNumber(),
   })
 }
@@ -63,7 +62,6 @@ export async function action({request, params}: LoaderArgs) {
 
   return typedjson({
     ...paymentIntent,
-    amount: paymentIntent.amount.toNumber(),
     tolerance: paymentIntent.tolerance.toNumber(),
   })
 }

@@ -8,7 +8,7 @@ import {Formatter} from '../formatter'
 
 type Data = {
   id: string
-  amount: number
+  amount: bigint
   address: string
   status: PaymentIntentStatus
   currency: string

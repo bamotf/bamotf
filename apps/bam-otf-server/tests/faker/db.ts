@@ -1,5 +1,5 @@
-import type {CurrencyCode} from '~/config/currency'
 import {prisma} from '~/utils/prisma.server'
+import type {CurrencyCode} from '../../../../config/currency'
 import {createRandomAddress} from './bitcoin'
 
 /**

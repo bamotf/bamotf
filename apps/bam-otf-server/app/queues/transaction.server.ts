@@ -1,11 +1,12 @@
+import {currency} from '@bam-otf/utils'
 import {UnrecoverableError} from 'bullmq'
 import {format, logger} from 'logger'
 
-import type {FiatCurrencyCode} from '~/config/currency'
 import {listUnspent} from '~/utils/bitcoin-core'
 import {getCurrencyValueFromSatoshis} from '~/utils/price'
-import {Prisma, prisma, type Transaction} from '~/utils/prisma.server'
+import {prisma, type Prisma, type Transaction} from '~/utils/prisma.server'
 import {createQueue} from '~/utils/queue.server'
+import type {FiatCurrencyCode} from '../../../../config/currency'
 import {queue as webhookQueue} from './webhook.server'
 
 type QueueData = {
@@ -53,7 +54,7 @@ export const queue = createQueue<QueueData>(
     // Update the local database with transaction history
     const savedTransactions = await Promise.all(
       transactions.map(async tx => {
-        const amount = tx.amount
+        const amount = BigInt(tx.amount * 1e8)
 
         // If the currency is BTC, we don't need to convert the amount
         // because it's already in satoshis
@@ -206,8 +207,8 @@ function getTotal(
   key: 'amount' | 'originalAmount' = 'amount',
 ) {
   return transactions.reduce(
-    (acc, tx) => acc.add(tx[key] || 0),
-    new Prisma.Decimal(0),
+    (acc, tx) => acc + (tx[key] || BigInt(0)),
+    BigInt(0),
   )
 }
 
@@ -222,22 +223,23 @@ function isPaymentIntentPaid({
 }: {
   amountReceived: ReturnType<typeof getTotalTransferred>
   currency: string
-  amountRequested: Prisma.Decimal
+  amountRequested: bigint
   tolerance: Prisma.Decimal
 }) {
   // If the payment intent is in BTC, we can simply compare the amount received
   // to the amount requested
   if (currency === 'BTC') {
-    return amountReceived.btc.confirmed.gte(amountRequested)
+    return amountReceived.btc.confirmed >= amountRequested
   }
 
   // Subtract the tolerance from 1 to get the percentage of the amount requested
   // that we can consider as paid
-  const acceptablePercentage = new Prisma.Decimal(1).sub(tolerance)
+  const acceptablePercentage = 1 - tolerance.toNumber()
 
   // If the PI is in FIAT, we need check if the amount when user first sent the
   // payment is somewhat close to the amount requested
-  return amountReceived.fiat.confirmed.gte(
-    amountRequested.mul(acceptablePercentage),
+  return (
+    amountReceived.fiat.confirmed >=
+    Number(amountRequested) * acceptablePercentage
   )
 }

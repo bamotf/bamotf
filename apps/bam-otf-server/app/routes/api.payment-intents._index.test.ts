@@ -40,6 +40,7 @@ test.describe('[POST] /api/payment-intents', () => {
         expect.objectContaining({
           id: expect.any(String),
           ...data,
+          amount: data.amount.toString(),
         }),
       )
       expect(webhook?.onServerCalled()).toBeTruthy()
@@ -84,7 +85,7 @@ test.describe('[POST] /api/payment-intents', () => {
               transactions: expect.arrayContaining([
                 expect.objectContaining({
                   id: expect.any(String),
-                  amount,
+                  amount: amount.toString(),
                   confirmations: 1,
                 }),
               ]),
@@ -122,7 +123,7 @@ test.describe('[POST] /api/payment-intents', () => {
       })
 
       const amountToPay = await getBtcAmountFromFiat({
-        amount,
+        amount: amount as bigint,
         currency,
       })
 
@@ -143,9 +144,9 @@ test.describe('[POST] /api/payment-intents', () => {
               status: 'succeeded',
               transactions: expect.arrayContaining([
                 expect.objectContaining({
-                  amount: amountToPay,
+                  amount: amountToPay.toString(),
                   // TODO: this should be the original amount at the time of the payment
-                  originalAmount: expect.any(Number),
+                  originalAmount: expect.any(String),
                 }),
               ]),
             }),
@@ -155,8 +156,8 @@ test.describe('[POST] /api/payment-intents', () => {
 
       expect(
         // @ts-ignore
-        payload.data.paymentIntent.transactions[0].originalAmount,
-      ).toBeGreaterThan(amount * tolerance)
+        Number(payload.data.paymentIntent.transactions[0].originalAmount),
+      ).toBeGreaterThan(Number(amount) * tolerance)
     })
 
     test('should accept payments after some payments have not been completed', async ({
@@ -205,7 +206,7 @@ test.describe('[POST] /api/payment-intents', () => {
               transactions: expect.arrayContaining([
                 expect.objectContaining({
                   id: expect.any(String),
-                  amount: lastPaymentIntent.amount,
+                  amount: lastPaymentIntent.amount.toString(),
                   confirmations: 1,
                 }),
               ]),
@@ -256,7 +257,7 @@ test.describe('[GET] /api/payment-intents', () => {
         data: expect.arrayContaining([
           expect.objectContaining({
             id: expect.any(String),
-            amount: amount.toNumber(),
+            amount: amount.toString(),
           }),
         ]),
         total: 1,

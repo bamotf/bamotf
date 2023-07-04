@@ -1,9 +1,9 @@
+import type {Prisma} from '~/utils/prisma.server'
 import {
   CURRENCY_CODES,
   FIAT_CURRENCY_CODES,
   type CurrencyCode,
-} from '~/config/currency'
-import type {Prisma} from '~/utils/prisma.server'
+} from '../../../../config/currency'
 import faker from './index'
 
 export function currency() {
@@ -16,7 +16,7 @@ export function fiat() {
 
 export function paymentIntent(
   props: {
-    amount?: number
+    amount?: bigint
     address?: string
     currency?: CurrencyCode
     description?: string
@@ -30,12 +30,11 @@ export function paymentIntent(
     tolerance = 0.02,
     // amount in BTC is much less because I haven't implemented the auto-mining when out of funds
     // on the simulatePayment function
-    amount = faker.number.float({
+    amount = faker.number.int({
       // btcoind has a minimum of 1000 satoshis
       min: 1000,
       max: 10000,
-      precision: 8,
-    }) / 1e8,
+    }),
   } = props
 
   if (chosenCurrency !== 'BTC') {
@@ -43,7 +42,7 @@ export function paymentIntent(
     // depending on the currency selected and the payment will fail
     // chosenCurrency = fiat()
     chosenCurrency = 'USD'
-    amount = faker.number.float({min: 100, max: 200, precision: 2})
+    amount = faker.number.int({min: 10000, max: 20000})
   }
 
   return {

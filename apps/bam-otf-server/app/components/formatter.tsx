@@ -1,4 +1,4 @@
-import type {CurrencyCode} from '~/config/currency'
+import type {CurrencyCode} from '../../../../config/currency'
 
 /**
  * Formats a date or an amount of money.
@@ -7,7 +7,7 @@ export function Formatter(
   props:
     | {date: Date}
     | {
-        amount: number
+        amount: bigint
         currency: CurrencyCode | string
       },
 ) {
