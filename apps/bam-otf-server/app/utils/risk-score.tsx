@@ -1,20 +1,14 @@
-import type {CurrencyCode, FiatCurrencyCode} from '~/config/currency'
-import type {Prisma} from '~/utils/prisma.server'
-import {getBtcAmountFromFiat} from './price'
+import type {Transaction} from '~/utils/prisma.server'
+import type {CurrencyCode} from '../../../../config/currency'
 
-interface BitcoinTransaction {
-  confirmations: number
-  amount: Prisma.Decimal
-}
-
-function getSafeConfirmations(amount: number): number {
-  if (amount <= 0.001) {
+function getSafeConfirmations(amount: bigint): number {
+  if (amount <= 100000) {
     // 0.001 BTC is a small amount, so 0 confirmations is considered safe
     return 0
-  } else if (amount <= 0.01) {
+  } else if (amount <= 1000000) {
     // 0.01 BTC is a moderate amount, so 1 confirmation is considered safe
     return 1
-  } else if (amount <= 1) {
+  } else if (amount <= 100000000) {
     // 1 BTC is a large amount, so 3 confirmations is considered safe
     return 3
   } else {
@@ -29,20 +23,12 @@ export async function calculateRiskScore({
   transactions,
   confirmations,
 }: {
-  amount: Prisma.Decimal
+  amount: bigint
   confirmations: number
-  currency: CurrencyCode | string
-  transactions: BitcoinTransaction[]
+  currency: CurrencyCode
+  transactions: Transaction[]
 }): Promise<number> {
-  const amountInBTC =
-    currency === 'BTC'
-      ? amount.toNumber()
-      : await getBtcAmountFromFiat({
-          amount: amount.toNumber(),
-          currency: currency as FiatCurrencyCode,
-        })
-
-  const safeConfirmations = getSafeConfirmations(amountInBTC)
+  const safeConfirmations = getSafeConfirmations(amount)
   const numberOfFactors = 2
 
   if (safeConfirmations === 0) {
@@ -79,10 +65,8 @@ export async function calculateRiskScore({
     // For example, if the expected amount is 1 BTC, and the transaction
     // amount is 0.9 BTC, then the risk score is 0.1.
     // If the transaction amount is 0 BTC, then the risk score is 1.
-    const amountDifference = Math.abs(
-      amountInBTC - transaction.amount.toNumber(),
-    )
-    const amountFactor = amountDifference / amountInBTC
+    const amountDifference = Math.abs(Number(amount - transaction.amount))
+    const amountFactor = amountDifference / Number(amount)
     return {confirmationFactor, amountFactor}
   })
 

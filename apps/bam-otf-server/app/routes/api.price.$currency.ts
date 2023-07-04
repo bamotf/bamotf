@@ -1,9 +1,9 @@
 import {json, type LoaderArgs} from '@remix-run/node'
 
-import {FIAT_CURRENCY_CODES} from '~/config/currency'
 import {createContract} from '~/utils/contract'
 import {getBitcoinPrice} from '~/utils/price'
 import {z} from '~/utils/zod'
+import {FIAT_CURRENCY_CODES} from '../../../../config/currency'
 
 export const contract = createContract({
   loader: {

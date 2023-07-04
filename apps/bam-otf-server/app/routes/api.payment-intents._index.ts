@@ -29,11 +29,7 @@ export async function loader({request}: LoaderArgs) {
   const [paymentIntents, total] = await listPaymentIntents()
 
   return typedjson({
-    data: paymentIntents.map(pi => ({
-      ...pi,
-      amount: pi.amount.toNumber(),
-      tolerance: pi.tolerance.toNumber(),
-    })),
+    data: paymentIntents,
     total,
   })
 }
@@ -87,7 +83,6 @@ export async function action({request}: LoaderArgs) {
 
   return typedjson({
     ...pi,
-    amount: pi.amount.toNumber(),
     tolerance: pi.tolerance.toNumber(),
   })
 }

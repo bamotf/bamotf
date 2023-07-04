@@ -1,8 +1,8 @@
 import {zpu, type Schema} from 'zod-prisma-utils'
 
-import {CURRENCY_CODES} from '~/config/currency'
 import {Prisma, type PaymentIntent} from '~/utils/prisma.server'
 import {z} from '~/utils/zod'
+import {CURRENCY_CODES} from '../../../../config/currency'
 
 type SchemaType = Schema<PaymentIntent, 'createdAt' | 'updatedAt'>
 
@@ -18,12 +18,7 @@ export const PaymentIntentSchema = z.object({
   /**
    * The amount the user needs to pay
    */
-  amount: z.coerce
-    .number()
-    // TODO: this is a bug in zod-prisma-utils
-    .transform(v => new Prisma.Decimal(v)) as unknown as ReturnType<
-    typeof zpu.decimal
-  >,
+  amount: z.coerce.bigint(),
   confirmations: z.coerce.number().default(1),
   tolerance: z.coerce
     .number()
