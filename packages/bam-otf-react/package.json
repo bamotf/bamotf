@@ -10,11 +10,13 @@
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.js"
     },
     "./styles.css": "./dist/styles.css"
   },
+  "files": [
+    "dist/**"
+  ],
   "license": "MIT",
   "scripts": {
     "build": "tsup",
