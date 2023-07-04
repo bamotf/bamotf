@@ -6,7 +6,7 @@ const STRING_REQUIRED = z.string().min(1, 'Required')
 
 export const env = createEnv({
   server: {
-    BAMOTF_API_KEY: STRING_REQUIRED,
+    API_KEY: STRING_REQUIRED,
     BAMOTF_SERVER_URL: STRING_REQUIRED.url(),
     NODE_ENV: z
       .enum(['development', 'production', 'test'])
