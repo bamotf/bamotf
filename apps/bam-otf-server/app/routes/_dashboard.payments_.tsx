@@ -20,7 +20,6 @@ export async function loader({request}: LoaderArgs) {
   return typedjson({
     data: paymentIntents.map(pi => ({
       ...pi,
-      amount: pi.amount.toNumber(),
       tolerance: pi.tolerance.toNumber(),
     })),
     total,

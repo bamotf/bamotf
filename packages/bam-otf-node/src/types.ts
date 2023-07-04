@@ -2,7 +2,7 @@
 // import type * as specific from 'bam-otf-server/app/routes/api.payment-intents.$id._index'
 // import type * as cancel from 'bam-otf-server/app/routes/api.payment-intents.$id.cancel'
 
-import type {CurrencyCode} from 'bam-otf-server/app/config/currency'
+import type {CurrencyCode} from '../../../config/currency'
 
 export const paymentIntentStatus = {
   pending: 'pending',

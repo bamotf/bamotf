@@ -1,6 +1,7 @@
 import React from 'react'
 import {currency as currencyUtil} from '@bam-otf/utils'
 
+import type {CurrencyCode} from '../../../config/currency'
 import {CopyableAddress} from './copyable-address'
 import {CopyableAmount} from './copyable-amount'
 import {QRCode, type QRCodeProps} from './qr-code'
@@ -22,7 +23,7 @@ interface PaymentIntentProps {
   intent: {
     address: string
     amount: bigint
-    currency: currencyUtil.Currency
+    currency: CurrencyCode
   }
 
   /**

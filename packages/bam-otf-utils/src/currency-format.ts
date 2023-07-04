@@ -1,56 +1,8 @@
-// TODO: move this to a config file
-
-export type Currency =
-  | 'BTC'
-  | 'USD'
-  | 'BRL'
-  | 'AED'
-  | 'AUD'
-  | 'BHD'
-  | 'BMD'
-  | 'CAD'
-  | 'CHF'
-  | 'CLP'
-  | 'CZK'
-  | 'DKK'
-  | 'EUR'
-  | 'GBP'
-  | 'HKD'
-  | 'HUF'
-  | 'IDR'
-  | 'ILS'
-  | 'INR'
-  | 'KRW'
-  | 'LKR'
-  | 'MXN'
-  | 'MYR'
-  | 'NGN'
-  | 'NOK'
-  | 'NZD'
-  | 'PHP'
-  | 'PKR'
-  | 'PLN'
-  | 'RUB'
-  | 'SAR'
-  | 'SEK'
-  | 'SGD'
-  | 'THB'
-  | 'TRY'
-  | 'TWD'
-  | 'ZAR'
-  | 'JPY'
-  | 'MMK'
-  | 'VND'
-  | 'BDT'
-  | 'KWD'
+import type {CurrencyCode, FiatCurrencyCode} from '../../../config/currency'
 
 type FormatOpts = {
   amount: bigint
-  currency: Currency
-  /**
-   * The style in which to format the currency
-   * @default 'currency'
-   */
+  currency: CurrencyCode
   style?: 'currency' | 'decimal'
 }
 
@@ -58,7 +10,7 @@ export function format(locale: string, opts: FormatOpts): string
 export function format(opts: FormatOpts): string
 
 /**
- * Formats a currency amount based on the locale and currency
+ * Format a currency amount visually
  */
 export function format(x: any, y?: any): string {
   const locale = typeof x === 'string' ? x : 'en-US'
@@ -78,7 +30,7 @@ export function format(x: any, y?: any): string {
 
 type FractionOpts = {
   amount: bigint
-  currency: Currency
+  currency: CurrencyCode
 }
 
 /**
@@ -98,18 +50,18 @@ export function toFraction(opts: FractionOpts) {
 }
 
 /**
- * Gets the minimum and maximum fraction digits for a given currency
+ * Returns the minimum and maximum fraction digits for a given currency
  *
- * @param currency 3-letters currency code
+ * @param currency Currency code
  * @returns
  */
-export function getFractionDigits(currency: Currency): {
+export function getFractionDigits(currency: CurrencyCode): {
   minimumFractionDigits: number
   maximumFractionDigits: number
 } {
-  const currenciesWithZeroDecimals: Currency[] = ['JPY', 'MMK', 'VND']
-  const currenciesWithThreeDecimals: Currency[] = ['BDT']
-  const currenciesWithVariableDecimals: Currency[] = ['KWD']
+  const currenciesWithZeroDecimals: CurrencyCode[] = ['JPY', 'MMK', 'VND']
+  const currenciesWithThreeDecimals: CurrencyCode[] = ['BDT']
+  const currenciesWithVariableDecimals: CurrencyCode[] = ['KWD']
 
   if (currency === 'BTC') {
     return {
@@ -144,4 +96,54 @@ export function getFractionDigits(currency: Currency): {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }
+}
+
+/**
+ * Calculate the number of satoshis are equally a given amount of fiat
+ */
+export function convertToSats(opts: {
+  /**
+   * Amount of fiat
+   */
+  amount: bigint
+  currency: FiatCurrencyCode
+  /**
+   * The price of 1 BTC in the given currency (this comes from the price API)
+   * This comes fractionated.
+   */
+  price: number
+}) {
+  const {currency, amount, price} = opts
+  const {maximumFractionDigits} = getFractionDigits(currency)
+
+  // Convert the price to an integer to avoid floating point errors
+  const fractionMultiplier = 10 ** maximumFractionDigits
+  const priceInInt = Math.ceil(price * fractionMultiplier)
+
+  return BigInt(Math.round((Number(amount) / priceInInt) * 1e8))
+}
+
+/**
+ * Calculate the amount of fiat that is equally a given number of satoshis
+ */
+export function convertFromSats(opts: {
+  /**
+   * Amount of satoshis
+   */
+  amount: bigint
+  currency: FiatCurrencyCode
+  /**
+   * The price of 1 BTC in the given currency (this comes from the price API)
+   * This comes fractionated.
+   */
+  price: number
+}) {
+  const {currency, amount, price} = opts
+  const {maximumFractionDigits} = getFractionDigits(currency)
+
+  // Convert the price to an integer to avoid floating point errors
+  const fractionMultiplier = 10 ** maximumFractionDigits
+  const priceInInt = Math.ceil(price * fractionMultiplier)
+
+  return BigInt(Math.round((Number(amount) * priceInInt) / 1e8))
 }

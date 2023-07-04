@@ -1,4 +1,6 @@
-import type {FiatCurrencyCode} from '~/config/currency'
+import {currency as currencyUtil} from '@bam-otf/utils'
+
+import type {FiatCurrencyCode} from '../../../../config/currency'
 import {env} from './env.server'
 
 type CurrencyData = {
@@ -62,7 +64,9 @@ export const getBitcoinPrice = async (currencyCode: FiatCurrencyCode) => {
   if (!priceData) {
     throw new Error(`No price data for ${currencyCode}`)
   }
-  return Math.round(priceData.price * 100) / 100
+  const {maximumFractionDigits} = currencyUtil.getFractionDigits(currencyCode)
+  const fractionMultiplier = 10 ** maximumFractionDigits
+  return Math.round(priceData.price * fractionMultiplier) / fractionMultiplier
 }
 
 function getData(): Promise<PriceAPIDataObject> {
@@ -72,7 +76,7 @@ function getData(): Promise<PriceAPIDataObject> {
 
 type FiatPrice = {
   currency: FiatCurrencyCode
-  amount: number
+  amount: bigint
 }
 
 /**
@@ -80,7 +84,11 @@ type FiatPrice = {
  */
 export const getBtcAmountFromFiat = async ({currency, amount}: FiatPrice) => {
   const price = await getBitcoinPrice(currency)
-  return Math.round((amount / price) * 1e8) / 1e8
+  return currencyUtil.convertToSats({
+    price,
+    amount,
+    currency,
+  })
 }
 
 /**
@@ -91,5 +99,9 @@ export const getCurrencyValueFromSatoshis = async ({
   amount,
 }: FiatPrice) => {
   const price = await getBitcoinPrice(currency)
-  return Math.round(price * amount * 100) / 100
+  return currencyUtil.convertFromSats({
+    price,
+    amount,
+    currency,
+  })
 }

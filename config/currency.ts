@@ -11,7 +11,6 @@ export const FIAT_CURRENCY_CODES = [
   'CAD',
   'CHF',
   'CLP',
-  'CNY',
   'CZK',
   'DKK',
   'EUR',

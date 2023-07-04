@@ -2,6 +2,8 @@ import React from 'react'
 import {env} from '@/utils/env'
 import {PaymentIntent} from '@bam-otf/react'
 
+import type {CurrencyCode} from '../../../../config/currency'
+
 export async function PaymentInformation({
   id,
   amount,
@@ -11,7 +13,7 @@ export async function PaymentInformation({
   id: string
   amount: bigint
   address: string
-  currency: string
+  currency: CurrencyCode
 }) {
   const developmentUrl = `http://localhost:4000/${id}`
   const productionUrl = `${env.VERCEL_URL!}/${id}`

@@ -5,6 +5,7 @@
  * It's a good idea to replace this with a library that supports TypeScript.
  */
 
+import {currency} from '@bam-otf/utils'
 import {fetch} from '@remix-run/node'
 import {format, logger} from 'logger'
 
@@ -202,17 +203,14 @@ export async function simulatePayment({
   /**
    * Amount in satoshis
    */
-  amount: Prisma.Decimal | number
+  amount: bigint | number
 }) {
   if (env.NODE_ENV === 'production') {
     throw new Error('Cannot simulate payment in production')
   }
 
-  // if amotun is decimal, convert to number
-  const amount =
-    typeof providedAmount === 'number'
-      ? providedAmount
-      : providedAmount.toNumber()
+  const convertedAmount = BigInt(providedAmount)
+  const amount = currency.toFraction({amount: convertedAmount, currency: 'BTC'})
 
   logger.silly(
     `🟠 Simulating payment of ${format.yellow(

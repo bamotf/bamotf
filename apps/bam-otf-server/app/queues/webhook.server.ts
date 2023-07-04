@@ -47,12 +47,12 @@ export const queue = createQueue<QueueData>(
       data: {
         paymentIntent: {
           ...paymentIntent,
-          amount: paymentIntent.amount.toNumber(),
+          amount: paymentIntent.amount.toString(),
           tolerance: paymentIntent.tolerance.toNumber(),
           transactions: paymentIntent.transactions.map(tx => ({
             ...tx,
-            amount: tx.amount.toNumber(),
-            originalAmount: tx.originalAmount?.toNumber(),
+            amount: tx.amount.toString(),
+            originalAmount: tx.originalAmount?.toString(),
           })),
         },
       },

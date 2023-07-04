@@ -14,6 +14,7 @@ import {createContract} from '~/utils/contract'
 import {cn} from '~/utils/css'
 import {prisma, type LogType} from '~/utils/prisma.server'
 import {calculateRiskScore} from '~/utils/risk-score'
+import type {CurrencyCode} from '../../../../config/currency'
 
 export const meta: V2_MetaFunction = ({params, data}) => {
   return [{title: `Payment ${params.id}`}]
@@ -48,20 +49,14 @@ export async function loader({params, request}: LoaderArgs) {
   const riskScore = await calculateRiskScore({
     amount: paymentIntent.amount,
     confirmations: paymentIntent.confirmations,
-    currency: paymentIntent.currency,
+    currency: paymentIntent.currency as CurrencyCode,
     transactions: paymentIntent.transactions,
   })
 
   return typedjson({
     ...paymentIntent,
-    amount: paymentIntent.amount.toNumber(),
     tolerance: paymentIntent.tolerance.toNumber(),
     riskScore,
-    transactions: paymentIntent.transactions.map(transaction => ({
-      ...transaction,
-      amount: transaction.amount.toNumber(),
-      originalAmount: transaction.originalAmount?.toNumber(),
-    })),
   })
 }
 
