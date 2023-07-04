@@ -1,5 +1,6 @@
 import axios, {type AxiosInstance} from 'axios'
 
+import * as address from './address'
 import type {BamOtfConfig} from './config'
 import {UnauthorizedError} from './errors'
 import {parse} from './parse'
@@ -17,6 +18,7 @@ export class BamOtf {
   private config: BamOtfConfig
   private client: AxiosInstance
   public webhooks = webhooks
+  public address = address
 
   constructor(apiKey: string, config?: BamOtfConfig) {
     const {

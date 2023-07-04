@@ -12,9 +12,10 @@
     "test:integration:watch": "vitest"
   },
   "devDependencies": {
+    "@types/hdkey": "^2.0.1",
     "bam-otf-server": "workspace:*",
-    "eslint": "^7.32.0",
     "eslint-config-custom": "workspace:*",
+    "eslint": "^7.32.0",
     "logger": "workspace:*",
     "msw": "^1.2.1",
     "tsconfig": "workspace:*",
@@ -22,8 +23,9 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@ts-rest/core": "^3.19.0",
     "axios": "^1.4.0",
+    "bitcoinjs-lib": "^6.1.1",
+    "hdkey": "^2.1.0",
     "secure-webhooks": "^0.3.0"
   }
 }
