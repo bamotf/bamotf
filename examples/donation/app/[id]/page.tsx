@@ -1,7 +1,7 @@
 import {bamotf} from '@/utils/bamotf'
 import {notFound} from 'next/navigation'
 
-import {Subscribe} from './subscribe'
+import {PaymentFlow} from './payment-flow'
 
 export default async function DonationStatusPage({
   params,
@@ -16,7 +16,7 @@ export default async function DonationStatusPage({
 
   return (
     <div className="">
-      <Subscribe paymentIntent={pi} />
+      <PaymentFlow paymentIntent={pi} />
     </div>
   )
 }

@@ -6,7 +6,11 @@ import type {PaymentIntent, PaymentIntentStatus} from '@bam-otf/node'
 
 import {PaymentInformation} from './payment-information'
 
-export function Subscribe({paymentIntent: pi}: {paymentIntent: PaymentIntent}) {
+export function PaymentFlow({
+  paymentIntent: pi,
+}: {
+  paymentIntent: PaymentIntent
+}) {
   const [status, setStatus] = useState<PaymentIntentStatus>(pi.status)
 
   useEffect(() => {
@@ -34,7 +38,7 @@ export function Subscribe({paymentIntent: pi}: {paymentIntent: PaymentIntent}) {
   }, [pi.id])
 
   const views = {
-    // @ts-ignore - Async component
+    // @ts-expect-error - Async component
     pending: <PaymentInformation {...pi} />,
     processing: <>processing</>,
     succeeded: <>succeeded</>,
