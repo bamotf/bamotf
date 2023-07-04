@@ -1,5 +1,4 @@
 import React from 'react'
-import {currency} from '@bam-otf/utils'
 import {QRCodeSVG} from 'qrcode.react'
 
 export type QRCodeProps = {
@@ -9,13 +8,13 @@ export type QRCodeProps = {
   address: string
 
   /**
-   * The amount to be received in satoshis
+   * The amount to be received in Bitcoins
    * @example
-   * 10_00_000_000 // 10 BTC
+   * 10.00_000_000 // 10 BTC
    * 100000000 // 1 BTC
-   * 10000000 // 0.1 BTC
+   * 0.10000000 // 0.1 BTC
    */
-  amount: bigint
+  amount: number
 
   /**
    * The URL to redirect to after the payment is complete
@@ -41,9 +40,7 @@ export function QRCode({
   message,
   redirectUrl,
 }: QRCodeProps) {
-  const btcAmount = currency.toFraction({amount, currency: 'BTC'})
-
-  let url = `bitcoin:${address}?amount=${btcAmount}`
+  let url = `bitcoin:${address}?amount=${amount}`
 
   if (label) {
     url += `&label=${encodeURIComponent(label)}`

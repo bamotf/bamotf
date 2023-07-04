@@ -1,6 +1,6 @@
 // TODO: move this to a config file
 
-type Currency =
+export type Currency =
   | 'BTC'
   | 'USD'
   | 'BRL'
@@ -47,18 +47,26 @@ type Currency =
 type FormatOpts = {
   amount: bigint
   currency: Currency
+  /**
+   * The style in which to format the currency
+   * @default 'currency'
+   */
+  style?: 'currency' | 'decimal'
 }
 
 export function format(locale: string, opts: FormatOpts): string
 export function format(opts: FormatOpts): string
 
+/**
+ * Formats a currency amount based on the locale and currency
+ */
 export function format(x: any, y?: any): string {
   const locale = typeof x === 'string' ? x : 'en-US'
-  const opts = typeof x === 'string' ? y : x
-  const {amount, currency} = opts
+  const opts: FormatOpts = typeof x === 'string' ? y : x
+  const {amount, currency, style = 'currency'} = opts
   const fractions = getFractionDigits(currency)
   const formatter = new Intl.NumberFormat(locale, {
-    style: 'currency',
+    style,
     currency,
     ...fractions,
   })
@@ -84,11 +92,17 @@ export function toFraction(opts: FractionOpts) {
   const {maximumFractionDigits} = getFractionDigits(currency)
 
   const fractionMultiplier = 10 ** maximumFractionDigits
-  const fraction = Number(amount.toString()) / fractionMultiplier
+  const fraction = Number(amount) / fractionMultiplier
 
   return fraction
 }
 
+/**
+ * Gets the minimum and maximum fraction digits for a given currency
+ *
+ * @param currency 3-letters currency code
+ * @returns
+ */
 export function getFractionDigits(currency: Currency): {
   minimumFractionDigits: number
   maximumFractionDigits: number
@@ -96,6 +110,13 @@ export function getFractionDigits(currency: Currency): {
   const currenciesWithZeroDecimals: Currency[] = ['JPY', 'MMK', 'VND']
   const currenciesWithThreeDecimals: Currency[] = ['BDT']
   const currenciesWithVariableDecimals: Currency[] = ['KWD']
+
+  if (currency === 'BTC') {
+    return {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 8,
+    }
+  }
 
   if (currenciesWithZeroDecimals.includes(currency)) {
     return {

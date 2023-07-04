@@ -1,4 +1,5 @@
 import React from 'react'
+import {currency as currencyUtil} from '@bam-otf/utils'
 
 import {CopyableAddress} from './copyable-address'
 import {CopyableAmount} from './copyable-amount'
@@ -21,7 +22,7 @@ interface PaymentIntentProps {
   intent: {
     address: string
     amount: bigint
-    currency: string
+    currency: currencyUtil.Currency
   }
 
   /**
@@ -42,12 +43,12 @@ export function PaymentIntent({
 }: PaymentIntentProps) {
   const {amount, currency, address} = intent
 
-  let amountInBTC = amount
+  let amountInBTC = currencyUtil.toFraction({amount, currency})
 
   if (currency !== 'BTC') {
     // TODO: this should be probably getting the price from the endpoint instead of
     // receiving it as a prop
-    // amountInBTC = amount / price
+    amountInBTC = Math.ceil((Number(amount) / price) * 1e8) / 1e8
   }
 
   return (

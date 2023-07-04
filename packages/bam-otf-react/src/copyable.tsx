@@ -34,7 +34,7 @@ export function Copyable({text, onCopied}: CopyableProps) {
 
   return (
     <div className="copyable">
-      <input type="text" value={text} className="copyable-input" />
+      <span className="copyable-input">{text}</span>
       <button onClick={handleCopy} className="copyable-button">
         {copied ? 'copied' : 'copy'}
       </button>
