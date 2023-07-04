@@ -68,7 +68,7 @@ async function main() {
       update: {},
       create: {
         id: 'seed-2',
-        amount: 420.69,
+        amount: 42069,
         address: 'random-address-2',
         status: 'succeeded',
         description: 'User has paid',
@@ -76,7 +76,7 @@ async function main() {
           create: [
             {
               id: 'transaction-1',
-              amount: 420.69,
+              amount: 42069,
               confirmations: 6,
             },
           ],
@@ -89,7 +89,7 @@ async function main() {
       update: {},
       create: {
         id: 'seed-3',
-        amount: 0.10_002_001,
+        amount: 10_002_001,
         address: 'random-address-3',
         confirmations: 6,
         description: 'Not enough confirmations',
@@ -98,7 +98,7 @@ async function main() {
           create: [
             {
               id: 'transaction-2',
-              amount: 0.10_002_001,
+              amount: 10_002_001,
               confirmations: 2,
             },
           ],
@@ -111,7 +111,7 @@ async function main() {
       update: {},
       create: {
         id: 'seed-4',
-        amount: 10,
+        amount: 1000,
         address: 'random-address-4',
         description: "User has paid but we haven't received enough funds",
         status: 'processing',
@@ -132,7 +132,7 @@ async function main() {
       update: {},
       create: {
         id: 'seed-5',
-        amount: 10_000,
+        amount: 10_000_00,
         address: 'random-address-5',
         currency: 'USD',
         description: 'Requested in another currency',
@@ -144,7 +144,7 @@ async function main() {
       update: {},
       create: {
         id: 'seed-6',
-        amount: 130.99,
+        amount: 13099,
         address: 'random-address-6',
         currency: 'BRL',
         description: 'Payed a PI that requested in another currency',
@@ -158,9 +158,9 @@ async function main() {
           create: [
             {
               id: 'transaction-4',
-              amount: 0.00_030_000,
+              amount: 30_000,
               confirmations: 6,
-              originalAmount: 129.99,
+              originalAmount: 12999,
             },
           ],
         },
@@ -189,7 +189,7 @@ async function main() {
       update: {},
       create: {
         id: 'seed-7',
-        amount: 130000.99,
+        amount: 13000099,
         address: 'random-address-7',
         currency: 'USD',
         description: 'Canceled payment intent',

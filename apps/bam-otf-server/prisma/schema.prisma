@@ -33,7 +33,7 @@ enum LogType {
 model PaymentIntent {
   id                 String              @id @default(uuid())
   address            String              @unique // Addresses are unique, so we can identify the payment intent by the address
-  amount             Decimal             @db.Decimal(20, 8)
+  amount             BigInt
   status             PaymentIntentStatus @default(pending)
   confirmations      Int                 @default(1) // Number of blocks confirmed required for the transaction to be considered confirmed.
   tolerance          Decimal             @default(0.02) @db.Decimal(5, 4) // Percentage of the amount that can be lost due to exchange rate fluctuations
@@ -61,8 +61,8 @@ model Log {
 
 model Transaction {
   id              String        @id
-  amount          Decimal       @db.Decimal(20, 8)
-  originalAmount  Decimal?      @db.Decimal(20, 2) /// Converted to the currency of the payment intent at the time of the transaction @map("amountReceived")
+  amount          BigInt
+  originalAmount  BigInt? /// Converted to the currency of the payment intent at the time of the transaction
   confirmations   Int
   paymentIntent   PaymentIntent @relation(fields: [paymentIntentId], references: [id])
   paymentIntentId String
