@@ -10,15 +10,17 @@
   .copyable-button {
   }
   .copyable-container {
+    @apply flex flex-col items-center justify-center;
   }
   .amount-prefix {
   }
   .copyable-field {
   }
   .payment-intent {
+    @apply flex flex-col items-center justify-center;
   }
 
   .qr-code {
-    @apply rounded-md opacity-90;
+    @apply rounded-md opacity-90 hover:opacity-30;
   }
 }

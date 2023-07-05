@@ -1,6 +1,7 @@
 import Link from 'next/link'
 
 import './globals.css'
+import '@bam-otf/react/styles.css'
 
 import {Inter} from 'next/font/google'
 
