@@ -27,7 +27,7 @@ export async function PaymentInformation({
     <PaymentIntent
       intent={{amount, currency, address}}
       price={price}
-      qrCodeProps={{label: '', message: '', redirectUrl, className: 'qr-code'}}
+      qrCodeProps={{label: '', message: '', redirectUrl}}
     />
   )
 }
