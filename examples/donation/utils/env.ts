@@ -13,12 +13,11 @@ export const env = createEnv({
       .default('development'),
     PUSHER_APP_ID: STRING_REQUIRED,
     PUSHER_SECRET: STRING_REQUIRED,
-    VERCEL_ENV: z.string(),
-    VERCEL_URL: z.string().optional(),
     XPUB_DONATION: STRING_REQUIRED,
     WEBHOOK_SECRET: STRING_REQUIRED,
   },
   client: {
+    // TODO vercel env vars are not working
     NEXT_PUBLIC_PUSHER_CLUSTER: STRING_REQUIRED,
     NEXT_PUBLIC_PUSHER_KEY: STRING_REQUIRED,
   },

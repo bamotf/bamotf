@@ -1,3 +1,4 @@
+// TODO: temporary method to replace VERCEL ENV variables
 import React from 'react'
 import {env} from '@/utils/env'
 import {PaymentIntent} from '@bam-otf/react'
@@ -16,9 +17,9 @@ export async function PaymentInformation({
   currency: CurrencyCode
 }) {
   const developmentUrl = `http://localhost:4000/${id}`
-  const productionUrl = `${env.VERCEL_URL!}/${id}`
+  const productionUrl = `${process.env.VERCEL_URL!}/${id}`
   const redirectUrl =
-    env.VERCEL_ENV === 'development' ? developmentUrl : productionUrl
+    process.env.VERCEL_ENV === 'development' ? developmentUrl : productionUrl
 
   const response = await fetch(`http://localhost:3000/api/price/${currency}`)
   const {price} = await response.json()
@@ -26,7 +27,7 @@ export async function PaymentInformation({
     <PaymentIntent
       intent={{amount, currency, address}}
       price={price}
-      qrCodeProps={{label: '', message: '', redirectUrl}}
+      qrCodeProps={{label: '', message: '', redirectUrl, className: 'qr-code'}}
     />
   )
 }
