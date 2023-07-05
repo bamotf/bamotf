@@ -30,14 +30,17 @@
       "outputs": []
     },
     "test:unit": {
+      "dependsOn": ["^build"],
       "dotEnv": [".env.test.local", ".env.test", ".env"],
       "outputs": []
     },
     "test:integration": {
+      "dependsOn": ["^build"],
       "dotEnv": [".env.test.local", ".env.test", ".env"],
       "outputs": []
     },
     "test:e2e": {
+      "dependsOn": ["^build"],
       "dotEnv": [".env.test.local", ".env.test", ".env"],
       "env": ["CI"],
       "outputs": []
