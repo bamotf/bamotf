@@ -13,7 +13,7 @@ export default defineProject({
   // @ts-expect-error vitest was updated
   plugins: [tsconfigPaths()],
   test: {
-    name: 'bamotf/server',
+    name: 'bamotf/server:unit',
     include: ['tests/**/*.test.ts', 'app/**/*.test.ts'],
     exclude: [
       'build/**/*',

@@ -13,11 +13,9 @@ export default defineProject({
   // @ts-expect-error vitest was updated
   plugins: [tsconfigPaths()],
   test: {
-    name: 'bam-otf-server',
+    threads: false,
+    name: 'bamotf/server:integration',
     include: ['app/routes/**/*.test.ts'],
-    setupFiles: [
-      'dotenv/config',
-      // './tests/setup.unit.ts'
-    ],
+    setupFiles: ['tests/setup.integration.ts'],
   },
 })
