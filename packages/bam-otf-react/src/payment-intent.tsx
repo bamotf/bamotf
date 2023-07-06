@@ -22,6 +22,7 @@ interface PaymentIntentProps {
    */
   intent: {
     address: string
+    // TODO error with telejson, storybook and bigint type
     amount: bigint
     currency: CurrencyCode
   }

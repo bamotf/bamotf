@@ -3,24 +3,25 @@
 @tailwind utilities;
 
 @layer components {
-  .copyable {
+  .payment-intent {
+    @apply flex flex-col items-center justify-center;
   }
-  .copyable-input {
-  }
-  .copyable-button {
+  .copyable-field {
   }
   .copyable-container {
     @apply flex flex-col items-center justify-center;
   }
+  .copyable {
+    @apply flex flex-row items-center justify-center;
+  }
+  .copyable-input {
+    @apply mr-5;
+  }
+  .copyable-button {
+  }
   .amount-prefix {
   }
-  .copyable-field {
-  }
-  .payment-intent {
-    @apply flex flex-col items-center justify-center;
-  }
-
   .qr-code {
-    @apply rounded-md opacity-90 hover:opacity-30;
+    @apply w-96 rounded-md opacity-90 hover:opacity-30;
   }
 }
