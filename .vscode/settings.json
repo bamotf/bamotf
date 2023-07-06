@@ -21,13 +21,6 @@
     "typedjson",
     "xpub"
   ],
-  "vitest.exclude": [
-    "**/node_modules/**",
-    "**/dist/**",
-    "**/cypress/**",
-    "**/.{idea,git,cache,output,temp}/**",
-    "**/routes/**/*.test.ts"
-  ],
   "editor.codeActionsOnSave": {
     "source.fixAll": true
   }

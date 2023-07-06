@@ -2,6 +2,7 @@ import http from 'http'
 import {ConnectionString} from 'connection-string'
 
 import {env} from '~/utils/env.server'
+import {vi} from './base.fixture'
 
 export class WebhookTestServer {
   /**
@@ -19,10 +20,17 @@ export class WebhookTestServer {
    * @param next Function to be called after the server is listening.
    */
   public async listen() {
-    const webhookConnectionString = new ConnectionString(env.WEBHOOK_URL)
-
     return new Promise<void>(resolve => {
-      this.server.listen(webhookConnectionString.port, async () => {
+      this.server.listen(0, async () => {
+        vi.spyOn(env, 'WEBHOOK_URL', 'get').mockReturnValue(
+          `http://localhost:${
+            // @ts-expect-error
+            server.address().port
+          }`,
+        )
+
+        vi.spyOn(env, 'WEBHOOK_SECRET', 'get').mockReturnValue('secret')
+
         await resolve()
       })
     })
