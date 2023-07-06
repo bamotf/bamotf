@@ -1,3 +1,4 @@
+import type {PropsWithChildren} from 'react'
 import {cssBundleHref} from '@remix-run/css-bundle'
 import {
   json,
@@ -6,6 +7,7 @@ import {
   type SerializeFrom,
 } from '@remix-run/node'
 import {
+  isRouteErrorResponse,
   Links,
   LiveReload,
   Meta,
@@ -13,6 +15,7 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
+  useRouteError,
 } from '@remix-run/react'
 
 import {prisma} from '~/utils/prisma.server'
@@ -65,6 +68,19 @@ export default function App() {
   const data = useLoaderData<typeof loader>()
 
   return (
+    <Document>
+      <Outlet />
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `window.ENV = ${JSON.stringify(data.ENV)}`,
+        }}
+      />
+    </Document>
+  )
+}
+
+function Document({children}: PropsWithChildren) {
+  return (
     <html lang="en">
       <head>
         <meta charSet="utf-8" />
@@ -73,17 +89,42 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <Outlet />
+        {children}
         <TailwindIndicator />
         <ScrollRestoration />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `window.ENV = ${JSON.stringify(data.ENV)}`,
-          }}
-        />
         <Scripts />
         <LiveReload />
       </body>
     </html>
+  )
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError()
+
+  // when true, this is what used to go to `CatchBoundary`
+  if (isRouteErrorResponse(error)) {
+    return (
+      <Document>
+        <h1>Oops</h1>
+        <p>Status: {error.status}</p>
+        <p>{error.data.message}</p>
+      </Document>
+    )
+  }
+
+  // Don't forget to typecheck with your own logic.
+  // Any value can be thrown, not just errors!
+  let errorMessage = 'Unknown error'
+  // if (isDefinitelyAnError(error)) {
+  // errorMessage = error.message
+  // }
+
+  return (
+    <Document>
+      <h1>Uh oh ...</h1>
+      <p>Something went wrong.</p>
+      <pre>{errorMessage}</pre>
+    </Document>
   )
 }
