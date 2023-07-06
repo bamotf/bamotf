@@ -28,3 +28,6 @@ storybook-static
 
 # Docker
 docker/*/data
+
+# Storybook stuff
+**/storybook-static/**

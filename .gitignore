@@ -33,7 +33,6 @@ yarn-error.log*
 # turbo
 .turbo
 
-
 # Docker
 docker/*/data
 
@@ -45,3 +44,6 @@ postgres-data
 
 # packages
 dist
+
+# Storybook stuff
+storybook-static
