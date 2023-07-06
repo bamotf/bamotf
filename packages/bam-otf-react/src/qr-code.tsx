@@ -55,6 +55,17 @@ export function QRCode({
   }
 
   return (
-    <QRCodeSVG bgColor="#FFF" fgColor="#000" value={url} className="qr-code" />
+    <a href={url}>
+      <QRCodeSVG
+        fgColor="#000"
+        value={url}
+        size={164}
+        className="qr-code"
+        style={{
+          background: '#FFF',
+          padding: '10px',
+        }}
+      />
+    </a>
   )
 }

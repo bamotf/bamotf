@@ -4,24 +4,30 @@
 
 @layer components {
   .payment-intent {
-    @apply flex flex-col items-center justify-center;
+    @apply flex h-screen w-full flex-col items-center justify-around bg-slate-200;
   }
   .copyable-field {
+    @apply flex h-2/4 w-1/2 flex-col justify-center bg-slate-100 p-4;
+  }
+  .copyable-field label {
+    @apply text-neutral-700;
   }
   .copyable-container {
-    @apply flex flex-col items-center justify-center;
+    @apply flex flex-row justify-center pt-2;
   }
   .copyable {
-    @apply flex flex-row items-center justify-center;
+    @apply flex w-full flex-row justify-between bg-slate-50 p-4;
   }
   .copyable-input {
-    @apply mr-5;
+    @apply mr-5 text-neutral-950;
   }
   .copyable-button {
+    @apply h-8 w-1/6 p-1 text-black;
   }
   .amount-prefix {
+    @apply bg-slate-50 pl-4 pt-4 text-neutral-700;
   }
   .qr-code {
-    @apply w-96 rounded-md opacity-90 hover:opacity-30;
+    @apply rounded-md p-2 opacity-100;
   }
 }
