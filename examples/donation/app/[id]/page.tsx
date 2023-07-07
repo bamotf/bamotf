@@ -1,3 +1,4 @@
+import React from 'react'
 import {bamotf} from '@/utils/bamotf'
 import {notFound} from 'next/navigation'
 

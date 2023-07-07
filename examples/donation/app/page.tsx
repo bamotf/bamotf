@@ -1,3 +1,4 @@
+import React from 'react'
 import {bamotf} from '@/utils/bamotf'
 import {env} from '@/utils/env'
 import {kv} from '@vercel/kv'
@@ -12,14 +13,8 @@ async function donate(formData: FormData) {
   const donate = formData.get('donate')
   if (!donate) return
 
-  // eslint-disable-next-line turbo/no-undeclared-env-vars
-  let xpub = env.XPUB_DONATION || ''
-  if (!xpub) {
-    throw new Error('XPUB_DONATION is not set')
-  }
-
   let index = await kv.incr(`donations-index`)
-  let address = bamotf.address.derive(xpub, index)
+  let address = bamotf.address.derive(env.XPUB_DONATION, index)
   let amount = Number.parseFloat(donate.toString())
 
   const pi = await bamotf.paymentIntents.create({
