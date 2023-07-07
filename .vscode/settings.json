@@ -26,6 +26,9 @@
     "**/.{idea,git,cache,output,temp}/**",
     "**/routes/**/*.test.ts"
   ],
+  "files.associations": {
+    "turbo.json": "jsonc"
+  },
   "editor.codeActionsOnSave": {
     "source.fixAll": true
   }

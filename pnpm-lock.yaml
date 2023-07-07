@@ -263,9 +263,6 @@ importers:
       encoding:
         specifier: ^0.1.13
         version: 0.1.13
-      eslint-config-custom:
-        specifier: workspace:*
-        version: link:../../packages/eslint-config-custom
       logger:
         specifier: workspace:*
         version: link:../../packages/logger
@@ -290,9 +287,6 @@ importers:
       tailwindcss:
         specifier: ^3.3.2
         version: 3.3.2
-      typescript:
-        specifier: ^5.0.4
-        version: 5.0.4
       zod:
         specifier: ^3.21.4
         version: 3.21.4
@@ -306,6 +300,15 @@ importers:
       '@types/react-dom':
         specifier: 18.2.4
         version: 18.2.4
+      eslint-config-custom:
+        specifier: workspace:*
+        version: link:../../packages/eslint-config-custom
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
+      typescript:
+        specifier: ^5.0.4
+        version: 5.0.4
 
   packages/bam-otf-node:
     dependencies:
