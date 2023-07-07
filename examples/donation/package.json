@@ -19,7 +19,7 @@
     "encoding": "^0.1.13",
     "eslint-config-custom": "workspace:*",
     "logger": "workspace:*",
-    "next": "^13.4.8",
+    "next": "13.4.7",
     "postcss": "8.4.24",
     "pusher": "^5.1.3",
     "pusher-js": "^8.1.0",
