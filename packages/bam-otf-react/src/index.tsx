@@ -5,6 +5,7 @@
 export * from './copyable'
 export * from './copyable-address'
 export * from './copyable-amount'
+export * from './currency-selector'
 export * from './payment-intent'
 export * from './qr-code'
 export * from './open-in-wallet-button'
