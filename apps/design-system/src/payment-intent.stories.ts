@@ -16,6 +16,7 @@ const meta = {
       message: 'Pagamento de boleto',
       redirectUrl: 'https://www.google.com',
     },
+    walletRedirectUrl: 'https://www.google.com',
   },
   tags: ['autodocs'],
 } satisfies Meta<typeof PaymentIntent>
