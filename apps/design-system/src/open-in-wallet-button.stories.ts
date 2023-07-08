@@ -7,6 +7,15 @@ const meta = {
   args: {
     redirectUrl: '#',
   },
+  parameters: {
+    backgrounds: {
+      values: [
+        {name: 'white', value: '#fff'},
+        {name: 'black', value: '#000'},
+        {name: 'grey', value: '#ccc'},
+      ],
+    },
+  },
 } satisfies Meta<typeof OpenInWalletButton>
 
 export default meta
