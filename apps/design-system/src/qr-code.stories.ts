@@ -9,7 +9,7 @@ const meta = {
     amount: 1000,
     label: 'Eu amo bitcoin',
     message: 'Pagamento de boleto',
-    redirectUrl: 'https://www.google.com',
+    redirectUrl: '#',
   },
 } satisfies Meta<typeof QRCode>
 

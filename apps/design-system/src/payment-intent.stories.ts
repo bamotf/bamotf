@@ -14,9 +14,9 @@ const meta = {
     qrCodeProps: {
       label: 'Eu amo bitcoin',
       message: 'Pagamento de boleto',
-      redirectUrl: 'https://www.google.com',
+      redirectUrl: '#',
     },
-    walletRedirectUrl: 'https://www.google.com',
+    walletRedirectUrl: '#',
   },
   tags: ['autodocs'],
 } satisfies Meta<typeof PaymentIntent>

@@ -5,7 +5,7 @@ const meta = {
   title: 'React/OpenInWalletButton',
   component: OpenInWalletButton,
   args: {
-    redirectUrl: 'https://www.google.com',
+    redirectUrl: '#',
   },
 } satisfies Meta<typeof OpenInWalletButton>
 
