@@ -4,10 +4,10 @@
 
 @layer components {
   .payment-intent {
-    @apply flex h-screen w-full flex-col items-center justify-around bg-gradient-to-br from-white to-slate-100;
+    @apply flex h-screen w-full flex-col items-center justify-center bg-gradient-to-br from-white to-slate-100;
   }
   .copyable-field {
-    @apply flex h-2/4 w-1/2 flex-col justify-center rounded-lg bg-white p-4 shadow-lg;
+    @apply flex h-1/5 w-1/2 flex-col justify-center rounded-lg bg-white p-4 shadow-lg;
   }
   .copyable-field label {
     @apply font-semibold text-gray-700;
@@ -22,18 +22,18 @@
     @apply mr-5 text-gray-900;
   }
   .copyable-button {
-    @apply h-8 w-1/6 rounded-lg p-1 text-neutral-700 transition duration-200 hover:text-neutral-950;
+    @apply h-8 w-14 rounded-lg p-1 text-neutral-600 transition duration-200 hover:text-slate-800;
   }
   .amount-prefix {
     @apply flex items-center justify-center bg-gray-100 p-4 font-semibold text-gray-700 shadow;
   }
   .qr-code {
-    @apply rounded-md p-4 opacity-100 shadow-xl;
+    @apply mb-4 rounded-md p-4 opacity-100 shadow-xl;
   }
   .open-in-wallet {
-    @apply flex h-2/6 w-1/2 items-center justify-center rounded-lg bg-white shadow-lg;
+    @apply flex h-1/6 w-1/2 items-center justify-center rounded-lg bg-white shadow-lg;
   }
   .open-in-wallet-button {
-    @apply w-48 cursor-pointer rounded-lg bg-neutral-500 px-4 py-2 text-base font-semibold text-white transition duration-200 hover:bg-neutral-600;
+    @apply w-48 cursor-pointer rounded-lg bg-neutral-400 px-4 py-2 text-base font-semibold text-slate-50 transition duration-200 hover:bg-neutral-600;
   }
 }
