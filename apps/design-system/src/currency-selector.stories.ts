@@ -11,6 +11,15 @@ const meta = {
       console.log('Currency:', newCurrency)
     },
   },
+  parameters: {
+    backgrounds: {
+      values: [
+        {name: 'white', value: '#fff'},
+        {name: 'black', value: '#000'},
+        {name: 'grey', value: '#ccc'},
+      ],
+    },
+  },
 } satisfies Meta<typeof CurrencySelector>
 
 export default meta

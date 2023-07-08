@@ -24,14 +24,16 @@ export function CurrencySelector({
   }
 
   return (
-    <div>
-      <label htmlFor="currency">Select Currency:</label>
+    <div className="bg-slate-100 p-4 w-64 justify-between rounded">
+      <label htmlFor="currency" className="px-2">
+        Select Currency:
+      </label>
       <select
         name="currency"
         id="currency"
         value={currency}
         onChange={handleCurrencyChange}
-        className="ml-2 px-2 py-1 border rounded-md custom-select"
+        className="ml-2 px-2 py-1 border rounded-md custom-select bg-slate-200 text-neutral-900"
       >
         {CURRENCY_CODES.map(currency => (
           <option key={currency} value={currency}>
