@@ -15,7 +15,7 @@ async function donate(formData: FormData) {
 
   let index = await kv.incr(`donations-index`)
   let address = bamotf.address.derive(env.XPUB_DONATION, index)
-  let amount = Number.parseFloat(donate.toString())
+  let amount = BigInt(donate.toString())
 
   const pi = await bamotf.paymentIntents.create({
     amount,

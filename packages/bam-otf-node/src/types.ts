@@ -16,12 +16,12 @@ export type PaymentIntentStatus = keyof typeof paymentIntentStatus
 
 export type PaymentIntent = {
   id: string
-  amount: number
+  amount: bigint
   tolerance: number
   address: string
   status: PaymentIntentStatus
   confirmations: number
-  currency: string
+  currency: CurrencyCode
   canceledAt: Date | null
   cancellationReason: string | null
   description: string | null
@@ -36,7 +36,7 @@ export type ListResult = {
 }
 export type CreateBodyParams = {
   address: string
-  amount: number
+  amount: bigint
   tolerance?: number
   confirmations?: number
   currency?: CurrencyCode
@@ -48,7 +48,7 @@ export type CreateResult = PaymentIntent
 export type RetrieveResult = PaymentIntent
 export type UpdateBodyParams = {
   address?: string
-  amount?: number
+  amount?: bigint
   tolerance?: number
   confirmations?: number
   currency?: CurrencyCode
