@@ -2,7 +2,7 @@ import type {Preview} from '@storybook/react'
 
 import '@bam-otf/react/styles.css'
 
-// Add a a 'hack' to resolve 'do not know how to serialize a BigInt'
+// @ts-expect-error - Add a 'hack' to resolve 'do not know how to serialize a BigInt'
 BigInt.prototype.toJSON = function () {
   if (
     (this as bigint) >= BigInt(Number.MIN_SAFE_INTEGER) &&
@@ -16,6 +16,13 @@ BigInt.prototype.toJSON = function () {
 
 const preview: Preview = {
   parameters: {
+    backgrounds: {
+      values: [
+        {name: 'white', value: '#fff'},
+        {name: 'black', value: '#000'},
+        {name: 'grey', value: '#ccc'},
+      ],
+    },
     actions: {argTypesRegex: '^on[A-Z].*'},
     controls: {
       matchers: {

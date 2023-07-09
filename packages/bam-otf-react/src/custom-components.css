@@ -1,32 +1,7 @@
 @layer components {
-  /* .payment-intent {
-    @apply flex h-screen w-full flex-col items-center justify-center bg-gradient-to-br from-white to-slate-100;
-  }
-  .copyable-field {
-    @apply flex h-1/5 w-1/2 flex-col justify-center rounded-lg bg-white p-4 shadow-lg;
-  }
-  .copyable-field label {
-    @apply font-semibold text-gray-700;
-  }
-  .copyable-container {
-    @apply flex flex-row justify-center pt-2;
-  }
-  .copyable {
-    @apply flex w-full flex-row items-center justify-between rounded-lg bg-gray-100 p-4 shadow;
-  }
-  .copyable-input {
-    @apply mr-5 text-gray-900;
-  }
-  .copyable-button {
-    @apply h-8 w-14 rounded-lg p-1 text-neutral-600 transition duration-200 hover:text-slate-800;
-  }
-  .amount-prefix {
-    @apply flex items-center justify-center bg-gray-100 p-4 font-semibold text-gray-700 shadow;
-  } */
-
   /* <QRCode /> */
   .qr-code {
-    @apply bg-background block flex-shrink-0 overflow-hidden rounded-lg;
+    @apply bg-background border-border block flex-shrink-0 overflow-hidden rounded-lg border p-3;
   }
 
   /* <Copyable /> */
@@ -34,13 +9,17 @@
     @apply border-input bg-background text-foreground flex h-10 w-full justify-between gap-1.5 rounded-md border px-3 py-2 text-sm;
   }
 
+  .copyable-prefix {
+    @apply text-muted-foreground font-light uppercase;
+  }
+
   .copyable-input {
-    @apply truncate;
+    @apply w-full truncate;
     user-select: all;
   }
 
   .copyable-button {
-    @apply ring-offset-background focus-visible:ring-ring relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
+    @apply ring-offset-background focus-visible:ring-ring relative -mr-1 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
   }
 
   .copyable-icon {
@@ -57,5 +36,23 @@
 
   .copyable-success {
     @apply text-success absolute;
+  }
+
+  /* <PaymentDetails /> */
+  .payment-details {
+    @apply box-content flex max-w-sm flex-col items-start gap-4 p-6;
+    @apply bg-card text-card-foreground border-border rounded-xl border;
+  }
+
+  .payment-details h3 {
+    @apply text-foreground text-2xl font-bold tracking-tight;
+  }
+
+  .copyable-field {
+    @apply flex w-full flex-col items-start gap-1.5;
+  }
+
+  .copyable-field label {
+    @apply text-foreground text-sm font-medium leading-none;
   }
 }

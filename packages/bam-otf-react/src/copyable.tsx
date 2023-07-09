@@ -2,8 +2,11 @@ import React, {useEffect, useState} from 'react'
 import {Check, Copy} from 'lucide-react'
 
 export interface CopyableProps {
+  /** Text that will prefix the copyable text */
   prefix?: string
+  /** Text that will be copied when User click on the copy button */
   text: string
+  /** Callback function when User click on copy button */
   onCopied?: () => void
 }
 

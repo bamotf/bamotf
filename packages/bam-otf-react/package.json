@@ -6,17 +6,33 @@
   ],
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "types": "./src/index.ts",
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
       "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "types": "./src/index.ts"
+    },
+    "./src/qr-code": {
+      "import": "./src/qr-code.tsx",
+      "require": "./src/qr-code.tsx",
+      "types": "./src/qr-code.tsx"
+    },
+    "./src/copyable": {
+      "import": "./src/copyable.tsx",
+      "require": "./src/copyable.tsx",
+      "types": "./src/copyable.tsx"
+    },
+    "./src/payment-details": {
+      "import": "./src/payment-details.tsx",
+      "require": "./src/payment-details.tsx",
+      "types": "./src/payment-details.tsx"
     },
     "./styles.css": "./dist/styles.css"
   },
   "files": [
-    "dist/**"
+    "dist/**",
+    "src/**"
   ],
   "license": "MIT",
   "scripts": {

@@ -1,9 +1,10 @@
-import {Copyable} from '@bam-otf/react'
+import {Copyable} from '@bam-otf/react/src/copyable'
 import type {Meta, StoryObj} from '@storybook/react'
 
 const meta = {
-  title: 'React/Copyable',
+  title: 'Components / Copyable',
   component: Copyable,
+  tags: ['autodocs'],
   args: {
     text: 'bc1q2hk7c9ekf2fj2w5mcdnryyrqtylc9f9cjwhee2',
   },

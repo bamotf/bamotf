@@ -1,9 +1,10 @@
-import {QRCode} from '@bam-otf/react'
+import {QRCode} from '@bam-otf/react/src/qr-code'
 import type {Meta, StoryObj} from '@storybook/react'
 
 const meta = {
-  title: 'React/QRCode',
+  title: 'Components / QRCode',
   component: QRCode,
+  tags: ['autodocs'],
   args: {
     address: 'uahusiahisuahs',
     amount: 1000,
