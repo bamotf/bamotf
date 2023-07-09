@@ -12,13 +12,7 @@ const meta = {
     redirectUrl: '#',
   },
   parameters: {
-    backgrounds: {
-      values: [
-        {name: 'white', value: '#fff'},
-        {name: 'black', value: '#000'},
-        {name: 'grey', value: '#ccc'},
-      ],
-    },
+    layout: 'centered',
   },
 } satisfies Meta<typeof QRCode>
 

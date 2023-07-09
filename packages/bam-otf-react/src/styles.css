@@ -1,33 +1,8 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss/base';
+@import 'tailwind-config/base.css';
 
-@layer components {
-  .payment-intent {
-    @apply flex h-screen w-full flex-col items-center justify-center bg-gradient-to-br from-white to-slate-100;
-  }
-  .copyable-field {
-    @apply flex h-1/5 w-1/2 flex-col justify-center rounded-lg bg-white p-4 shadow-lg;
-  }
-  .copyable-field label {
-    @apply font-semibold text-gray-700;
-  }
-  .copyable-container {
-    @apply flex flex-row justify-center pt-2;
-  }
-  .copyable {
-    @apply flex w-full flex-row items-center justify-between rounded-lg bg-gray-100 p-4 shadow;
-  }
-  .copyable-input {
-    @apply mr-5 text-gray-900;
-  }
-  .copyable-button {
-    @apply h-8 w-14 rounded-lg p-1 text-neutral-600 transition duration-200 hover:text-slate-800;
-  }
-  .amount-prefix {
-    @apply flex items-center justify-center bg-gray-100 p-4 font-semibold text-gray-700 shadow;
-  }
-  .qr-code {
-    @apply mb-4 rounded-md p-4 opacity-100 shadow-xl;
-  }
-}
+@import 'tailwindcss/components';
+@import './custom-components.css';
+
+@import 'tailwindcss/utilities';
+@import './custom-utilities.css';
