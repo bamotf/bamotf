@@ -1,6 +1,5 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalEnv": ["VERCEL_URL", "VERCEL_ENV", "WEBHOOK_SECRET"],
   "globalDotEnv": [".env"],
   "pipeline": {
     "dev": {

@@ -1,4 +1,3 @@
-/* eslint-disable turbo/no-undeclared-env-vars */
 import PusherServer from 'pusher'
 
 import {env} from './env'

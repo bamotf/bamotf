@@ -19,7 +19,6 @@ export const env = createEnv({
     VERCEL_URL: z.string().optional(),
   },
   client: {
-    // TODO vercel env vars are not working
     NEXT_PUBLIC_PUSHER_CLUSTER: STRING_REQUIRED,
     NEXT_PUBLIC_PUSHER_KEY: STRING_REQUIRED,
   },

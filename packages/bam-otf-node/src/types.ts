@@ -1,6 +1,4 @@
-// import type * as root from 'bam-otf-server/app/routes/api.payment-intents._index'
-// import type * as specific from 'bam-otf-server/app/routes/api.payment-intents.$id._index'
-// import type * as cancel from 'bam-otf-server/app/routes/api.payment-intents.$id.cancel'
+// TODO: This file should be generated from the OpenAPI spec
 
 import type {CurrencyCode} from '../../../config/currency'
 
@@ -11,7 +9,6 @@ export const paymentIntentStatus = {
   canceled: 'canceled',
 }
 
-// TODO
 export type PaymentIntentStatus = keyof typeof paymentIntentStatus
 
 export type PaymentIntent = {

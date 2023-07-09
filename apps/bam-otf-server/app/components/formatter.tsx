@@ -32,8 +32,6 @@ export function Formatter(
 
   const {currency, amount} = props
 
-  // TODO: this can probably be exported as a set of @bam-otf/react components or something
-  // format like `₿ 0.00000001`
   return (
     <>
       {currencyUtils.format(language, {
@@ -41,14 +39,6 @@ export function Formatter(
         currency: currency as CurrencyCode,
         style: 'currency',
       })}
-      {/* {new Intl.NumberFormat(language, {
-        style: 'currency',
-        currency: currency === 'BTC' ? 'XBT' : currency,
-        minimumFractionDigits: 2,
-        maximumFractionDigits: currency === 'BTC' ? 8 : 2,
-      })
-        .format(amount)
-        .replace('XBT', '₿')} */}
     </>
   )
 }

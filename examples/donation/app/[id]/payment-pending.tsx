@@ -5,7 +5,7 @@ import type {CurrencyCode} from '../../../../config/currency'
 import {PaymentIntent} from './payment-information'
 
 async function getPrice(currency: CurrencyCode) {
-  const response = await fetch(`http://localhost:4000/api/price/${currency}`)
+  const response = await fetch(`${env.BAMOTF_SERVER_URL}/api/price/${currency}`)
   const {price} = await response.json()
   return price
 }
