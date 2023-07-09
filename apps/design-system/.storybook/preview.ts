@@ -2,6 +2,7 @@ import type {Preview} from '@storybook/react'
 
 import '@bam-otf/react/styles.css'
 
+// HACK: storybook 'do not know how to serialize a BigInt'
 // @ts-expect-error - Add a 'hack' to resolve 'do not know how to serialize a BigInt'
 BigInt.prototype.toJSON = function () {
   if (
