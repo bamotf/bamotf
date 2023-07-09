@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react'
+import {Check, Copy} from 'lucide-react'
 
 export interface CopyableProps {
   text: string
@@ -36,7 +37,16 @@ export function Copyable({text, onCopied}: CopyableProps) {
     <div className="copyable">
       <span className="copyable-input">{text}</span>
       <button onClick={handleCopy} className="copyable-button">
-        {copied ? 'Copied' : 'Copy'}
+        <span
+          className={`${
+            copied && 'show'
+          } copyable-icon-container copyable-success`}
+        >
+          <Check className="copyable-icon" aria-label="Copied" />
+        </span>
+        <span className={`${!copied && 'show'} copyable-icon-container`}>
+          <Copy className="copyable-icon" aria-label="Copy" />
+        </span>
       </button>
     </div>
   )

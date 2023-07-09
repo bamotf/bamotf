@@ -24,7 +24,38 @@
     @apply flex items-center justify-center bg-gray-100 p-4 font-semibold text-gray-700 shadow;
   } */
 
+  /* <QRCode /> */
   .qr-code {
-    @apply bg-background block flex-shrink-0 overflow-hidden rounded-md border shadow-sm;
+    @apply bg-background block flex-shrink-0 overflow-hidden rounded-lg;
+  }
+
+  /* <Copyable /> */
+  .copyable {
+    @apply border-input bg-background text-foreground flex h-10 w-full justify-between gap-1.5 rounded-md border px-3 py-2 text-sm;
+  }
+
+  .copyable-input {
+    @apply truncate;
+    user-select: all;
+  }
+
+  .copyable-button {
+    @apply ring-offset-background focus-visible:ring-ring relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
+  }
+
+  .copyable-icon {
+    @apply p-1;
+  }
+
+  .copyable-icon-container {
+    @apply inset-0 flex items-center justify-center opacity-0 transition-opacity;
+  }
+
+  .copyable-icon-container.show {
+    @apply opacity-100;
+  }
+
+  .copyable-success {
+    @apply text-success absolute;
   }
 }
