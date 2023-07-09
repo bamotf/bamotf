@@ -255,9 +255,6 @@ importers:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
     devDependencies:
-      '@aashutoshrathi/word-wrap':
-        specifier: ^1.2.6
-        version: 1.2.6
       '@bam-otf/react':
         specifier: workspace:*
         version: link:../../packages/bam-otf-react
@@ -367,10 +364,22 @@ importers:
       '@bam-otf/utils':
         specifier: workspace:*
         version: link:../bam-otf-utils
+      lucide-react:
+        specifier: ^0.233.0
+        version: 0.233.0(react@18.2.0)
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
     devDependencies:
       '@types/react':
-        specifier: ^18.2.5
-        version: 18.2.8
+        specifier: 18.2.11
+        version: 18.2.11
+      '@types/react-dom':
+        specifier: 18.2.4
+        version: 18.2.4
       autoprefixer:
         specifier: ^10.4.14
         version: 10.4.14(postcss@8.4.21)
@@ -383,12 +392,18 @@ importers:
       postcss:
         specifier: ^8.4.20
         version: 8.4.21
-      react:
-        specifier: ^18.2.0
-        version: 18.2.0
+      postcss-import:
+        specifier: ^15.1.0
+        version: 15.1.0(postcss@8.4.21)
+      qrcode.react:
+        specifier: ^3.1.0
+        version: 3.1.0(react@18.2.0)
       tailwind-config:
         specifier: workspace:*
         version: link:../tailwind-config
+      tailwindcss:
+        specifier: ^3.3.2
+        version: 3.3.2
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -476,11 +491,6 @@ importers:
   packages/tsconfig: {}
 
 packages:
-
-  /@aashutoshrathi/word-wrap@1.2.6:
-    resolution: {integrity: sha512-1Yjs2SvM8TflER/OD3cOjhWWOZb58A2t7wpE2S9XfBYTiIl+XFhQG2bjy4Pu1I+EAlCNUzRDYDdFwFYUKvXcIA==}
-    engines: {node: '>=0.10.0'}
-    dev: true
 
   /@alloc/quick-lru@5.2.0:
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
@@ -7923,6 +7933,14 @@ packages:
       csstype: 3.1.2
     dev: true
 
+  /@types/react@18.2.11:
+    resolution: {integrity: sha512-+hsJr9hmwyDecSMQAmX7drgbDpyE+EgSF6t7+5QEBAn1tQK7kl1vWZ4iRf6SjQ8lk7dyEULxUmZOIpN0W5baZA==}
+    dependencies:
+      '@types/prop-types': 15.7.5
+      '@types/scheduler': 0.16.3
+      csstype: 3.1.2
+    dev: true
+
   /@types/react@18.2.14:
     resolution: {integrity: sha512-A0zjq+QN/O0Kpe30hA1GidzyFjatVvrpIvWLxD+xv67Vt91TWWgco9IvrJBkeyHm1trGaFS/FSGqPlhyeZRm0g==}
     dependencies:
@@ -14540,6 +14558,18 @@ packages:
       postcss: 8.4.24
     dev: true
 
+  /postcss-import@15.1.0(postcss@8.4.21):
+    resolution: {integrity: sha512-hpr+J05B2FVYUAXHeK1YyI267J/dDDhMU6B6civm8hSY1jYJnBXxzKDKDswzJmtLHryrjhnDjqqp/49t8FALew==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      postcss: ^8.0.0
+    dependencies:
+      postcss: 8.4.21
+      postcss-value-parser: 4.2.0
+      read-cache: 1.0.0
+      resolve: 1.22.2
+    dev: true
+
   /postcss-import@15.1.0(postcss@8.4.24):
     resolution: {integrity: sha512-hpr+J05B2FVYUAXHeK1YyI267J/dDDhMU6B6civm8hSY1jYJnBXxzKDKDswzJmtLHryrjhnDjqqp/49t8FALew==}
     engines: {node: '>=14.0.0'}
@@ -14935,6 +14965,14 @@ packages:
       - bufferutil
       - supports-color
       - utf-8-validate
+    dev: true
+
+  /qrcode.react@3.1.0(react@18.2.0):
+    resolution: {integrity: sha512-oyF+Urr3oAMUG/OiOuONL3HXM+53wvuH3mtIWQrYmsXoAq0DkvZp2RYUWFSMFtbdOpuS++9v+WAkzNVkMlNW6Q==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
     dev: true
 
   /qs@6.11.0:

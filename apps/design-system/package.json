@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "storybook dev -p 6006",
+    "dev": "storybook dev -p 6006 --no-open",
     "build": "storybook build",
     "preview-storybook": "serve storybook-static",
     "typecheck": "tsc",
@@ -15,7 +15,6 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@aashutoshrathi/word-wrap": "^1.2.6",
     "@bam-otf/react": "workspace:*",
     "@storybook/addon-essentials": "^7.0.26",
     "@storybook/addon-interactions": "^7.0.26",
