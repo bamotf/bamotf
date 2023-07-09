@@ -2,7 +2,7 @@ import type {Preview} from '@storybook/react'
 
 import '@bam-otf/react/styles.css'
 
-// Add a a 'hack' to resolve 'do not know how to serialize a BigInt'
+// HACK: storybook 'do not know how to serialize a BigInt'
 BigInt.prototype.toJSON = function () {
   if (
     (this as bigint) >= BigInt(Number.MIN_SAFE_INTEGER) &&

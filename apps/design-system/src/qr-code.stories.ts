@@ -5,11 +5,11 @@ const meta = {
   title: 'React/QRCode',
   component: QRCode,
   args: {
-    address: 'uahusiahisuahs',
-    amount: 1000,
-    label: 'Eu amo bitcoin',
-    message: 'Pagamento de boleto',
-    redirectUrl: '#',
+    address: 'bc1q2hk7c9ekf2fj2w5mcdnryyrqtylc9f9cjwhee2',
+    amount: 0.00001,
+    label: 'sbddesign',
+    message: 'For lunch Tuesday',
+    redirectUrl: 'https://app.com/success',
   },
   parameters: {
     backgrounds: {

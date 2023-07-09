@@ -5,7 +5,7 @@ const meta = {
   title: 'React/CopyableAddress',
   component: CopyableAddress,
   args: {
-    address: 'uahusiahisuahs',
+    address: 'bc1q2hk7c9ekf2fj2w5mcdnryyrqtylc9f9cjwhee2',
   },
 } satisfies Meta<typeof CopyableAddress>
 
