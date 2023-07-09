@@ -1,4 +1,5 @@
 import {useEffect, useState} from 'react'
+import {currency} from '@bam-otf/utils'
 import {conform, useForm} from '@conform-to/react'
 import {getFieldsetConstraint, parse} from '@conform-to/zod'
 import {json, type ActionArgs} from '@remix-run/node'
@@ -21,7 +22,13 @@ export async function action({request}: ActionArgs) {
     return json(submission, {status: 400})
   }
 
-  await simulatePayment(submission.value)
+  await simulatePayment({
+    address: submission.value.address,
+    amount: currency.convertToBigInt({
+      amount: submission.value.amount,
+      currency: 'BTC',
+    }),
+  })
 
   return json(submission, {status: 200})
 }

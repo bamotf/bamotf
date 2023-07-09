@@ -15,7 +15,7 @@ async function donate(formData: FormData) {
 
   let index = await kv.incr(`donations-index`)
   let address = bamotf.address.derive(env.XPUB_DONATION, index)
-  let amount = BigInt(donate.toString())
+  let amount = Number(donate.toString())
 
   const pi = await bamotf.paymentIntents.create({
     amount,
@@ -60,13 +60,13 @@ function CustomDonationForm() {
 function PredefinedDonationForm() {
   return (
     <form action={donate} className="flex space-x-2 justify-center flex-wrap">
-      <Submit value="5" name="donate">
+      <Submit value="500" name="donate">
         $5
       </Submit>
-      <Submit value="10" name="donate">
+      <Submit value="1000" name="donate">
         $10
       </Submit>
-      <Submit value="50" name="donate">
+      <Submit value="5000" name="donate">
         $50
       </Submit>
     </form>

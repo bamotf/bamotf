@@ -36,7 +36,7 @@ export type ListResult = {
 }
 export type CreateBodyParams = {
   address: string
-  amount: bigint
+  amount: number
   tolerance?: number
   confirmations?: number
   currency?: CurrencyCode

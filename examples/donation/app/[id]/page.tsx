@@ -3,6 +3,7 @@ import {bamotf} from '@/utils/bamotf'
 import {notFound} from 'next/navigation'
 
 import {PaymentFlow} from './payment-flow'
+import {PaymentPending} from './payment-pending'
 
 export default async function DonationStatusPage({
   params,
@@ -17,7 +18,17 @@ export default async function DonationStatusPage({
 
   return (
     <div className="">
-      <PaymentFlow paymentIntent={pi} />
+      <PaymentFlow
+        initialStatus={pi.status}
+        listenTo={pi.id}
+        views={{
+          // @ts-ignore - TODO: fix this
+          pending: <PaymentPending {...pi} />,
+          processing: <>processing</>,
+          succeeded: <>succeeded</>,
+          canceled: <>canceled</>,
+        }}
+      />
     </div>
   )
 }

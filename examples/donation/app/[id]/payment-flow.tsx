@@ -1,49 +1,44 @@
 'use client'
 
-import React, {useEffect, useState} from 'react'
+import type React from 'react'
+import {useEffect, useState} from 'react'
 import {pusherClient} from '@/utils/pusher.client'
 import type {PaymentIntent, PaymentIntentStatus} from '@bam-otf/node'
 
-import {PaymentInformation} from './payment-information'
-
 export function PaymentFlow({
-  paymentIntent: pi,
+  listenTo,
+  initialStatus,
+  views,
 }: {
-  paymentIntent: PaymentIntent
+  listenTo: PaymentIntent['id']
+  initialStatus: PaymentIntent['status']
+  views: Record<PaymentIntentStatus, React.JSX.Element>
 }) {
-  const [status, setStatus] = useState<PaymentIntentStatus>(pi.status)
+  const [status, setStatus] = useState<PaymentIntentStatus>(initialStatus)
 
   useEffect(() => {
-    const onPaymentIntentProcessing = (data: any) => {
+    const onPaymentIntentProcessing = () => {
       setStatus('processing')
     }
 
-    const onPaymentIntentSucceeded = (data: any) => {
+    const onPaymentIntentSucceeded = () => {
       setStatus('succeeded')
     }
 
-    pusherClient.subscribe(pi.id)
+    pusherClient.subscribe(listenTo)
     pusherClient.bind('payment_intent.processing', onPaymentIntentProcessing)
     pusherClient.bind('payment_intent.succeeded', onPaymentIntentSucceeded)
 
     return () => {
       // cleanup
-      pusherClient.unsubscribe(pi.id)
+      pusherClient.unsubscribe(listenTo)
       pusherClient.unbind(
         'payment_intent.processing',
         onPaymentIntentProcessing,
       )
       pusherClient.unbind('payment_intent.succeeded', onPaymentIntentSucceeded)
     }
-  }, [pi.id])
+  }, [listenTo])
 
-  const views = {
-    // @ts-expect-error - Async component
-    pending: <PaymentInformation {...pi} />,
-    processing: <>processing</>,
-    succeeded: <>succeeded</>,
-    canceled: <>canceled</>,
-  }
-
-  return <div>{views[status]}</div>
+  return views[status]
 }

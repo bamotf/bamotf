@@ -1,3 +1,5 @@
+import {currency as currencyUtils} from '@bam-otf/utils'
+
 import type {CurrencyCode} from '../../../../config/currency'
 
 /**
@@ -34,14 +36,19 @@ export function Formatter(
   // format like `₿ 0.00000001`
   return (
     <>
-      {new Intl.NumberFormat(language, {
+      {currencyUtils.format(language, {
+        amount,
+        currency: currency as CurrencyCode,
+        style: 'currency',
+      })}
+      {/* {new Intl.NumberFormat(language, {
         style: 'currency',
         currency: currency === 'BTC' ? 'XBT' : currency,
         minimumFractionDigits: 2,
         maximumFractionDigits: currency === 'BTC' ? 8 : 2,
       })
         .format(amount)
-        .replace('XBT', '₿')}
+        .replace('XBT', '₿')} */}
     </>
   )
 }

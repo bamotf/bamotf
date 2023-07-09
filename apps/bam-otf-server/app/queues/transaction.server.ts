@@ -121,10 +121,12 @@ export const queue = createQueue<QueueData>(
       defaultJobOptions: {
         attempts: Number.MAX_SAFE_INTEGER,
         backoff: {
-          // delay: 1000 * 60 * 5, // 5 minutes
+          // TODO: add more delay as it go to preview and production
+          //  delay: 1000 * 60 * 5, // 5 minutes
           delay: 1000, // 1 second
           type: 'fixed',
         },
+        removeOnFail: false,
       },
     },
   },

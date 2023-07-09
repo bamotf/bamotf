@@ -9,7 +9,6 @@ import {currency} from '@bam-otf/utils'
 import {fetch} from '@remix-run/node'
 import {format, logger} from 'logger'
 
-import type {Prisma} from '~/utils/prisma.server'
 import {env} from './env.server'
 
 const BITCOIN_CORE_URL = `${env.BITCOIN_CORE_URL.protocol}://${env.BITCOIN_CORE_URL.host}`
@@ -203,7 +202,7 @@ export async function simulatePayment({
   /**
    * Amount in satoshis
    */
-  amount: bigint | number
+  amount: bigint
 }) {
   if (env.NODE_ENV === 'production') {
     throw new Error('Cannot simulate payment in production')

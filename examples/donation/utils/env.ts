@@ -24,7 +24,7 @@ export const env = createEnv({
     NEXT_PUBLIC_PUSHER_KEY: STRING_REQUIRED,
   },
   experimental__runtimeEnv: {
-    NEXT_PUBLIC_PUSHER_CLUSTER: process.env.NEXT_PUBLIC_PUSHER_KEY,
+    NEXT_PUBLIC_PUSHER_CLUSTER: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
     NEXT_PUBLIC_PUSHER_KEY: process.env.NEXT_PUBLIC_PUSHER_KEY,
   },
 })
