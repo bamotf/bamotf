@@ -4,10 +4,6 @@ import {currency as currencyUtil} from '@bam-otf/utils'
 import type {CurrencyCode} from '../../../config/currency'
 import {CopyableAddress} from './copyable-address'
 import {CopyableAmount} from './copyable-amount'
-import {
-  OpenInWalletButton,
-  type WalletRedirectUrl,
-} from './open-in-wallet-button'
 import {QRCode, type QRCodeProps} from './qr-code'
 
 // TODO: there are duplicate types of this
@@ -40,14 +36,12 @@ interface PaymentIntentProps {
    * Props to pass to the QRCode component
    */
   qrCodeProps?: Pick<QRCodeProps, 'label' | 'message' | 'redirectUrl'>
-  walletRedirectUrl: WalletRedirectUrl
 }
 
 export function PaymentIntent({
   intent,
   price,
   qrCodeProps,
-  walletRedirectUrl,
 }: PaymentIntentProps) {
   const {amount, currency, address} = intent
 
@@ -57,10 +51,6 @@ export function PaymentIntent({
     // TODO: this should be probably getting the price from the endpoint instead of
     // receiving it as a prop
     amountInBTC = Math.ceil((Number(amount) / price) * 1e8) / 1e8
-  }
-
-  const handleOpenInWalletClick = () => {
-    window.open(walletRedirectUrl, '_blank')
   }
 
   return (
@@ -75,10 +65,6 @@ export function PaymentIntent({
       <div className="copyable-field">
         <label>Amount</label>
         <CopyableAmount amount={amountInBTC} />
-      </div>
-
-      <div className="open-in-wallet">
-        <OpenInWalletButton redirectUrl={walletRedirectUrl} />
       </div>
     </div>
   )

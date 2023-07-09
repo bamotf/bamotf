@@ -30,10 +30,4 @@
   .qr-code {
     @apply mb-4 rounded-md p-4 opacity-100 shadow-xl;
   }
-  .open-in-wallet {
-    @apply flex h-1/6 w-1/2 items-center justify-center rounded-lg bg-white shadow-lg;
-  }
-  .open-in-wallet-button {
-    @apply w-48 cursor-pointer rounded-lg bg-neutral-400 px-4 py-2 text-base font-semibold text-slate-50 transition duration-200 hover:bg-neutral-600;
-  }
 }
