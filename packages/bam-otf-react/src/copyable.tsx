@@ -20,8 +20,12 @@ export function Copyable({prefix, text, onCopied}: CopyableProps) {
   const [copied, setCopied] = useState(false)
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(text)
-    setCopied(true)
+    try {
+      navigator.clipboard.writeText(text)
+      setCopied(true)
+    } catch (error) {
+      console.error('Copy available only in secure contexts.')
+    }
   }
 
   useEffect(() => {
