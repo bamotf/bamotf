@@ -4,4 +4,4 @@
 // This is a Next.js workaround for exporting client-side components
 // See
 // https://nextjs.org/docs/getting-started/react-essentials#third-party-packages
-export {PaymentIntent} from '@bam-otf/react'
+export {PaymentDetails} from '@bam-otf/react'

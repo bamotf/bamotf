@@ -3,7 +3,5 @@
 
 // components
 export * from './copyable'
-export * from './copyable-address'
-export * from './copyable-amount'
-export * from './payment-intent'
+export * from './payment-details'
 export * from './qr-code'

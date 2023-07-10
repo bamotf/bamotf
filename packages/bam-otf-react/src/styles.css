@@ -1,26 +1,8 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss/base';
+@import 'tailwind-config/base.css';
 
-@layer components {
-  .copyable {
-  }
-  .copyable-input {
-  }
-  .copyable-button {
-  }
-  .copyable-container {
-    @apply flex flex-col items-center justify-center;
-  }
-  .amount-prefix {
-  }
-  .copyable-field {
-  }
-  .payment-intent {
-    @apply flex flex-col items-center justify-center;
-  }
+@import 'tailwindcss/components';
+@import './custom-components.css';
 
-  .qr-code {
-    @apply rounded-md opacity-90 hover:opacity-30;
-  }
-}
+@import 'tailwindcss/utilities';
+@import './custom-utilities.css';

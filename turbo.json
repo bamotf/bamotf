@@ -20,7 +20,12 @@
         ".env"
       ],
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
+      "outputs": [
+        "dist/**",
+        ".next/**",
+        "!.next/cache/**",
+        "storybook-static/**"
+      ]
     },
     "lint": {
       "outputs": []

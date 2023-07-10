@@ -2,7 +2,7 @@ import React from 'react'
 import {env} from '@/utils/env'
 
 import type {CurrencyCode} from '../../../../config/currency'
-import {PaymentIntent} from './payment-information'
+import {PaymentDetails} from './payment-details'
 
 async function getPrice(currency: CurrencyCode) {
   const response = await fetch(`${env.BAMOTF_SERVER_URL}/api/price/${currency}`)
@@ -29,10 +29,14 @@ export async function PaymentPending({
   const price = await getPrice(currency)
   return (
     <div>
-      <PaymentIntent
-        intent={{amount, currency, address}}
+      <PaymentDetails
+        amount={amount}
+        currency={currency}
+        address={address}
         price={price}
-        qrCodeProps={{label: '', message: '', redirectUrl}}
+        label="Donation to bam-otf"
+        message="Thank you for your donation!"
+        redirectUrl={redirectUrl}
       />
     </div>
   )

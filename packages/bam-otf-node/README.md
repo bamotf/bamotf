@@ -25,8 +25,11 @@ pnpm i @bam-otf/node --save
 
 ## Usage
 
-The package needs to be configured with your account's secret key, which is
-available in the [bam-otf Dashboard][api-keys]. Require it with the key's value:
+The package needs to be configured with your API Key, which is defined as a env
+var during start up (see
+[Running the server](../../README.md#1-running-the-server)).
+
+Using it with CJS:
 
 <!-- prettier-ignore -->
 ```js
@@ -35,9 +38,10 @@ const bamotf = require('@bam-otf/node')('secret-key...');
 bamotf.paymentIntents.retrieve({
   amount: 50,
   currency: 'USD',
+  tolerance: 0.05,
   address: 'bc1q00hf9mlaxzej30cx5q6200c636ufdc4gjmqyuh',
 })
-  .then(customer => console.log(customer.id))
+  .then(pi => console.log(pi.id))
   .catch(error => console.error(error));
 ```
 
