@@ -28,6 +28,8 @@
       "require": "./src/payment-details.tsx",
       "types": "./src/payment-details.tsx"
     },
+    "./base.css": "./dist/base.css",
+    "./components.css": "./dist/components.css",
     "./styles.css": "./dist/styles.css"
   },
   "files": [

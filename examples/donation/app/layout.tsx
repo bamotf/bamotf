@@ -2,7 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 
 import './globals.css'
-import '@bam-otf/react/styles.css'
+import '@bam-otf/react/components.css'
 
 import {Inter} from 'next/font/google'
 
@@ -15,7 +15,7 @@ export const metadata = {
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <body className={inter.className}>
         <main className="flex min-h-screen flex-col items-center justify-evenly p-24">
           <div className="items-center justify-between font-mono text-sm lg:flex">

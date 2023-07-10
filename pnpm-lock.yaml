@@ -373,6 +373,12 @@ importers:
       eslint-config-custom:
         specifier: workspace:*
         version: link:../../packages/eslint-config-custom
+      postcss-import:
+        specifier: ^15.1.0
+        version: 15.1.0(postcss@8.4.24)
+      tailwind-config:
+        specifier: workspace:*
+        version: link:../../packages/tailwind-config
       tsconfig:
         specifier: workspace:*
         version: link:../../packages/tsconfig

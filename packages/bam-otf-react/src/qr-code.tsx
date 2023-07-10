@@ -70,7 +70,7 @@ export function QRCode({
     <a href={url}>
       <QRCodeSVG
         bgColor="#ffffff00"
-        fgColor="#020817"
+        fgColor="current"
         value={url}
         size={420}
         level="M"

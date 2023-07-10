@@ -1,7 +1,7 @@
 @layer components {
   /* <QRCode /> */
   .qr-code {
-    @apply bg-background border-border block flex-shrink-0 overflow-hidden rounded-lg border p-3;
+    @apply bg-background border-border block flex-shrink-0 overflow-hidden rounded-lg border fill-current p-3;
   }
 
   /* <Copyable /> */
