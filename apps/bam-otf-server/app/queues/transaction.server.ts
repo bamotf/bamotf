@@ -54,7 +54,10 @@ export const queue = createQueue<QueueData>(
     // Update the local database with transaction history
     const savedTransactions = await Promise.all(
       transactions.map(async tx => {
-        const amount = BigInt(tx.amount * 1e8)
+        const amount = currency.convertToBigInt({
+          amount: tx.amount,
+          currency: 'BTC',
+        })
 
         // If the currency is BTC, we don't need to convert the amount
         // because it's already in satoshis
