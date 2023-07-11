@@ -48,11 +48,6 @@
     @apply text-foreground text-2xl font-bold tracking-tight;
   }
 
-  .payment-details-status {
-    @apply flex items-center justify-center;
-    @apply bg-card text-card-foreground border-border rounded-xl border;
-  }
-
   .copyable-field {
     @apply flex w-full flex-col items-start gap-1.5;
   }
@@ -60,13 +55,4 @@
   .copyable-field label {
     @apply text-foreground text-sm font-medium leading-none;
   }
-}
-
-/* <BranchStatus /> */
-.branch-status {
-  @apply flex flex-row items-center justify-center p-6;
-}
-
-.branch-status .branch-status-title {
-  @apply text-muted-foreground pr-1 font-light;
 }

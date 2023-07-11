@@ -5,4 +5,3 @@
 export * from './copyable'
 export * from './payment-details'
 export * from './qr-code'
-export * from './branch-status'

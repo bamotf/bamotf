@@ -72,7 +72,7 @@ export function QRCode({
         bgColor="#ffffff00"
         fgColor="current"
         value={url}
-        size={120}
+        size={420}
         level="M"
         className="qr-code"
         style={{

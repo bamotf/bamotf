@@ -1,9 +1,7 @@
 import React from 'react'
 import {currency as currencyUtil} from '@bam-otf/utils'
-import {BookOpen, Laptop, Target} from 'lucide-react'
 
 import type {CurrencyCode} from '../../../config/currency'
-import {BranchStatus} from './branch-status'
 import {Copyable} from './copyable'
 import {QRCode, type QRCodeProps} from './qr-code'
 
@@ -57,31 +55,25 @@ export function PaymentDetails({
   }
 
   return (
-    <>
-      <div className="payment-details-status">
-        <BranchStatus branch="Development" />
+    <div className="payment-details">
+      <h3>Payment Details</h3>
+      <QRCode
+        address={address}
+        amount={amountInBTC}
+        label={label}
+        message={message}
+        redirectUrl={redirectUrl}
+      />
+
+      <div className="copyable-field">
+        <label>Address</label>
+        <Copyable text={address} />
       </div>
 
-      <div className="payment-details">
-        <h3>Payment Details</h3>
-        <QRCode
-          address={address}
-          amount={amountInBTC}
-          label={label}
-          message={message}
-          redirectUrl={redirectUrl}
-        />
-
-        <div className="copyable-field">
-          <label>Address</label>
-          <Copyable text={address} />
-        </div>
-
-        <div className="copyable-field">
-          <label>Amount</label>
-          <Copyable prefix="BTC" text={amountInBTC.toString()} />
-        </div>
+      <div className="copyable-field">
+        <label>Amount</label>
+        <Copyable prefix="BTC" text={amountInBTC.toString()} />
       </div>
-    </>
+    </div>
   )
 }
