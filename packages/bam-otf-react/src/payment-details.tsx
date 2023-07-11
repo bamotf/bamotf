@@ -63,27 +63,23 @@ export function PaymentDetails({
       </div>
 
       <div className="payment-details">
-        <div className="payment-details-column">
-          <h3>Payment Details</h3>
-          <QRCode
-            address={address}
-            amount={amountInBTC}
-            label={label}
-            message={message}
-            redirectUrl={redirectUrl}
-          />
+        <h3>Payment Details</h3>
+        <QRCode
+          address={address}
+          amount={amountInBTC}
+          label={label}
+          message={message}
+          redirectUrl={redirectUrl}
+        />
+
+        <div className="copyable-field">
+          <label>Address</label>
+          <Copyable text={address} />
         </div>
 
-        <div className="payment-details-column">
-          <div className="copyable-field">
-            <label>Address</label>
-            <Copyable text={address} />
-          </div>
-
-          <div className="copyable-field">
-            <label>Amount</label>
-            <Copyable prefix="BTC" text={amountInBTC.toString()} />
-          </div>
+        <div className="copyable-field">
+          <label>Amount</label>
+          <Copyable prefix="BTC" text={amountInBTC.toString()} />
         </div>
       </div>
     </>
