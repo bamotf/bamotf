@@ -40,8 +40,8 @@
 
   /* <PaymentDetails /> */
   .payment-details {
-    @apply box-content flex max-w-sm flex-col items-start gap-4 p-6;
-    @apply bg-card text-card-foreground border-border rounded-xl border;
+    @apply box-content flex max-w-sm flex-col items-start gap-4 px-5 py-6;
+    @apply bg-card text-card-foreground border-border rounded-lg border;
   }
 
   .payment-details h3 {
