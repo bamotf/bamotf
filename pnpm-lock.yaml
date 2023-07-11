@@ -218,6 +218,9 @@ importers:
       '@types/uuid':
         specifier: ^9.0.1
         version: 9.0.1
+      autoprefixer:
+        specifier: ^10.4.14
+        version: 10.4.14(postcss@8.4.24)
       eslint:
         specifier: ^8.38.0
         version: 8.38.0
@@ -227,6 +230,12 @@ importers:
       msw:
         specifier: ^1.2.1
         version: 1.2.1(typescript@5.0.4)
+      postcss:
+        specifier: ^8.4.20
+        version: 8.4.24
+      postcss-import:
+        specifier: ^15.1.0
+        version: 15.1.0(postcss@8.4.24)
       prisma:
         specifier: ^4.12.0
         version: 4.12.0
@@ -342,6 +351,9 @@ importers:
       postcss:
         specifier: 8.4.24
         version: 8.4.24
+      postcss-import:
+        specifier: ^15.1.0
+        version: 15.1.0(postcss@8.4.24)
       pusher:
         specifier: ^5.1.3
         version: 5.1.3(encoding@0.1.13)
@@ -373,9 +385,6 @@ importers:
       eslint-config-custom:
         specifier: workspace:*
         version: link:../../packages/eslint-config-custom
-      postcss-import:
-        specifier: ^15.1.0
-        version: 15.1.0(postcss@8.4.24)
       tailwind-config:
         specifier: workspace:*
         version: link:../../packages/tailwind-config
@@ -8829,7 +8838,6 @@ packages:
       picocolors: 1.0.0
       postcss: 8.4.24
       postcss-value-parser: 4.2.0
-    dev: false
 
   /available-typed-arrays@1.0.5:
     resolution: {integrity: sha512-DMD0KiN46eipeziST1LPP/STfDU0sufISXmjSgvVsoU2tqxctQeASejWcfNtxYKqETM1UxQ8sp2OrSBWpHY6sw==}
