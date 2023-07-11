@@ -27,6 +27,12 @@ export interface PaymentDetailsProps
    * The current price of the bitcoin
    */
   price: number
+
+  /**
+   * The environment where the payment is being made
+   * @default 'development'
+   */
+  environment?: 'development' | 'preview' | 'production'
 }
 
 export function PaymentDetails({
@@ -37,6 +43,7 @@ export function PaymentDetails({
   label,
   message,
   redirectUrl,
+  environment = 'development',
 }: PaymentDetailsProps) {
   let amountInBTC = currencyUtil.toFraction({amount, currency})
 
@@ -55,8 +62,34 @@ export function PaymentDetails({
   }
 
   return (
-    <div className="payment-details">
-      <h3>Payment Details</h3>
+    <div
+      className={`payment-details ${
+        environment === 'development'
+          ? 'environment-development'
+          : environment === 'preview'
+          ? 'environment-preview'
+          : ''
+      }`}
+    >
+      <div className="payment-details-title">
+        <h3>Payment Details</h3>
+
+        {environment === 'development' ? (
+          <button
+            onClick={() => {
+              window.open(
+                `http://localhost:3000/simulate?amount=${amountInBTC}&address=${address}`,
+              )
+            }}
+            className="environment-action"
+          >
+            Simulate Payment
+          </button>
+        ) : environment === 'preview' ? (
+          <span className="environment-action">testnet</span>
+        ) : null}
+      </div>
+
       <QRCode
         address={address}
         amount={amountInBTC}

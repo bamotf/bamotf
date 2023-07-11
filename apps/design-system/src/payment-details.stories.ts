@@ -26,3 +26,13 @@ export const WithBTC: Story = {
   },
 }
 export const WithFiatCurrency: Story = {}
+export const InPreviewEnvironment: Story = {
+  args: {
+    environment: 'preview',
+  },
+}
+export const InProductionEnvironment: Story = {
+  args: {
+    environment: 'production',
+  },
+}

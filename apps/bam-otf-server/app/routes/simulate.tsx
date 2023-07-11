@@ -3,7 +3,12 @@ import {currency} from '@bam-otf/utils'
 import {conform, useForm} from '@conform-to/react'
 import {getFieldsetConstraint, parse} from '@conform-to/zod'
 import {json, type ActionArgs} from '@remix-run/node'
-import {Form, useActionData, useNavigation} from '@remix-run/react'
+import {
+  Form,
+  useActionData,
+  useNavigation,
+  useSearchParams,
+} from '@remix-run/react'
 
 import {Button, ErrorList, Field} from '~/components/forms'
 import {simulatePayment} from '~/utils/bitcoin-core'
@@ -33,13 +38,8 @@ export async function action({request}: ActionArgs) {
   return json(submission, {status: 200})
 }
 
-export default function SimulateForm({
-  redirectTo,
-  formError,
-}: {
-  redirectTo?: string
-  formError?: string | null
-}) {
+export default function SimulateForm({formError}: {formError?: string | null}) {
+  const [searchParams] = useSearchParams()
   const [status, setStatus] = useState<
     'pending' | 'idle' | 'error' | 'success'
   >('idle')
@@ -48,7 +48,10 @@ export default function SimulateForm({
 
   const [form, fields] = useForm({
     id: 'inline-login',
-    defaultValue: {redirectTo},
+    defaultValue: {
+      address: searchParams.get('address') ?? '',
+      amount: searchParams.get('amount') ?? '',
+    },
     constraint: getFieldsetConstraint(schema),
     lastSubmission,
     shouldRevalidate: 'onBlur',

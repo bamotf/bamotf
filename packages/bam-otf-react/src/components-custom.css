@@ -44,6 +44,10 @@
     @apply bg-card text-card-foreground border-border rounded-lg border;
   }
 
+  .payment-details-title {
+    @apply flex w-full items-center justify-between;
+  }
+
   .payment-details h3 {
     @apply text-foreground text-2xl font-bold tracking-tight;
   }
@@ -54,5 +58,35 @@
 
   .copyable-field label {
     @apply text-foreground text-sm font-medium leading-none;
+  }
+
+  /* environment */
+
+  .environment-development {
+    background: repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0.1) 10px,
+      rgba(247, 248, 255, 0.1) 10px,
+      rgba(247, 248, 255, 0.1) 20px
+    );
+  }
+
+  .environment-development .environment-action {
+    @apply border-border text-background rounded-md border bg-[#333863] p-2 text-xs font-medium;
+  }
+
+  .environment-preview {
+    background: repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0.1) 10px,
+      rgba(255, 252, 247, 0.1) 10px,
+      rgba(255, 252, 247, 0.1) 20px
+    );
+  }
+
+  .environment-preview .environment-action {
+    @apply p-2 text-xs font-medium text-[#4d402a];
   }
 }
