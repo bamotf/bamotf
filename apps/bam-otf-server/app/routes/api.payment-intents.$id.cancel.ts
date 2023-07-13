@@ -33,7 +33,7 @@ export async function action({request, params}: LoaderArgs) {
       logs: {create: [{status: 'status_canceled'}]},
     },
   })
-
+  // TODO: handle not found error.code='P2025'
   // TODO: cancel the worker
 
   return typedjson({

@@ -37,14 +37,6 @@ export const prisma = getClient(() => {
             {emit: 'stdout', level: 'info'},
             {emit: 'stdout', level: 'warn'},
           ],
-    // rejectOnNotFound: {
-    //   findFirst: {
-    //     PaymentIntent: err => new Error('PaymentIntent not found'),
-    //   },
-    //   findUnique: {
-    //     PaymentIntent: err => new Error('PaymentIntent not found'),
-    //   },
-    // },
   })
 
   client.$on('query', e => {

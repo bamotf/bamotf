@@ -35,7 +35,7 @@ export async function loader({params, request}: LoaderArgs) {
 
   const {id} = path
 
-  const paymentIntent = await prisma.paymentIntent.findUniqueOrThrow({
+  const paymentIntent = await prisma.paymentIntent.findUnique({
     where: {id},
     include: {
       transactions: true,
@@ -45,6 +45,10 @@ export async function loader({params, request}: LoaderArgs) {
       },
     },
   })
+
+  if (!paymentIntent) {
+    throw new Response(null, {status: 404})
+  }
 
   const riskScore = await calculateRiskScore({
     amount: paymentIntent.amount,

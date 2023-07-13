@@ -26,9 +26,16 @@ export async function loader({request, params}: LoaderArgs) {
 
   const {id} = path
 
-  const paymentIntent = await prisma.paymentIntent.findUniqueOrThrow({
+  const paymentIntent = await prisma.paymentIntent.findUnique({
     where: {id},
   })
+
+  if (!paymentIntent) {
+    throw new Response('Payment intent not found', {
+      status: 404,
+      statusText: 'Not Found',
+    })
+  }
 
   return typedjson({
     ...paymentIntent,
@@ -59,6 +66,7 @@ export async function action({request, params}: LoaderArgs) {
       },
     },
   })
+  // TODO: handle not found error.code='P2025'
 
   return typedjson({
     ...paymentIntent,
