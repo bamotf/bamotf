@@ -2,4 +2,6 @@
 // import './styles.css'
 
 // components
-export * from './button'
+export * from './copyable'
+export * from './payment-details'
+export * from './qr-code'

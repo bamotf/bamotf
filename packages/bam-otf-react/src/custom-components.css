@@ -1,0 +1,58 @@
+@layer components {
+  /* <QRCode /> */
+  .qr-code {
+    @apply bg-background border-border block flex-shrink-0 overflow-hidden rounded-lg border p-3;
+  }
+
+  /* <Copyable /> */
+  .copyable {
+    @apply border-input bg-background text-foreground flex h-10 w-full justify-between gap-1.5 rounded-md border px-3 py-2 text-sm;
+  }
+
+  .copyable-prefix {
+    @apply text-muted-foreground font-light uppercase;
+  }
+
+  .copyable-input {
+    @apply w-full truncate;
+    user-select: all;
+  }
+
+  .copyable-button {
+    @apply ring-offset-background focus-visible:ring-ring relative -mr-1 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
+  }
+
+  .copyable-icon {
+    @apply p-1;
+  }
+
+  .copyable-icon-container {
+    @apply inset-0 flex items-center justify-center opacity-0 transition-opacity;
+  }
+
+  .copyable-icon-container.show {
+    @apply opacity-100;
+  }
+
+  .copyable-success {
+    @apply text-success absolute;
+  }
+
+  /* <PaymentDetails /> */
+  .payment-details {
+    @apply box-content flex max-w-sm flex-col items-start gap-4 p-6;
+    @apply bg-card text-card-foreground border-border rounded-xl border;
+  }
+
+  .payment-details h3 {
+    @apply text-foreground text-2xl font-bold tracking-tight;
+  }
+
+  .copyable-field {
+    @apply flex w-full flex-col items-start gap-1.5;
+  }
+
+  .copyable-field label {
+    @apply text-foreground text-sm font-medium leading-none;
+  }
+}

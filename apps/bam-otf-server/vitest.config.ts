@@ -5,6 +5,7 @@ import {defineProject} from 'vitest/config'
 process.env.LOG_LEVEL = 'error'
 
 export default defineProject({
+  // @ts-expect-error vitest was updated
   plugins: [tsconfigPaths()],
   test: {
     name: 'bam-otf-server',
