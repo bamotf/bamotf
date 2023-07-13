@@ -7,10 +7,10 @@
     "type": "separator",
     "title": "API References"
   },
-  "server": "",
-  "@bam-otf/react": "",
-  "@bam-otf/utils": "",
-  "@bam-otf/node": "",
+  "@bamotf/server": "",
+  "@bamotf/react": "",
+  "@bamotf/utils": "",
+  "@bamotf/node": "",
   "-- More": {
     "type": "separator",
     "title": "More"
