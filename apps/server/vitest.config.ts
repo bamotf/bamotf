@@ -1,6 +1,9 @@
+import 'dotenv/config'
+
 import tsconfigPaths from 'vite-tsconfig-paths'
 import {defineProject} from 'vitest/config'
 
+// Disable logging during tests
 // eslint-disable-next-line turbo/no-undeclared-env-vars
 process.env.LOG_LEVEL = 'error'
 
@@ -15,6 +18,6 @@ export default defineProject({
       // If you want to test a route, you are probably looking for an integration test.
       'app/routes/**/*.test.ts',
     ],
-    setupFiles: ['dotenv/config', './tests/setup.unit.ts'],
+    setupFiles: ['./tests/setup.unit.ts'],
   },
 })
