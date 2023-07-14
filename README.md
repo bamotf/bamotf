@@ -37,9 +37,8 @@ transactions have been completed - BAM notifies you via a webhook as soon as a
 payment is confirmed on the blockchain.
 
 In addition to its core functionality, BAM offers
-[Node](./packages/node/README.md) and
-[React](./packages/bam-otf-react/README.md) libraries, further easing
-implementation for developers.
+[Node](./packages/node/README.md) and [React](./packages/react/README.md)
+libraries, further easing implementation for developers.
 
 ### Built With
 
@@ -131,8 +130,8 @@ Here's a full example of how to integrate using
   to create and manage payments.
 - **[bam-otf/node](packages/node/README.md)** - A Node.js client to interact
   with the _bam-otf_ server.
-- **[bam-otf/react](packages/bam-otf-react/README.md)** - A React component
-  library to easily integrate bitcoin payments in your React app.
+- **[bam-otf/react](packages/react/README.md)** - A React component library to
+  easily integrate bitcoin payments in your React app.
 - **[bam-otf/utils](packages/utils/README.md)** - A utility library to help with
   formatting and stuff like that.
 
