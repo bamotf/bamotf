@@ -1,5 +1,5 @@
 {
-  "name": "bam-otf",
+  "name": "bamotf",
   "version": "0.0.0",
   "private": true,
   "workspaces": [
@@ -9,7 +9,7 @@
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
-    "dev:ui": "turbo dev --filter=design-system --filter=@bam-otf/react",
+    "dev:ui": "turbo dev --filter=storybook --filter=@bamotf/react",
     "lint": "turbo lint",
     "test": "turbo test:unit test:integration test:e2e",
     "test:unit": "turbo test:unit",
@@ -18,7 +18,7 @@
     "test:e2e:install": "pnpx playwright install chromium --with-deps",
     "typecheck": "turbo typecheck",
     "format": "prettier --write \"**/*.{js,jsx,json,yml,yaml,css,ts,tsx,md,mdx}\"",
-    "prisma": "cd apps/bam-otf-server && pnpm prisma",
+    "prisma": "cd apps/server && pnpm prisma",
     "prepare": "node ./scripts/prepare.js",
     "changeset": "changeset",
     "release": "turbo build && changeset publish",

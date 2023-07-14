@@ -42,11 +42,11 @@ importers:
         specifier: 0.31.1
         version: 0.31.1
 
-  apps/bam-otf-server:
+  apps/server:
     dependencies:
-      '@bam-otf/utils':
+      '@bamotf/utils':
         specifier: workspace:*
-        version: link:../../packages/bam-otf-utils
+        version: link:../../packages/utils
       '@conform-to/react':
         specifier: ^0.7.1
         version: 0.7.1(react@18.2.0)
@@ -250,7 +250,7 @@ importers:
         specifier: ^4.2.0
         version: 4.2.0(typescript@5.0.4)
 
-  apps/design-system:
+  apps/storybook:
     dependencies:
       react:
         specifier: ^18.2.0
@@ -259,9 +259,9 @@ importers:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
     devDependencies:
-      '@bam-otf/react':
+      '@bamotf/react':
         specifier: workspace:*
-        version: link:../../packages/bam-otf-react
+        version: link:../../packages/react
       '@storybook/addon-essentials':
         specifier: ^7.0.26
         version: 7.0.26(react-dom@18.2.0)(react@18.2.0)
@@ -345,7 +345,7 @@ importers:
         specifier: ^4.9.3
         version: 4.9.4
 
-  packages/bam-otf-node:
+  packages/node:
     dependencies:
       '@ts-rest/core':
         specifier: ^3.19.0
@@ -357,15 +357,15 @@ importers:
         specifier: ^0.3.0
         version: 0.3.0
     devDependencies:
+      'server':
+        specifier: workspace:*
+        version: link:../../apps/server
       '@types/react':
         specifier: ^18.0.17
         version: 18.0.22
       '@types/react-dom':
         specifier: ^18.0.6
         version: 18.0.7
-      bam-otf-server:
-        specifier: workspace:*
-        version: link:../../apps/bam-otf-server
       eslint:
         specifier: ^7.32.0
         version: 7.32.0
@@ -388,11 +388,11 @@ importers:
         specifier: ^5.0.4
         version: 5.0.4
 
-  packages/bam-otf-react:
+  packages/react:
     dependencies:
-      '@bam-otf/utils':
+      '@bamotf/utils':
         specifier: workspace:*
-        version: link:../bam-otf-utils
+        version: link:../utils
       lucide-react:
         specifier: ^0.233.0
         version: 0.233.0(react@18.2.0)
@@ -443,7 +443,7 @@ importers:
         specifier: ^4.9.4
         version: 4.9.4
 
-  packages/bam-otf-utils:
+  packages/utils:
     devDependencies:
       eslint-config-custom:
         specifier: workspace:*

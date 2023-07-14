@@ -1,10 +1,10 @@
 <!-- PROJECT LOGO -->
 <p align="center">
-  <a href="https://github.com/bam-otf/bam-otf">
-   <img src="https://github.com/bam-otf/bam-otf/blob/main/.github/banner.png?raw=true" alt="Logo">
+  <a href="https://github.com/bamotf/bamotf">
+   <img src="https://github.com/bamotf/bamotf/blob/main/.github/banner.png?raw=true" alt="Logo">
   </a>
 
-  <h3 align="center"><i>bam-otf</i></h3>
+  <h3 align="center"><i>bamotf</i></h3>
 
   <p align="center">
     The open-source Stripe alternative but for Bitcoin only.
@@ -13,7 +13,7 @@
     <b>⚠️ This is a Work in Progress ⚠️</b> - Do not use it in production!
     <br />
     <br />
-    <a href="https://github.com/bam-otf/bam-otf/issues">Issues</a>
+    <a href="https://github.com/bamotf/bamotf/issues">Issues</a>
   </p>
 </p>
 
@@ -25,7 +25,7 @@
 
 # Bitcoin Payments Infrastructure
 
-_Bitcoin Acknowledgement Mechanism Over Time Frame (bam-otf)_ is a near
+_Bitcoin Acknowledgement Mechanism Over Time Frame (bamotf)_ is a near
 zero-config solution to accept bitcoins on your application. Designed
 specifically for web developers, BAM makes it simple and easy to create payment
 intents.
@@ -37,17 +37,16 @@ transactions have been completed - BAM notifies you via a webhook as soon as a
 payment is confirmed on the blockchain.
 
 In addition to its core functionality, BAM offers
-[Node](./packages/bam-otf-node/README.md) and
-[React](./packages/bam-otf-react/README.md) libraries, further easing
-implementation for developers.
+[Node](./packages/node/README.md) and [React](./packages/react/README.md)
+libraries, further easing implementation for developers.
 
 ### Built With
 
-- [Remix.run](https://remix.run/?ref=bam-otf)
-- [React.js](https://reactjs.org/?ref=bam-otf)
-- [Tailwind CSS](https://tailwindcss.com/?ref=bam-otf)
-- [Prisma.io](https://prisma.io/?ref=bam-otf)
-- [Turbo](https://turbo.build/?ref=bam-otf)
+- [Remix.run](https://remix.run/?ref=bamotf)
+- [React.js](https://reactjs.org/?ref=bamotf)
+- [Tailwind CSS](https://tailwindcss.com/?ref=bamotf)
+- [Prisma.io](https://prisma.io/?ref=bamotf)
+- [Turbo](https://turbo.build/?ref=bamotf)
 
 <!-- GETTING STARTED -->
 
@@ -57,11 +56,11 @@ To get it and running, please follow these simple steps.
 
 ### Prerequisites
 
-Here is what you need to be able to run _bam-otf_.
+Here is what you need to be able to run _bamotf_.
 
 - docker-compose
 
-### 1. Running the [Server](./apps/bam-otf-server/README.md)
+### 1. Running the [Server](./apps/server/README.md)
 
 Create a `docker-compose.yml` file in the root of your project and paste the
 following:
@@ -70,14 +69,14 @@ following:
 # docker-compose.yml
 #
 #  This is an example of how you can configure for running
-#  bam-otf-server in development mode if you don't already have a
+#  bamotf/server in development mode if you don't already have a
 #  Bitcoin Core, Redis, and Postgres instance running.
 
 version: '3.8'
 services:
-  bam-otf-server:
-    image: bam-otf-server:latest
-    container_name: bam-otf-server
+  bamotf:
+    image: bamotf/server:latest
+    container_name: bamotf
     restart: always
     environment:
       - REDIS_URL=redis://redis:6379
@@ -95,7 +94,7 @@ services:
 
   # Bitcoin-core for development
   bitcoin-core:
-    image: bam-otf-core-dev:latest
+    image: bamotf-core-dev:latest
     container_name: bitcoin-core
     restart: always
 
@@ -118,23 +117,23 @@ server on port [21000](http://localhost:21000) with the following credentials:
 
 ### 2. Interact with the server
 
-You can either access the [API](./apps/bam-otf-server/README.md#api) directly or
-use the [Node.js client](./packages/bam-otf-node/README.md) to create and manage
-Payment Intents.
+You can either access the [API](./apps/server/README.md#api) directly or use the
+[Node.js client](./packages/node/README.md) to create and manage Payment
+Intents.
 
 Here's a full example of how to integrate using
 [Next.js](./examples/donation/README.md).
 
 ## What's in this repo?
 
-- **[bam-otf/server](apps/bam-otf-server/README.md)** - A server that exposes a
-  REST API to create and manage payments.
-- **[bam-otf/node](packages/bam-otf-node/README.md)** - A Node.js client to
-  interact with the _bam-otf_ server.
-- **[bam-otf/react](packages/bam-otf-react/README.md)** - A React component
-  library to easily integrate bitcoin payments in your React app.
-- **[bam-otf/utils](packages/bam-otf-utils/README.md)** - A utility library to
-  help with formatting and stuff like that.
+- **[bamotf/server](apps/server/README.md)** - A server that exposes a REST API
+  to create and manage payments.
+- **[bamotf/node](packages/node/README.md)** - A Node.js client to interact with
+  the _bamotf_ server.
+- **[bamotf/react](packages/react/README.md)** - A React component library to
+  easily integrate bitcoin payments in your React app.
+- **[bamotf/utils](packages/utils/README.md)** - A utility library to help with
+  formatting and stuff like that.
 
 <!-- ACTIVITY -->
 
@@ -159,7 +158,7 @@ information.
 
 ## Acknowledgements
 
-Special thanks to these amazing projects which help power bam-otf:
+Special thanks to these amazing projects which help power bamotf:
 
 - [Bitcoin Core](https://github.com/bitcoin/bitcoin)
 - [Turbo](https://turbo.build/)

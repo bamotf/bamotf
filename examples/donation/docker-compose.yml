@@ -1,10 +1,10 @@
-# 🟠 This is example docker-compose.yml file for running bam-otf-server in development mode.
+# 🟠 This is example docker-compose.yml file for running bamotf/server in development mode.
 
 version: '3.8'
 services:
-  bam-otf-server:
-    image: bam-otf-server:latest
-    container_name: bam-otf-server
+  bamotf:
+    image: bamotf/server:latest
+    container_name: bamotf
     restart: always
     environment:
       - REDIS_URL=redis://redis:6379
