@@ -5,7 +5,7 @@ process.env.LOG_LEVEL = 'error'
 
 export default defineProject({
   test: {
-    name: 'bam-otf-node',
+    name: 'bamotf/node',
     include: ['src/**/*.test.ts'],
     setupFiles: ['./tests/setup.unit.ts'],
   },

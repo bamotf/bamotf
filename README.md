@@ -37,7 +37,7 @@ transactions have been completed - BAM notifies you via a webhook as soon as a
 payment is confirmed on the blockchain.
 
 In addition to its core functionality, BAM offers
-[Node](./packages/bam-otf-node/README.md) and
+[Node](./packages/node/README.md) and
 [React](./packages/bam-otf-react/README.md) libraries, further easing
 implementation for developers.
 
@@ -119,7 +119,7 @@ server on port [21000](http://localhost:21000) with the following credentials:
 ### 2. Interact with the server
 
 You can either access the [API](./apps/server/README.md#api) directly or use the
-[Node.js client](./packages/bam-otf-node/README.md) to create and manage Payment
+[Node.js client](./packages/node/README.md) to create and manage Payment
 Intents.
 
 Here's a full example of how to integrate using
@@ -129,8 +129,8 @@ Here's a full example of how to integrate using
 
 - **[bam-otf/server](apps/server/README.md)** - A server that exposes a REST API
   to create and manage payments.
-- **[bam-otf/node](packages/bam-otf-node/README.md)** - A Node.js client to
-  interact with the _bam-otf_ server.
+- **[bam-otf/node](packages/node/README.md)** - A Node.js client to interact
+  with the _bam-otf_ server.
 - **[bam-otf/react](packages/bam-otf-react/README.md)** - A React component
   library to easily integrate bitcoin payments in your React app.
 - **[bam-otf/utils](packages/bam-otf-utils/README.md)** - A utility library to
