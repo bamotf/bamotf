@@ -133,8 +133,8 @@ Here's a full example of how to integrate using
   with the _bam-otf_ server.
 - **[bam-otf/react](packages/bam-otf-react/README.md)** - A React component
   library to easily integrate bitcoin payments in your React app.
-- **[bam-otf/utils](packages/bam-otf-utils/README.md)** - A utility library to
-  help with formatting and stuff like that.
+- **[bam-otf/utils](packages/utils/README.md)** - A utility library to help with
+  formatting and stuff like that.
 
 <!-- ACTIVITY -->
 

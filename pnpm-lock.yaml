@@ -46,7 +46,7 @@ importers:
     dependencies:
       '@bamotf/utils':
         specifier: workspace:*
-        version: link:../../packages/bam-otf-utils
+        version: link:../../packages/utils
       '@conform-to/react':
         specifier: ^0.7.1
         version: 0.7.1(react@18.2.0)
@@ -392,7 +392,7 @@ importers:
     dependencies:
       '@bamotf/utils':
         specifier: workspace:*
-        version: link:../bam-otf-utils
+        version: link:../utils
       lucide-react:
         specifier: ^0.233.0
         version: 0.233.0(react@18.2.0)
@@ -443,7 +443,7 @@ importers:
         specifier: ^4.9.4
         version: 4.9.4
 
-  packages/bam-otf-utils:
+  packages/utils:
     devDependencies:
       eslint-config-custom:
         specifier: workspace:*
