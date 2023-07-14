@@ -3,6 +3,7 @@ import type {CurrencyCode, FiatCurrencyCode} from '../../../config/currency'
 type FormatOpts = {
   amount: bigint
   currency: CurrencyCode
+  style?: 'currency' | 'decimal'
 }
 
 export function format(locale: string, opts: FormatOpts): string
@@ -13,11 +14,11 @@ export function format(opts: FormatOpts): string
  */
 export function format(x: any, y?: any): string {
   const locale = typeof x === 'string' ? x : 'en-US'
-  const opts = typeof x === 'string' ? y : x
-  const {amount, currency} = opts
+  const opts: FormatOpts = typeof x === 'string' ? y : x
+  const {amount, currency, style = 'currency'} = opts
   const fractions = getFractionDigits(currency)
   const formatter = new Intl.NumberFormat(locale, {
-    style: 'currency',
+    style,
     currency,
     ...fractions,
   })
@@ -113,13 +114,10 @@ export function convertToSats(opts: {
   price: number
 }) {
   const {currency, amount, price} = opts
-  const {maximumFractionDigits} = getFractionDigits(currency)
 
-  // Convert the price to an integer to avoid floating point errors
-  const fractionMultiplier = 10 ** maximumFractionDigits
-  const priceInInt = Math.ceil(price * fractionMultiplier)
+  const priceInInt = convertToBigInt({currency, amount: price})
 
-  return BigInt(Math.round((Number(amount) / priceInInt) * 1e8))
+  return BigInt(Math.round((Number(amount) / Number(priceInInt)) * 1e8))
 }
 
 /**
@@ -138,11 +136,25 @@ export function convertFromSats(opts: {
   price: number
 }) {
   const {currency, amount, price} = opts
+  const priceInInt = convertToBigInt({currency, amount: price})
+
+  return BigInt(Math.round((Number(amount) * Number(priceInInt)) / 1e8))
+}
+
+/**
+ * Convert a amount to an integer based maintaining the number of decimal places
+ * for the given currency. This is useful to avoid floating point errors.
+ */
+export function convertToBigInt({
+  currency,
+  amount,
+}: {
+  currency: CurrencyCode
+  amount: number
+}) {
   const {maximumFractionDigits} = getFractionDigits(currency)
 
-  // Convert the price to an integer to avoid floating point errors
   const fractionMultiplier = 10 ** maximumFractionDigits
-  const priceInInt = Math.ceil(price * fractionMultiplier)
-
-  return BigInt(Math.round((Number(amount) * priceInInt) / 1e8))
+  const priceInInt = Math.ceil(amount * fractionMultiplier)
+  return BigInt(priceInInt)
 }
