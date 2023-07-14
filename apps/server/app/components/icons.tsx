@@ -40,7 +40,7 @@ export const Icons = {
   }: {size?: 'default'} & JSX.IntrinsicElements['div']) => (
     <div {...props} className={cn('flex items-center space-x-2', className)}>
       <Scan strokeWidth={2} className="h-6 w-6" />
-      <span className="font-bold font-inter">bam-otf</span>
+      <span className="font-bold font-inter">bamotf</span>
     </div>
   ),
   Close: X,

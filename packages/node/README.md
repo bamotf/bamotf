@@ -1,6 +1,6 @@
-# [_bam-otf_][bam-otf] NodeJS Library
+# [_bamotf_][bamotf] NodeJS Library
 
-This library provides convenient access to the bam-otf API from applications
+This library provides convenient access to the bamotf API from applications
 written in server-side JavaScript.
 
 ## Documentation
@@ -102,11 +102,11 @@ const bamotf = BamOtf('sk_test_...', {
 
 ### Webhook signing
 
-_bam-otf_ can optionally sign the webhook events it sends to your endpoint,
+_bamotf_ can optionally sign the webhook events it sends to your endpoint,
 allowing you to validate that they were not sent by a third-party.
 
 Please note that you must pass the _raw_ request body, exactly as received from
-_bam-otf_, to the `constructEvent()` function; this will not work with a parsed
+_bamotf_, to the `constructEvent()` function; this will not work with a parsed
 (i.e., JSON) request body.
 
 You can find an example of how to use this with various JavaScript frameworks in
@@ -124,7 +124,7 @@ const {success, parsed} = bamotf.webhooks.constructEvent(
 #### Testing Webhook signing
 
 You can use `bamotf.webhooks.generateTestHeaderString` to mock webhook events
-that come from _bam-otf_:
+that come from _bamotf_:
 
 ```js
 const payload = {
@@ -155,7 +155,7 @@ expect(event.parsed.id).to.equal(payload.id)
 Follow the instructions in [CONTRIBUTING.md][contributing] to set up your
 environment.
 
-[bam-otf]: ../../README.md
+[bamotf]: ../../README.md
 [contributing]: ../../CONTRIBUTING.md
 
 <!-- [youtube-playlist]: https://www.youtube.com/playlist?list= -->

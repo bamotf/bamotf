@@ -1,6 +1,6 @@
 ![alt](./Screenshot%202023-06-30%20at%2016.29.55.png)
 
-# bam-otf/server
+# bamotf/server
 
 A server that exposes a REST API to create and manage payments in Bitcoin.
 

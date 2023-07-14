@@ -1,6 +1,6 @@
 export type BamOtfConfig = {
   /**
-   * Hostname of the *bam-otf* server.
+   * Hostname of the *bamotf* server.
    * @default 'http://localhost:3000'
    */
   baseURL?: string

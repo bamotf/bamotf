@@ -38,7 +38,7 @@ instructions:
 > requests from branches on your fork. To do this, run:
 >
 > ```
-> git remote add upstream https://github.com/bam-otf/bam-otf.com.git
+> git remote add upstream https://github.com/bamotf/bamotf.git
 > git fetch upstream
 > git branch --set-upstream-to=upstream/main main
 > ```
@@ -53,7 +53,7 @@ If the setup script doesn't work, you can try to run the commands manually:
 
 ```sh
 git clone <your-fork>
-cd ./bam-otf
+cd ./bamotf
 
 # copy the .env.example to .env
 #   everything's mocked out during development so you shouldn't need to
@@ -155,5 +155,5 @@ requests! Thanks!
 
 <!-- prettier-ignore-start -->
 [egghead]: https://egghead.io/courses/how-to-contribute-to-an-open-source-project-on-github
-[issues]: https://github.com/bam-otf/bam-otf.com/issues
+[issues]: https://github.com/bamotf/bamotf.com/issues
 <!-- prettier-ignore-end -->

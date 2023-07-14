@@ -11,7 +11,7 @@ test('should not have Authorization', async () => {
       amount: 9999,
       address: 'fake-address',
     }),
-  ).rejects.toThrow(new UnauthorizedError('bam-otf API key is invalid.'))
+  ).rejects.toThrow(new UnauthorizedError('bamotf API key is invalid.'))
 })
 
 test('should hit the Payment Intent API', async () => {

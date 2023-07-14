@@ -6,7 +6,7 @@ import {parse} from './parse'
 import {PaymentIntents} from './payment-intents'
 
 /**
- * *bam-otf* client class.
+ * *bamotf* client class.
  * @param apiKey - API key.
  * @param config - Client configuration.
  */
@@ -29,7 +29,7 @@ export class BamOtf {
     }
 
     if (!apiKey) {
-      throw new UnauthorizedError('bam-otf API key is required.')
+      throw new UnauthorizedError('bamotf API key is required.')
     }
 
     this.client = axios.create({
@@ -48,7 +48,7 @@ export class BamOtf {
       },
       error => {
         if (error.response.status === 401) {
-          throw new UnauthorizedError('bam-otf API key is invalid.')
+          throw new UnauthorizedError('bamotf API key is invalid.')
         }
 
         return Promise.reject(error)
