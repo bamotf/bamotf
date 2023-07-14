@@ -8,8 +8,8 @@
   ],
   "scripts": {
     "build": "turbo build",
-    "dev": "turbo dev",
-    "dev:ui": "turbo dev --filter=storybook --filter=@bamotf/react",
+    "dev": "turbo dev --concurrency=20",
+    "dev:ui": "turbo dev --filter=storybook...",
     "lint": "turbo lint",
     "test": "turbo test:unit test:integration test:e2e",
     "test:unit": "turbo test:unit",
