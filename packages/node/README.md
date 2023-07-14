@@ -48,9 +48,9 @@ bamotf.paymentIntents.retrieve({
 Or using ES modules and `async`/`await`:
 
 ```js
-import BamOtf from '@bamotf/node'
+import Bamotf from '@bamotf/node'
 
-const bamotf = new BamOtf('my-fancy-token', {
+const bamotf = new Bamotf('my-fancy-token', {
   //   host: 'localhost',
   //   port: 21000,
 })
@@ -73,7 +73,7 @@ project, import `@bamotf/node` using an npm specifier:
 Import using npm specifiers:
 
 ```js
-import BamOtf from 'npm:@bamotf/node'
+import Bamotf from 'npm:@bamotf/node'
 ```
 
 Please see [examples/bamotf-node-deno-sample][] for more
@@ -86,7 +86,7 @@ detailed example and instructions on how to use bamotf/node in Deno. -->
 The package can be initialized with several options:
 
 ```js
-const bamotf = BamOtf('sk_test_...', {
+const bamotf = Bamotf('my-fancy-token', {
   host: 'api.example.com',
   port: 123,
 })

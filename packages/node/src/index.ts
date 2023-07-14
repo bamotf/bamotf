@@ -1,6 +1,6 @@
-import {BamOtf} from './client'
+import {Bamotf} from './client'
 
 export * as webhooks from './webhooks'
 
-export default BamOtf
-export {BamOtf}
+export default Bamotf
+export {Bamotf}

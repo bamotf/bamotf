@@ -1,6 +1,6 @@
 import axios, {type AxiosInstance} from 'axios'
 
-import type {BamOtfConfig} from './config'
+import type {BamotfConfig} from './config'
 import {UnauthorizedError} from './errors'
 import {parse} from './parse'
 import {PaymentIntents} from './payment-intents'
@@ -11,12 +11,12 @@ import {PaymentIntents} from './payment-intents'
  * @param config - Client configuration.
  */
 
-export class BamOtf {
+export class Bamotf {
   public paymentIntents: PaymentIntents
-  private config: BamOtfConfig
+  private config: BamotfConfig
   private client: AxiosInstance
 
-  constructor(apiKey: string, config?: BamOtfConfig) {
+  constructor(apiKey: string, config?: BamotfConfig) {
     const {
       baseURL = 'http://localhost:3000',
       // maxNetworkRetries = 3,

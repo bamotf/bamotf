@@ -1,4 +1,4 @@
-export type BamOtfConfig = {
+export type BamotfConfig = {
   /**
    * Hostname of the *bamotf* server.
    * @default 'http://localhost:3000'
