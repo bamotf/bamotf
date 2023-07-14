@@ -1,3 +1,4 @@
+/* COLORS */
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -67,5 +68,27 @@
 
     --success: 160 96% 84%;
     --success-foreground: 162 88% 43%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/** FONT */
+@layer base {
+  :root {
+    --font-inter: 'Inter';
+  }
+
+  @supports (font-variation-settings: normal) {
+    :root {
+      --font-inter: 'Inter var';
+    }
   }
 }
