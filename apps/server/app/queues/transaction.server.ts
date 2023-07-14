@@ -54,7 +54,10 @@ export const queue = createQueue<QueueData>(
     // Update the local database with transaction history
     const savedTransactions = await Promise.all(
       transactions.map(async tx => {
-        const amount = BigInt(tx.amount * 1e8)
+        const amount = currency.convertToBigInt({
+          amount: tx.amount,
+          currency: 'BTC',
+        })
 
         // If the currency is BTC, we don't need to convert the amount
         // because it's already in satoshis
@@ -121,10 +124,12 @@ export const queue = createQueue<QueueData>(
       defaultJobOptions: {
         attempts: Number.MAX_SAFE_INTEGER,
         backoff: {
-          // delay: 1000 * 60 * 5, // 5 minutes
+          // TODO: add more delay as it go to preview and production
+          //  delay: 1000 * 60 * 5, // 5 minutes
           delay: 1000, // 1 second
           type: 'fixed',
         },
+        removeOnFail: false,
       },
     },
   },

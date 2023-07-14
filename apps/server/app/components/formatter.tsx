@@ -1,3 +1,5 @@
+import {currency as currencyUtils} from '@bamotf/utils'
+
 import type {CurrencyCode} from '../../../../config/currency'
 
 /**
@@ -30,18 +32,13 @@ export function Formatter(
 
   const {currency, amount} = props
 
-  // TODO: this can probably be exported as a set of @bamotf/react components or something
-  // format like `₿ 0.00000001`
   return (
     <>
-      {new Intl.NumberFormat(language, {
+      {currencyUtils.format(language, {
+        amount,
+        currency: currency as CurrencyCode,
         style: 'currency',
-        currency: currency === 'BTC' ? 'XBT' : currency,
-        minimumFractionDigits: 2,
-        maximumFractionDigits: currency === 'BTC' ? 8 : 2,
-      })
-        .format(amount)
-        .replace('XBT', '₿')}
+      })}
     </>
   )
 }

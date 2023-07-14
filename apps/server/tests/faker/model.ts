@@ -1,4 +1,3 @@
-import type {Prisma} from '~/utils/prisma.server'
 import {
   CURRENCY_CODES,
   FIAT_CURRENCY_CODES,
@@ -30,7 +29,7 @@ export function paymentIntent(
     tolerance = 0.02,
     // amount in BTC is much less because I haven't implemented the auto-mining when out of funds
     // on the simulatePayment function
-    amount = faker.number.int({
+    amount = faker.number.bigInt({
       // btcoind has a minimum of 1000 satoshis
       min: 1000,
       max: 10000,
@@ -42,7 +41,7 @@ export function paymentIntent(
     // depending on the currency selected and the payment will fail
     // chosenCurrency = fiat()
     chosenCurrency = 'USD'
-    amount = faker.number.int({min: 10000, max: 20000})
+    amount = faker.number.bigInt({min: 10000, max: 20000})
   }
 
   return {
@@ -51,5 +50,5 @@ export function paymentIntent(
     description,
     tolerance,
     currency: chosenCurrency,
-  } satisfies Prisma.PaymentIntentCreateInput
+  }
 }
