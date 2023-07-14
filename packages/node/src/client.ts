@@ -1,9 +1,11 @@
 import axios, {type AxiosInstance} from 'axios'
 
+import * as address from './address'
 import type {BamotfConfig} from './config'
 import {UnauthorizedError} from './errors'
 import {parse} from './parse'
 import {PaymentIntents} from './payment-intents'
+import * as webhooks from './webhooks'
 
 /**
  * *bamotf* client class.
@@ -15,6 +17,8 @@ export class Bamotf {
   public paymentIntents: PaymentIntents
   private config: BamotfConfig
   private client: AxiosInstance
+  public webhooks = webhooks
+  public address = address
 
   constructor(apiKey: string, config?: BamotfConfig) {
     const {
@@ -47,7 +51,7 @@ export class Bamotf {
         return response
       },
       error => {
-        if (error.response.status === 401) {
+        if (error.response?.status === 401) {
           throw new UnauthorizedError('bamotf API key is invalid.')
         }
 

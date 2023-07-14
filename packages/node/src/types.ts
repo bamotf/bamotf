@@ -1,27 +1,21 @@
-// import type * as root from 'server/app/routes/api.payment-intents._index'
-// import type * as specific from 'server/app/routes/api.payment-intents.$id._index'
-// import type * as cancel from 'server/app/routes/api.payment-intents.$id.cancel'
+// TODO: This file should be generated from the OpenAPI spec
 
 import type {CurrencyCode} from '../../../config/currency'
 
-export const paymentIntentStatus = {
-  pending: 'pending',
-  processing: 'processing',
-  succeeded: 'succeeded',
-  canceled: 'canceled',
-}
-
 export type PaymentIntentStatus =
-  (typeof paymentIntentStatus)[keyof typeof paymentIntentStatus]
+  | 'pending'
+  | 'processing'
+  | 'succeeded'
+  | 'canceled'
 
-type PaymentIntent = {
+export type PaymentIntent = {
   id: string
-  amount: number
+  amount: bigint
   tolerance: number
   address: string
   status: PaymentIntentStatus
   confirmations: number
-  currency: string
+  currency: CurrencyCode
   canceledAt: Date | null
   cancellationReason: string | null
   description: string | null
@@ -48,7 +42,7 @@ export type CreateResult = PaymentIntent
 export type RetrieveResult = PaymentIntent
 export type UpdateBodyParams = {
   address?: string
-  amount?: number
+  amount?: bigint
   tolerance?: number
   confirmations?: number
   currency?: CurrencyCode
