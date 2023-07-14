@@ -1,8 +1,11 @@
 import React from 'react'
+import Image from 'next/image'
 import type {DocsThemeConfig} from 'nextra-theme-docs'
 
 const config: DocsThemeConfig = {
-  logo: <span>My Project</span>,
+  logo: (
+    <Image src="bamotf-logo.svg" alt={'bamotf Logo'} width={100} height={30} />
+  ),
   project: {
     link: 'https://github.com/shuding/nextra-docs-template',
   },
@@ -11,7 +14,7 @@ const config: DocsThemeConfig = {
   },
   docsRepositoryBase: 'https://github.com/shuding/nextra-docs-template',
   footer: {
-    text: 'Nextra Docs Template',
+    text: 'Made in João Pessoa, Brazil',
   },
 }
 
