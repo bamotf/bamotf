@@ -12,11 +12,11 @@
     "test:integration:watch": "vitest"
   },
   "devDependencies": {
-    "@types/react": "^18.0.17",
+    "@bam-otf/server": "workspace:*",
     "@types/react-dom": "^18.0.6",
-    "bam-otf-server": "workspace:*",
-    "eslint": "^7.32.0",
+    "@types/react": "^18.0.17",
     "eslint-config-custom": "workspace:*",
+    "eslint": "^7.32.0",
     "logger": "workspace:*",
     "msw": "^1.2.1",
     "tsconfig": "workspace:*",

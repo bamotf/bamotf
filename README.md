@@ -70,14 +70,14 @@ following:
 # docker-compose.yml
 #
 #  This is an example of how you can configure for running
-#  bam-otf-server in development mode if you don't already have a
+#  bam-otf/server in development mode if you don't already have a
 #  Bitcoin Core, Redis, and Postgres instance running.
 
 version: '3.8'
 services:
-  bam-otf-server:
-    image: bam-otf-server:latest
-    container_name: bam-otf-server
+  bam-otf:
+    image: bam-otf/server:latest
+    container_name: bam-otf
     restart: always
     environment:
       - REDIS_URL=redis://redis:6379

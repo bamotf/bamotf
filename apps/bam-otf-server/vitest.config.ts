@@ -8,7 +8,7 @@ export default defineProject({
   // @ts-expect-error vitest was updated
   plugins: [tsconfigPaths()],
   test: {
-    name: 'bam-otf-server',
+    name: 'bam-otf/server',
     include: ['tests/**/*.test.ts', 'app/**/*.test.ts'],
     exclude: [
       'build/**/*',
