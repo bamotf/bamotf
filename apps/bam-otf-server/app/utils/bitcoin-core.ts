@@ -5,7 +5,7 @@
  * It's a good idea to replace this with a library that supports TypeScript.
  */
 
-import {currency} from '@bam-otf/utils'
+import {currency} from '@bamotf/utils'
 import {fetch} from '@remix-run/node'
 import {format, logger} from 'logger'
 

@@ -1,4 +1,4 @@
-import {Copyable} from '@bam-otf/react/src/copyable'
+import {Copyable} from '@bamotf/react/src/copyable'
 import type {Meta, StoryObj} from '@storybook/react'
 
 const meta = {

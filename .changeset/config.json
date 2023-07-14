@@ -3,7 +3,7 @@
   "changelog": "@changesets/cli/changelog",
   "commit": false,
   "fixed": [],
-  "linked": [["@bam-otf/*"]],
+  "linked": [["@bamotf/*"]],
   "access": "restricted",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",

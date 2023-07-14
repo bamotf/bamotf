@@ -1,4 +1,4 @@
-import {currency as currencyUtil} from '@bam-otf/utils'
+import {currency as currencyUtil} from '@bamotf/utils'
 
 import type {FiatCurrencyCode} from '../../../../config/currency'
 import {env} from './env.server'

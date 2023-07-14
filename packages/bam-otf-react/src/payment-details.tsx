@@ -1,5 +1,5 @@
 import React from 'react'
-import {currency as currencyUtil} from '@bam-otf/utils'
+import {currency as currencyUtil} from '@bamotf/utils'
 
 import type {CurrencyCode} from '../../../config/currency'
 import {Copyable} from './copyable'

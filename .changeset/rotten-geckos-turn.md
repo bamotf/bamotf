@@ -1,6 +1,6 @@
 ---
-'@bam-otf/node': patch
+'@bamotf/node': patch
 ---
 
-Creates the @bam-otf/node package that can be installed by devs and let devs
-interact with the @bam-otf/server
+Creates the @bamotf/node package that can be installed by devs and let devs
+interact with the @bamotf/server

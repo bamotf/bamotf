@@ -1,4 +1,4 @@
-import {currency} from '@bam-otf/utils'
+import {currency} from '@bamotf/utils'
 import {UnrecoverableError} from 'bullmq'
 import {format, logger} from 'logger'
 

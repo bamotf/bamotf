@@ -1,4 +1,4 @@
-import {PaymentDetails} from '@bam-otf/react/src/payment-details'
+import {PaymentDetails} from '@bamotf/react/src/payment-details'
 import type {Meta, StoryObj} from '@storybook/react'
 
 const meta = {

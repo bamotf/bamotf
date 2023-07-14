@@ -44,7 +44,7 @@ importers:
 
   apps/bam-otf-server:
     dependencies:
-      '@bam-otf/utils':
+      '@bamotf/utils':
         specifier: workspace:*
         version: link:../../packages/bam-otf-utils
       '@conform-to/react':
@@ -259,7 +259,7 @@ importers:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
     devDependencies:
-      '@bam-otf/react':
+      '@bamotf/react':
         specifier: workspace:*
         version: link:../../packages/bam-otf-react
       '@storybook/addon-essentials':
@@ -357,7 +357,7 @@ importers:
         specifier: ^0.3.0
         version: 0.3.0
     devDependencies:
-      '@bam-otf/server':
+      '@bamotf/server':
         specifier: workspace:*
         version: link:../../apps/bam-otf-server
       '@types/react':
@@ -390,7 +390,7 @@ importers:
 
   packages/bam-otf-react:
     dependencies:
-      '@bam-otf/utils':
+      '@bamotf/utils':
         specifier: workspace:*
         version: link:../bam-otf-utils
       lucide-react:

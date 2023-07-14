@@ -1,4 +1,4 @@
-import {QRCode} from '@bam-otf/react/src/qr-code'
+import {QRCode} from '@bamotf/react/src/qr-code'
 import type {Meta, StoryObj} from '@storybook/react'
 
 const meta = {

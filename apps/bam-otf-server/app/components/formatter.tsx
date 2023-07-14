@@ -30,7 +30,7 @@ export function Formatter(
 
   const {currency, amount} = props
 
-  // TODO: this can probably be exported as a set of @bam-otf/react components or something
+  // TODO: this can probably be exported as a set of @bamotf/react components or something
   // format like `₿ 0.00000001`
   return (
     <>

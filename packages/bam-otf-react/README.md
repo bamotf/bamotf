@@ -1,4 +1,4 @@
-# @bam-otf/react
+# @bamotf/react
 
 This package contains React components that help you build bitcoin related
 interfaces.
@@ -6,19 +6,19 @@ interfaces.
 ## Installation
 
 ```bash
-npm install @bam-otf/react
+npm install @bamotf/react
 # or
-yarn add @bam-otf/react
+yarn add @bamotf/react
 # or
-pnpm add @bam-otf/react
+pnpm add @bamotf/react
 ```
 
 ## Usage
 
 ```tsx
-import {Payment} from '@bam-otf/react'
+import {Payment} from '@bamotf/react'
 
-import '@bam-otf/react/styles.css'
+import '@bamotf/react/styles.css'
 
 export function App() {
   const pi = ... // get payment intent from server

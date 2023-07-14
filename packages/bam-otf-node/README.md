@@ -16,11 +16,11 @@ Node 12 or higher.
 Install the package with:
 
 ```sh
-npm install @bam-otf/node --save
+npm install @bamotf/node --save
 # or
-yarn add @bam-otf/node
+yarn add @bamotf/node
 # or
-pnpm i @bam-otf/node --save
+pnpm i @bamotf/node --save
 ```
 
 ## Usage
@@ -33,7 +33,7 @@ Using it with CJS:
 
 <!-- prettier-ignore -->
 ```js
-const bamotf = require('@bam-otf/node')('secret-key...');
+const bamotf = require('@bamotf/node')('secret-key...');
 
 bamotf.paymentIntents.retrieve({
   amount: 50,
@@ -48,7 +48,7 @@ bamotf.paymentIntents.retrieve({
 Or using ES modules and `async`/`await`:
 
 ```js
-import BamOtf from '@bam-otf/node'
+import BamOtf from '@bamotf/node'
 
 const bamotf = new BamOtf('my-fancy-token', {
   //   host: 'localhost',
@@ -67,13 +67,13 @@ console.log(pi.id)
 
 TODO: add instructions for Deno
 
-<!-- `@bam-otf/node` provides a `deno` export target. In your Deno
-project, import `@bam-otf/node` using an npm specifier:
+<!-- `@bamotf/node` provides a `deno` export target. In your Deno
+project, import `@bamotf/node` using an npm specifier:
 
 Import using npm specifiers:
 
 ```js
-import BamOtf from 'npm:@bam-otf/node'
+import BamOtf from 'npm:@bamotf/node'
 ```
 
 Please see [examples/bamotf-node-deno-sample][] for more

@@ -20,7 +20,7 @@ FROM base AS pruned
 WORKDIR /app
 RUN npm install -g turbo
 COPY . .
-RUN turbo prune --scope=@bam-otf/server --docker
+RUN turbo prune --scope=@bamotf/server --docker
 
 
 # STAGE 2
@@ -69,7 +69,7 @@ COPY --from=deps /app/ .
 
 # Build the project
 RUN pnpm prisma generate
-RUN pnpm build --filter=@bam-otf/server...
+RUN pnpm build --filter=@bamotf/server...
 
 
 # STAGE 5

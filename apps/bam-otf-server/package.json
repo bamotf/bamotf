@@ -1,5 +1,5 @@
 {
-  "name": "@bam-otf/server",
+  "name": "@bamotf/server",
   "version": "0.0.0",
   "description": "A server that exposes a REST API to create and manage payments in Bitcoin.",
   "repository": "bamotf/bamotf",
@@ -17,7 +17,7 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
-    "@bam-otf/utils": "workspace:*",
+    "@bamotf/utils": "workspace:*",
     "@conform-to/react": "^0.7.1",
     "@conform-to/zod": "^0.7.1",
     "@hookform/resolvers": "^3.1.0",
