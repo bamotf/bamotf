@@ -42,7 +42,7 @@ importers:
         specifier: 0.31.1
         version: 0.31.1
 
-  apps/bam-otf-server:
+  apps/server:
     dependencies:
       '@bamotf/utils':
         specifier: workspace:*
@@ -357,9 +357,9 @@ importers:
         specifier: ^0.3.0
         version: 0.3.0
     devDependencies:
-      '@bamotf/server':
+      'server':
         specifier: workspace:*
-        version: link:../../apps/bam-otf-server
+        version: link:../../apps/server
       '@types/react':
         specifier: ^18.0.17
         version: 18.0.22

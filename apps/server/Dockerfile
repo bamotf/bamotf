@@ -20,7 +20,7 @@ FROM base AS pruned
 WORKDIR /app
 RUN npm install -g turbo
 COPY . .
-RUN turbo prune --scope=@bamotf/server --docker
+RUN turbo prune --scope=server --docker
 
 
 # STAGE 2
@@ -53,7 +53,7 @@ RUN pnpm install --frozen-lockfile --ignore-scripts
 # Ideally we would be prunning from dev but it gets stuck on the postinstall script
 # COPY --from=deps /app .
 # COPY /scripts/prepare.js ./scripts/prepare.js
-# COPY /apps/bam-otf-server/scripts/postinstall.sh ./apps/bam-otf-server/scripts/postinstall.sh
+# COPY /apps/server/scripts/postinstall.sh ./apps/server/scripts/postinstall.sh
 # RUN SKIP_SCRIPTS=true pnpm prune --prod
 
 
@@ -69,7 +69,7 @@ COPY --from=deps /app/ .
 
 # Build the project
 RUN pnpm prisma generate
-RUN pnpm build --filter=@bamotf/server...
+RUN pnpm build --filter=server...
 
 
 # STAGE 5
@@ -91,11 +91,11 @@ RUN mkdir /app
 WORKDIR /app
 
 COPY --from=production-deps /app/ .
-COPY --from=build /app/apps/bam-otf-server/node_modules/.prisma/ ./apps/bam-otf-server/node_modules/.prisma/
-COPY --from=build /app/apps/bam-otf-server/build ./apps/bam-otf-server/build
-COPY --from=build /app/apps/bam-otf-server/public ./apps/bam-otf-server/public
-COPY --from=pruned /app/out/full/apps/bam-otf-server/scripts/ ./apps/bam-otf-server/scripts
-COPY --from=pruned /app/out/full/apps/bam-otf-server/prisma/ ./apps/bam-otf-server/prisma
+COPY --from=build /app/apps/server/node_modules/.prisma/ ./apps/server/node_modules/.prisma/
+COPY --from=build /app/apps/server/build ./apps/server/build
+COPY --from=build /app/apps/server/public ./apps/server/public
+COPY --from=pruned /app/out/full/apps/server/scripts/ ./apps/server/scripts
+COPY --from=pruned /app/out/full/apps/server/prisma/ ./apps/server/prisma
 
 EXPOSE ${PORT}   
 
@@ -103,6 +103,6 @@ RUN apt-get install -y curl
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3  \
     CMD curl --fail http://localhost:$PORT || exit 1 
 
-CMD apps/bam-otf-server/scripts/docker-start.sh
+CMD apps/server/scripts/docker-start.sh
 
 

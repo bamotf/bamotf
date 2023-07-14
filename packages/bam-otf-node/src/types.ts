@@ -1,6 +1,6 @@
-// import type * as root from 'bam-otf-server/app/routes/api.payment-intents._index'
-// import type * as specific from 'bam-otf-server/app/routes/api.payment-intents.$id._index'
-// import type * as cancel from 'bam-otf-server/app/routes/api.payment-intents.$id.cancel'
+// import type * as root from 'server/app/routes/api.payment-intents._index'
+// import type * as specific from 'server/app/routes/api.payment-intents.$id._index'
+// import type * as cancel from 'server/app/routes/api.payment-intents.$id.cancel'
 
 import type {CurrencyCode} from '../../../config/currency'
 

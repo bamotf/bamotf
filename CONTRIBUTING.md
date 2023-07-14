@@ -135,7 +135,7 @@ the root file that has some global styles.
 
 We've got Postgres that starts with the docker-compose. Learn about the schema
 and learn more about what commands you can run in
-`apps/bam-otf-server/prisma/schema.prisma`.
+`apps/server/prisma/schema.prisma`.
 
 One common command you might need to run is to re-seed the database:
 

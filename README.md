@@ -61,7 +61,7 @@ Here is what you need to be able to run _bam-otf_.
 
 - docker-compose
 
-### 1. Running the [Server](./apps/bam-otf-server/README.md)
+### 1. Running the [Server](./apps/server/README.md)
 
 Create a `docker-compose.yml` file in the root of your project and paste the
 following:
@@ -118,17 +118,17 @@ server on port [21000](http://localhost:21000) with the following credentials:
 
 ### 2. Interact with the server
 
-You can either access the [API](./apps/bam-otf-server/README.md#api) directly or
-use the [Node.js client](./packages/bam-otf-node/README.md) to create and manage
-Payment Intents.
+You can either access the [API](./apps/server/README.md#api) directly or use the
+[Node.js client](./packages/bam-otf-node/README.md) to create and manage Payment
+Intents.
 
 Here's a full example of how to integrate using
 [Next.js](./examples/donation/README.md).
 
 ## What's in this repo?
 
-- **[bam-otf/server](apps/bam-otf-server/README.md)** - A server that exposes a
-  REST API to create and manage payments.
+- **[bam-otf/server](apps/server/README.md)** - A server that exposes a REST API
+  to create and manage payments.
 - **[bam-otf/node](packages/bam-otf-node/README.md)** - A Node.js client to
   interact with the _bam-otf_ server.
 - **[bam-otf/react](packages/bam-otf-react/README.md)** - A React component

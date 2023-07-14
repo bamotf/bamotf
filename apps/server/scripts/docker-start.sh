@@ -18,4 +18,4 @@ pnpm prisma migrate deploy
 pnpm prisma db seed
 
 # Start the server
-pnpm -C apps/bam-otf-server start
+pnpm -C apps/server start

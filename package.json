@@ -18,7 +18,7 @@
     "test:e2e:install": "pnpx playwright install chromium --with-deps",
     "typecheck": "turbo typecheck",
     "format": "prettier --write \"**/*.{js,jsx,json,yml,yaml,css,ts,tsx,md,mdx}\"",
-    "prisma": "cd apps/bam-otf-server && pnpm prisma",
+    "prisma": "cd apps/server && pnpm prisma",
     "prepare": "node ./scripts/prepare.js",
     "changeset": "changeset",
     "release": "turbo build && changeset publish",
