@@ -19,7 +19,7 @@
 }
 
 .wrapper .description {
-  @apply mt-6 text-xl font-bold opacity-50 md:text-2xl;
+  @apply ml-6 mr-6 mt-6 text-xl font-bold opacity-50 md:text-2xl;
 }
 
 .button {
