@@ -1,6 +1,6 @@
 {
-  "server": "Server",
-  "node": "Node",
-  "react": "React",
-  "utils": "Utils"
+  "server": "@bamotf/server",
+  "node": "@bamotf/node",
+  "react": "@bamotf/react",
+  "utils": "@bamotf/utils"
 }

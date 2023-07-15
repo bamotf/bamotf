@@ -3,12 +3,5 @@
   "tutorials": "",
   "guides": "",
   "conventions": "",
-  "-- API References": {
-    "type": "separator",
-    "title": "API References"
-  },
-  "@bamotf/server": "",
-  "@bamotf/react": "",
-  "@bamotf/utils": "",
-  "@bamotf/node": ""
+  "api": "API References"
 }
