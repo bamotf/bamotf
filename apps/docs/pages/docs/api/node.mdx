@@ -3,10 +3,6 @@
 This library provides convenient access to the bam-otf API from applications
 written in server-side JavaScript.
 
-## Documentation
-
-See [video demonstrations][youtube-playlist] covering how to use the library.
-
 ## Requirements
 
 Node 12 or higher.
@@ -149,3 +145,155 @@ if (!event.success) {
 // Do something with mocked signed event
 expect(event.parsed.id).to.equal(payload.id)
 ```
+
+## Features
+
+### Client
+
+#### Constructor
+
+```typescript
+constructor(apiKey: string, config?: BamOtfConfig)
+```
+
+- `apiKey`: The API key used for authentication.
+- `config` (optional): Configuration options for the client. Supports the
+  following properties:
+  - `baseURL`: The base URL of the server. Defaults to
+    `'http://localhost:3000'`.
+  - `timeout`: The request timeout in milliseconds. Defaults to `60000`.
+
+#### Example Usage
+
+```typescript
+import { BamOtf } from './client'
+
+const apiKey = 'YOUR_API_KEY'
+const bamOtf = new BamOtf(apiKey)
+
+// Access the PaymentIntents module
+const paymentIntents = bamOtf.paymentIntents
+
+// Use the PaymentIntents module methods
+paymentIntents.create(/* params */)
+paymentIntents.retrieve(/* id */)
+paymentIntents.list()
+paymentIntents.update(/* id */, /* params */)
+paymentIntents.cancel(/* id */, /* params */)
+```
+
+---
+
+### Parse
+
+The `parse` function is used to parse the response data received from the
+server.
+
+#### Example Usage
+
+```typescript
+import { parse } from './parse'
+
+const responseData = /* raw response data from server */
+
+// Parse the response data
+const parsedData = parse(responseData)
+
+// Use the parsed data
+console.log(parsedData)
+```
+
+---
+
+### PaymentIntents
+
+The `PaymentIntents` class provides methods for interacting with payment intents
+on the Bam-otf server.
+
+#### Constructor
+
+```typescript
+constructor(client: AxiosInstance)
+```
+
+- `client`: An Axios instance used for making HTTP requests.
+
+#### Methods
+
+- `create(params: CreateBodyParams): Promise<CreateResult>`: Creates a new
+  payment intent.
+- `retrieve(id: string): Promise<RetrieveResult>`: Retrieves a payment intent by
+  ID.
+- `list(): Promise<ListResult>`: Retrieves a list of payment intents.
+- `update(id: string, params: UpdateBodyParams): Promise<UpdateResult>`: Updates
+  a payment intent.
+- `cancel(id: string, params: CancelBodyParams = {}): Promise<CancelResult>`:
+  Cancels a payment intent.
+
+#### Example Usage
+
+```typescript
+import { PaymentIntents } from './payment-intents'
+
+const paymentIntents = new PaymentIntents(/* axiosInstance */)
+
+// Use the PaymentIntents module methods
+paymentIntents.create(/* params */)
+paymentIntents.retrieve(/* id */)
+paymentIntents.list()
+paymentIntents.update(/* id */, /* params */)
+paymentIntents.cancel(/* id */, /* params */)
+```
+
+---
+
+### Types
+
+The `types` module provides various type definitions used in the Bam-otf server
+implementation.
+
+#### Example Usage
+
+```typescript
+import {CreateBodyParams, PaymentIntentStatus} from './types'
+
+const status: PaymentIntentStatus = 'pending'
+
+const params: CreateBodyParams = {
+  address: '123 Main St',
+  amount: 100,
+  tolerance: 5,
+}
+```
+
+---
+
+### Webhooks
+
+The `webhooks` module provides functions for handling webhooks in the Bam-otf
+server.
+
+#### Functions
+
+- `constructEvent(webhookRawBody: string, webhookSignatureHeader: string, webhookSecret: string): EventConstructionResult`:
+  Builds a webhook event from a raw body and signature header.
+- `generateTestHeaderString(payload: string, secret: string): string`: Generates
+  a test header string for mocking a webhook event.
+
+#### Example Usage
+
+```typescript
+import { constructEvent, generateTestHeaderString } from './webhooks'
+
+const rawBody = /* raw webhook body */
+const signatureHeader = /* webhook signature header */
+const secret = /* webhook secret */
+
+// Construct the webhook event
+const event = constructEvent(rawBody, signatureHeader, secret)
+
+// Generate a test header string
+const testHeader = generateTestHeaderString('payload', secret)
+```
+
+---
