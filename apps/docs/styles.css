@@ -1,3 +1,50 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.wrapper {
+  @apply flex h-screen w-full flex-col items-center justify-center text-center;
+}
+
+.wrapper h1 {
+  @apply pb-6 pt-6 text-5xl font-bold opacity-80 md:text-7xl;
+}
+
+.landingContainer {
+  @apply flex flex-col items-center justify-around;
+}
+
+.typed {
+  @apply pl-4 pr-4 text-3xl font-bold md:text-5xl;
+}
+
+.wrapper .description {
+  @apply mt-6 text-xl font-bold opacity-50 md:text-2xl;
+}
+
+.button {
+  @apply pb-4 pt-4;
+}
+
+a.button-link {
+  @apply mt-2 inline-block select-none rounded-full px-6 py-3 text-[white] no-underline shadow-[0_1px_2px_#00295738] transition-all duration-200 ease-in hover:shadow-[0_5px_30px_-10px_#0078ffab] hover:brightness-105 focus-visible:outline-offset-2 active:shadow-[0_1px_3px_#00295738] active:brightness-95;
+  background: linear-gradient(to bottom, #238aff, #0077ff);
+  text-shadow: 0 1px 1px #00387838;
+  -webkit-user-drag: none;
+  -webkit-tap-highlight-color: transparent;
+}
+a.button-link span {
+  @apply inline-block transition-all duration-200 ease-in;
+}
+a.button-link:hover span {
+  @apply translate-x-[3px];
+}
+a.button-link:active span {
+  @apply translate-x-[5px];
+}
+a.button-link:focus-visible {
+  outline: 2px solid hsl(var(--nextra-primary-hue) 100% 77%);
+}
+a.button-link:focus-visible span {
+  @apply translate-x-[3px];
+}
