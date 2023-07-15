@@ -11,6 +11,9 @@
     "type": "git",
     "url": "git+https://github.com/shuding/nextra-docs-template.git"
   },
+  "exports": {
+    "./styles.css": "./dist/styles.css"
+  },
   "author": "Shu Ding <g@shud.in>",
   "license": "MIT",
   "bugs": {
@@ -18,12 +21,16 @@
   },
   "homepage": "https://github.com/shuding/nextra-docs-template#readme",
   "dependencies": {
+    "autoprefixer": "^10.4.14",
     "next": "^13.0.6",
     "nextra": "latest",
     "nextra-theme-docs": "latest",
+    "postcss": "^8.4.20",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-typed": "^1.2.0"
+    "react-typed": "^1.2.0",
+    "tailwind-config": "workspace:*",
+    "tailwindcss": "^3.3.2"
   },
   "devDependencies": {
     "@types/node": "18.11.10",
