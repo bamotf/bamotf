@@ -3,9 +3,9 @@
   "changelog": "@changesets/cli/changelog",
   "commit": false,
   "privatePackages": {"tag": true, "version": true},
-  "fixed": [],
-  "linked": [["@bamotf/*"]],
-  "access": "restricted",
+  "fixed": [["@bamotf/*"]],
+  "linked": [],
+  "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
   "ignore": []
