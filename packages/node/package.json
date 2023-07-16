@@ -8,6 +8,9 @@
     "url": "https://github.com/bamotf/bamotf",
     "directory": "packages/node"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "bugs": "https://github.com/bamotf/bamotf/issues",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
