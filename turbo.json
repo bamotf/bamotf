@@ -27,6 +27,9 @@
         "storybook-static/**"
       ]
     },
+    "@bamotf/node#build": {
+      "env": ["PUBLISHING"]
+    },
     "lint": {
       "outputs": []
     },
