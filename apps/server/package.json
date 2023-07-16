@@ -1,9 +1,7 @@
 {
   "name": "server",
   "version": "0.0.0",
-  "description": "A server that exposes a REST API to create and manage payments in Bitcoin.",
-  "repository": "bamotf/bamotf",
-  "bugs": "https://github.com/bamotf/bamotf/issues",
+  "private": true,
   "sideEffects": false,
   "scripts": {
     "build": "remix build",
