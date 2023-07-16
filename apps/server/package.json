@@ -9,6 +9,7 @@
     "start": "remix-serve build",
     "typecheck": "tsc",
     "lint": "eslint .",
+    "prisma": "prisma",
     "test:unit": "vitest run",
     "test:unit:watch": "vitest",
     "test:integration": "playwright test",
@@ -49,13 +50,14 @@
     "isbot": "^3.6.8",
     "logger": "workspace:*",
     "lucide-react": "^0.233.0",
-    "react": "^18.2.0",
+    "prisma": "^4.12.0",
     "react-day-picker": "^8.7.1",
     "react-dom": "^18.2.0",
     "react-json-pretty": "^2.2.0",
+    "react": "^18.2.0",
     "recharts": "^2.6.2",
-    "remix-auth": "^3.4.0",
     "remix-auth-form": "^1.3.0",
+    "remix-auth": "^3.4.0",
     "remix-typedjson": "^0.1.7",
     "secure-webhooks": "^0.3.0",
     "tailwind-config": "workspace:*",
@@ -63,8 +65,8 @@
     "tiny-invariant": "^1.3.1",
     "tiny-secp256k1": "^2.2.1",
     "uuid": "^9.0.0",
-    "zod": "^3.21.4",
-    "zod-prisma-utils": "^0.0.9"
+    "zod-prisma-utils": "^0.0.9",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.0.2",
@@ -82,7 +84,6 @@
     "msw": "^1.2.1",
     "postcss-import": "^15.1.0",
     "postcss": "^8.4.20",
-    "prisma": "^4.12.0",
     "tailwindcss": "^3.3.2",
     "typescript": "^5.0.4",
     "vite-tsconfig-paths": "^4.2.0"

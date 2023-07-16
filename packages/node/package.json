@@ -22,12 +22,12 @@
     "test:integration:watch": "vitest"
   },
   "devDependencies": {
+    "@bamotf/server": "workspace:*",
     "@types/hdkey": "^2.0.1",
     "eslint-config-custom": "workspace:*",
     "eslint": "^7.32.0",
     "logger": "workspace:*",
     "msw": "^1.2.1",
-    "server": "workspace:*",
     "tsconfig": "workspace:*",
     "tsup": "^6.7.0",
     "typescript": "^5.0.4"

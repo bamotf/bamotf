@@ -13,6 +13,7 @@ $DIR/wait-for-it.sh "${DB_HOSTNAME}:${DB_PORT}" -- echo '🟢 - Database is read
 
 # Apply migratrions
 pnpm prisma migrate deploy
+pnpm prisma generate
 
 # Apply seed data
 pnpm prisma db seed

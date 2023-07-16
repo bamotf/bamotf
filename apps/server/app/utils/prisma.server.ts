@@ -1,9 +1,8 @@
+import {PrismaClient} from '@prisma/client'
 import {format, logger} from 'logger'
 
-import {PrismaClient} from '.prisma/client'
-
 // export all types from from prisma client
-export * from '.prisma/client'
+export * from '@prisma/client'
 
 declare global {
   // This prevents us from making multiple connections to the db when the
