@@ -1,5 +1,5 @@
 {
-  "name": "@bamotf/storybook",
+  "name": "bamotf-storybook",
   "private": true,
   "type": "module",
   "scripts": {
