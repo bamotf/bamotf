@@ -45,5 +45,8 @@ postgres-data
 # packages
 dist
 
+# Vercel
+.vercel
+
 # Storybook stuff
 storybook-static

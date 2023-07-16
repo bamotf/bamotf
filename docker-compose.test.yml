@@ -12,7 +12,7 @@ services:
       - REDIS_URL=redis://redis:6379
       - POSTGRES_URL=postgresql://johndoe:randompassword@postgres:5432
       - BITCOIN_CORE_URL=http://username:wc7eFmVwEeZCDYTMaOqxRnLWSR7aI76bGmHl6pRFtAU@bitcoin-core:18443
-      - WEBHOOK_URL=http://localhost:4000
+      - WEBHOOK_URL=http://localhost:4000/api
       - WEBHOOK_SECRET=my-secret
       - API_KEY=<preferable-a-very-long-api-key>
     ports:

@@ -76,7 +76,6 @@ version: '3.8'
 services:
   bamotf:
     image: bamotf/server:latest
-    container_name: bamotf
     restart: always
     environment:
       - REDIS_URL=redis://redis:6379
@@ -95,7 +94,6 @@ services:
   # Bitcoin-core for development
   bitcoin-core:
     image: bamotf-core-dev:latest
-    container_name: bitcoin-core
     restart: always
 
   postgres:
