@@ -15,7 +15,9 @@ const envSchema = z.object({
    * @note development is the developer time and production after built.
    * @default development
    */
-  NODE_ENV: z.enum(['development', 'production']).default('development'),
+  NODE_ENV: z
+    .enum(['development', 'test', 'production'])
+    .default('development'),
 
   /**
    * The mode that the server is running in. This is used to determine the network
