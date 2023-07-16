@@ -1,6 +1,5 @@
 import {format, logger} from 'logger'
 
-import {env} from './env.server'
 import {PrismaClient} from '.prisma/client'
 
 // export all types from from prisma client
@@ -28,23 +27,12 @@ export const prisma = getClient(() => {
   logger.info(`Connecting to database...`)
 
   const client = new PrismaClient({
-    log:
-      env.NODE_ENV === 'test' || env.RUNNING_TESTS
-        ? [{emit: 'stdout', level: 'error'}]
-        : [
-            {emit: 'event', level: 'query'},
-            {emit: 'stdout', level: 'error'},
-            {emit: 'stdout', level: 'info'},
-            {emit: 'stdout', level: 'warn'},
-          ],
-    // rejectOnNotFound: {
-    //   findFirst: {
-    //     PaymentIntent: err => new Error('PaymentIntent not found'),
-    //   },
-    //   findUnique: {
-    //     PaymentIntent: err => new Error('PaymentIntent not found'),
-    //   },
-    // },
+    log: [
+      {emit: 'event', level: 'query'},
+      {emit: 'stdout', level: 'error'},
+      {emit: 'stdout', level: 'info'},
+      {emit: 'stdout', level: 'warn'},
+    ],
   })
 
   client.$on('query', e => {

@@ -1,10 +1,10 @@
 import {json, redirect} from '@remix-run/node'
-import bcrypt from 'bcryptjs'
 import {Authenticator} from 'remix-auth'
 import {FormStrategy} from 'remix-auth-form'
 import invariant from 'tiny-invariant'
 
 import {prisma, type Password, type User} from '~/utils/prisma.server'
+import {decrypt, encrypt} from './encryption.server'
 import {env} from './env.server'
 import {sessionStorage} from './session.server'
 
@@ -100,7 +100,7 @@ export async function resetUserPassword({
   username: User['username']
   password: string
 }) {
-  const hashedPassword = await bcrypt.hash(password, 10)
+  const hashedPassword = await encrypt(password)
   return prisma.user.update({
     where: {username},
     data: {
@@ -145,7 +145,7 @@ export async function signup({
 }
 
 export async function getPasswordHash(password: string) {
-  const hash = await bcrypt.hash(password, 10)
+  const hash = await encrypt(password)
   return hash
 }
 
@@ -162,7 +162,7 @@ export async function verifyLogin(
     return null
   }
 
-  const isValid = await bcrypt.compare(password, userWithPassword.password.hash)
+  const isValid = await decrypt(password, userWithPassword.password.hash)
 
   if (!isValid) {
     return null
