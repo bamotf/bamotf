@@ -22,6 +22,10 @@ export function parse({
 }
 
 function applyMeta<T>(data: T, meta: MetaType) {
+  if (!meta) {
+    return data
+  }
+
   for (const key of Object.keys(meta)) {
     applyConversion(data, key.split('.'), meta[key])
   }
