@@ -22,7 +22,9 @@ export class Bamotf {
 
   constructor(apiKey: string, config?: BamotfConfig) {
     const {
-      baseURL = 'http://localhost:3000',
+      baseURL = process.env.PUBLISHING === 'true'
+        ? 'http://localhost:21000'
+        : 'http://localhost:3000',
       // maxNetworkRetries = 3,
       timeout = 60000,
     } = config || {}
