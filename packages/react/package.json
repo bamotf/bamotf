@@ -1,6 +1,17 @@
 {
   "name": "@bamotf/react",
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "description": "A set of React components that helps you build Bitcoin related interfaces",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bamotf/bamotf",
+    "directory": "packages/react"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "bugs": "https://github.com/bamotf/bamotf/issues",
   "sideEffects": [
     "**/*.css"
   ],

@@ -3,7 +3,9 @@
 version: '3.8'
 services:
   bamotf:
-    image: bamotf/server:latest
+    build:
+      context: .
+      dockerfile: apps/server/Dockerfile
     container_name: bamotf
     restart: always
     environment:
@@ -12,6 +14,7 @@ services:
       - BITCOIN_CORE_URL=http://username:wc7eFmVwEeZCDYTMaOqxRnLWSR7aI76bGmHl6pRFtAU@bitcoin-core:18443
       - WEBHOOK_URL=http://localhost:4000
       - WEBHOOK_SECRET=my-secret
+      - API_KEY=<preferable-a-very-long-api-key>
     ports:
       - 21000:21000
     depends_on:
@@ -21,20 +24,20 @@ services:
 
   # Bitcoin-core for development
   bitcoin-core:
-    build:
-      context: ../../docker/bitcoin-core
-      dockerfile: ./Dockerfile
-    volumes:
-      - ./bitcoin-core:/home/bitcoin/.bitcoin
+    extends:
+      file: ./docker-compose.yml
+      service: bitcoin-core
 
   postgres:
-    image: postgres:latest
-    restart: always
-    environment:
-      - POSTGRES_USER=johndoe
-      - POSTGRES_PASSWORD=randompassword
-    volumes:
-      - ./postgres-data:/var/lib/postgresql/data
+    extends:
+      file: ./docker-compose.yml
+      service: postgres
+    healthcheck:
+      test: ['CMD', 'pg_isready']
 
   redis:
-    image: redis:latest
+    extends:
+      file: ./docker-compose.yml
+      service: redis
+    healthcheck:
+      test: ['CMD', 'redis-cli', '--raw', 'incr', 'ping']

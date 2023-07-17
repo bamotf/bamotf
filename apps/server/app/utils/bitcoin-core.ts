@@ -204,8 +204,8 @@ export async function simulatePayment({
    */
   amount: bigint
 }) {
-  if (env.NODE_ENV === 'production') {
-    throw new Error('Cannot simulate payment in production')
+  if (env.MODE !== 'development') {
+    throw new Error('You can only simulate payment in development mode')
   }
 
   const convertedAmount = BigInt(providedAmount)

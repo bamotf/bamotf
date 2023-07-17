@@ -20,7 +20,7 @@ FROM base AS pruned
 WORKDIR /app
 RUN npm install -g turbo
 COPY . .
-RUN turbo prune --scope=server --docker
+RUN turbo prune --scope=@bamotf/server --docker
 
 
 # STAGE 2
@@ -66,9 +66,10 @@ WORKDIR /app
 
 COPY --from=pruned /app/out/full/ .
 COPY --from=deps /app/ .
+# HACK: We need to copy the config folder but maybe me should just move it to another package
+COPY ./config ./config
 
 # Build the project
-RUN pnpm prisma generate
 RUN pnpm build --filter=server...
 
 
@@ -91,9 +92,9 @@ RUN mkdir /app
 WORKDIR /app
 
 COPY --from=production-deps /app/ .
-COPY --from=build /app/apps/server/node_modules/.prisma/ ./apps/server/node_modules/.prisma/
 COPY --from=build /app/apps/server/build ./apps/server/build
 COPY --from=build /app/apps/server/public ./apps/server/public
+COPY --from=build /app/packages/utils/dist ./packages/utils/dist
 COPY --from=pruned /app/out/full/apps/server/scripts/ ./apps/server/scripts
 COPY --from=pruned /app/out/full/apps/server/prisma/ ./apps/server/prisma
 
@@ -103,6 +104,6 @@ RUN apt-get install -y curl
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3  \
     CMD curl --fail http://localhost:$PORT || exit 1 
 
+# use this to keep the container running for debugging
+# CMD sleep infinity
 CMD apps/server/scripts/docker-start.sh
-
-

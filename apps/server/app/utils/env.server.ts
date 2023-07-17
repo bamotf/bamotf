@@ -1,5 +1,6 @@
 import {ConnectionString} from 'connection-string'
 
+import {createSecret} from './encryption.server'
 import {z} from './zod'
 
 const STRING_REQUIRED = z.string().min(1, 'Required')
@@ -7,18 +8,27 @@ const URL_REQUIRED = STRING_REQUIRED.url()
 
 const envSchema = z.object({
   /**
-   * The environment the server is running in.
+   * The environment that the code is running in.
    * This is used to determine if we should enable certain features.
-   * For example, we don't want to enable the test-wallet in production.
-   * This is also used to determine if we should enable certain security features.
+   * It is also used to determine if we should enable certain security features.
    *
-   * @note development is the developer time, test is the automated test environment,
-   * and production... is production.
+   * @note development is the developer time and production after built.
    * @default development
    */
   NODE_ENV: z
-    .enum(['development', 'production', 'test'])
+    .enum(['development', 'test', 'production'])
     .default('development'),
+
+  /**
+   * The mode that the server is running in. This is used to determine the network
+   * that the server is checking for payments on. And it is also used to determine
+   * if we should enable certain features.
+   * For example, we don't want to enable the `/simulate` when not running in development.
+   *
+   * @note development = regtest, preview = testnet and production = bitcoin.
+   * @default development
+   */
+  MODE: z.enum(['development', 'preview', 'production']).default('development'),
 
   /**
    * Connection string for prisma.
@@ -79,7 +89,7 @@ const envSchema = z.object({
    * The secret that we use to sign the the session cookie.
    * This is used to prevent people from tampering with the session cookie.
    */
-  SESSION_SECRET: z.string().default('not-a-secret'), // FIX: should be randomly generated
+  SESSION_SECRET: z.string().default(createSecret()),
 
   /**
    * This is the API key that the server will use to authenticate clients

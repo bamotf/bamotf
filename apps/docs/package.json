@@ -1,25 +1,12 @@
 {
-  "name": "nextra-docs-template",
+  "name": "@bamotf/docs",
+  "private": true,
   "version": "0.0.1",
-  "description": "Nextra docs template",
   "scripts": {
     "dev": "next dev --port 3001",
     "build": "next build",
     "start": "next start"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/shuding/nextra-docs-template.git"
-  },
-  "exports": {
-    "./styles.css": "./dist/styles.css"
-  },
-  "author": "Shu Ding <g@shud.in>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/shuding/nextra-docs-template/issues"
-  },
-  "homepage": "https://github.com/shuding/nextra-docs-template#readme",
   "dependencies": {
     "autoprefixer": "^10.4.14",
     "classnames": "^2.3.2",

@@ -7,12 +7,24 @@ import {Form, useActionData, useNavigation} from '@remix-run/react'
 
 import {Button, ErrorList, Field} from '~/components/forms'
 import {simulatePayment} from '~/utils/bitcoin-core'
+import {env} from '~/utils/env.server'
 import {z} from '~/utils/zod'
 
 const schema = z.object({
   amount: z.coerce.number(),
   address: z.string().min(1, 'Address is required'),
 })
+
+export async function loader() {
+  if (env.MODE !== 'development') {
+    throw new Response('', {
+      status: 404,
+      statusText: `Page not found`,
+    })
+  }
+
+  return null
+}
 
 export async function action({request}: ActionArgs) {
   const formData = await request.formData()
@@ -81,6 +93,7 @@ export default function SimulateForm({
   return (
     <div>
       <div className="mx-auto w-full max-w-md px-8">
+        <h1 className="text-2xl font-bold mb-4">Simulate Payment</h1>
         <Form method="POST" {...form.props}>
           <Field
             className="mb-4"
