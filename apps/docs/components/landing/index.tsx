@@ -29,6 +29,11 @@ function LandingPage() {
               Get started
             </Link>
           </p>
+          {/* <p className="button">
+            <Link className="" href="/https://github.com/bamotf/bamotf">
+              Github
+            </Link>
+          </p> */}
         </div>
       </main>
     </>
