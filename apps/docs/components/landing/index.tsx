@@ -8,13 +8,13 @@ import BamotfLogo from '../logo/bamotf-logo'
 function LandingPage() {
   return (
     <>
-      <main className="flex flex-col items-center justify-center w-full h-full">
+      <main className="flex flex-col items-center justify-between w-full h-full">
         <div className="wrapper">
           <LandingBackground />
-          <div className="landingContainer">
+          <div className="landingContainer pb-8">
             <BamotfLogo />
-            <h1 className="heading">
-              The Bitcoin toolkit <br /> for developers
+            <h1 className="heading max-w-lg md:max-w-xl lg:max-w-4xl">
+              The Bitcoin toolkit for developers
             </h1>
             <Typed
               className="typed"
@@ -23,21 +23,20 @@ function LandingPage() {
               backSpeed={140}
               loop
             />
-            <p className="description">
+            <p className="description max-w-lg md:max-w-xl lg:max-w-4xl">
               A streamlined, efficient, and open source way to integrate Bitcoin
               as payment method.
             </p>
           </div>
-          <p className="button">
-            <Link className="button-link" href="/docs">
-              Get started
-            </Link>
-          </p>
-          {/* <p className="button">
-            <Link className="" href="/https://github.com/bamotf/bamotf">
-              Github
-            </Link>
-          </p> */}
+
+          <div className="flex flex-col w-2/6 gap-3 md:!flex-row">
+            <button className="w-full min-w-[120px] h-12 text-base font-medium no-underline dark:text-black text-white border-transparent bg-black dark:bg-white rounded md:leading-6 transition-all duration-300">
+              <Link href="/docs">Get started</Link>
+            </button>
+            <button className="w-full min-w-[120px] h-12 text-base font-medium no-underline border dark:border-neutral-400  dark:text-neutral-200 dark:hover:border-white dark:hover:text-white border-[#EAEAEA] text-neutral-800 hover:border-black hover:text-black rounded md:leading-6 transition-all duration-300">
+              <Link href="https://github.com/bamotf/bamotf">Github</Link>
+            </button>
+          </div>
         </div>
 
         <section className="flex flex-col items-center justify-between w-1/2 h-screen text-center">
