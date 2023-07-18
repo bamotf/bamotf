@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Typed from 'react-typed'
 
 import LandingBackground from '../landing-background/background'
+import BamotfLogo from '../logo/bamotf-logo'
 
 function LandingPage() {
   return (
@@ -11,6 +12,7 @@ function LandingPage() {
         <div className="wrapper">
           <LandingBackground />
           <div className="landingContainer">
+            <BamotfLogo />
             <h1 className="heading">
               The Bitcoin toolkit <br /> for developers
             </h1>
