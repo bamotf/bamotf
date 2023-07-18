@@ -1,7 +1,7 @@
 {
   "index": "Getting Started",
-  "tutorials": "",
-  "guides": "",
-  "conventions": "",
+  "tutorials": "Tutorials",
+  "guides": "Guides",
+  "conventions": "Conventions",
   "api": "API References"
 }
