@@ -1,6 +1,6 @@
-# @bam-otf/node
+# @bamotf/node
 
-This library provides convenient access to the bam-otf API from applications
+This library provides convenient access to the bamotf API from applications
 written in server-side JavaScript.
 
 ## Requirements
@@ -12,11 +12,11 @@ Node 12 or higher.
 Install the package with:
 
 ```sh
-npm install @bam-otf/node --save
+npm install @bamotf/node --save
 # or
-yarn add @bam-otf/node
+yarn add @bamotf/node
 # or
-pnpm i @bam-otf/node --save
+pnpm i @bamotf/node --save
 ```
 
 ## Usage
@@ -28,7 +28,7 @@ var during start up (see
 Using it with CJS:
 
 ```js
-const bamotf = require('@bam-otf/node')('secret-key...')
+const bamotf = require('@bamotf/node')('secret-key...')
 
 bamotf.paymentIntents
   .retrieve({
@@ -44,7 +44,7 @@ bamotf.paymentIntents
 Or using ES modules and `async`/`await`:
 
 ```js
-import BamOtf from '@bam-otf/node'
+import BamOtf from '@bamotf/node'
 
 const bamotf = new BamOtf('my-fancy-token', {
   //   host: 'localhost',
@@ -63,13 +63,13 @@ console.log(pi.id)
 
 TODO: add instructions for Deno
 
-`@bam-otf/node` provides a `deno` export target. In your Deno project, import
-`@bam-otf/node` using an npm specifier:
+`@bamotf/node` provides a `deno` export target. In your Deno project, import
+`@bamotf/node` using an npm specifier:
 
 Import using npm specifiers:
 
 ```js
-import BamOtf from 'npm:@bam-otf/node'
+import BamOtf from 'npm:@bamotf/node'
 ```
 
 Please see [examples/bamotf-node-deno-sample][] for more detailed example and
@@ -98,11 +98,11 @@ const bamotf = BamOtf('sk_test_...', {
 
 ### Webhook signing
 
-_bam-otf_ can optionally sign the webhook events it sends to your endpoint,
+_bamotf_ can optionally sign the webhook events it sends to your endpoint,
 allowing you to validate that they were not sent by a third-party.
 
 Please note that you must pass the _raw_ request body, exactly as received from
-_bam-otf_, to the `constructEvent()` function; this will not work with a parsed
+_bamotf_, to the `constructEvent()` function; this will not work with a parsed
 (i.e., JSON) request body.
 
 You can find an example of how to use this with various JavaScript frameworks in
@@ -120,7 +120,7 @@ const {success, parsed} = bamotf.webhooks.constructEvent(
 #### Testing Webhook signing
 
 You can use `bamotf.webhooks.generateTestHeaderString` to mock webhook events
-that come from _bam-otf_:
+that come from _bamotf_:
 
 ```js
 const payload = {

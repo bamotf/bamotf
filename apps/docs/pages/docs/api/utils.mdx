@@ -1,17 +1,17 @@
-# @bam-otf/utils
+# @bamotf/utils
 
 A typescript utility library to help with formatting and stuff like that.
 
 ## Getting started
 
 ```bash
-npm install @bam-otf/utils
+npm install @bamotf/utils
 ```
 
 ## Usage
 
 ```js
-import { ... } from '@bam-otf/utils';
+import { ... } from '@bamotf/utils';
 ```
 
 ## API

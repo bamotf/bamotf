@@ -1,4 +1,4 @@
-# @bam-otf/server
+# @bamotf/server
 
 A server that exposes a REST API to create and manage payments in Bitcoin.
 
@@ -78,7 +78,7 @@ if the payment was successful.
 
 ###### Imports
 
-- `currency` from `@bam-otf/utils`: Utility function for currency operations.
+- `currency` from `@bamotf/utils`: Utility function for currency operations.
 - `UnrecoverableError` from `bullmq`: Error class for unrecoverable errors.
 - `format` and `logger` from `logger`: Utility functions for logging.
 - `listUnspent` from `~/utils/bitcoin-core`: Function for listing unspent
@@ -266,7 +266,7 @@ retrieval, payment simulation, etc.
 
 ##### Dependencies
 
-- `@bam-otf/utils`: A utility library.
+- `@bamotf/utils`: A utility library.
 - `@remix-run/node`: A library for handling server-side rendering and routing.
 - `logger`: A logging library.
 - `~/utils/prisma.server`: A server-side utility for interacting with Prisma.
@@ -327,7 +327,7 @@ fiat currencies and converting amounts between BTC and fiat currencies.
 
 ##### Dependencies
 
-- `@bam-otf/utils/currency`: A utility library for currency-related operations.
+- `@bamotf/utils/currency`: A utility library for currency-related operations.
 - `env.server`: A server-side environment configuration.
 
 ##### Functions

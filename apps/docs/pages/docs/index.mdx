@@ -4,7 +4,7 @@ To get it and running, please follow these simple steps.
 
 ## Prerequisites
 
-Here is what you need to be able to run _bam-otf_.
+Here is what you need to be able to run _bamotf_.
 
 - docker-compose
 
@@ -17,14 +17,14 @@ following:
 # docker-compose.yml
 #
 #  This is an example of how you can configure for running
-#  bam-otf-server in development mode if you don't already have a
+#  bamotf-server in development mode if you don't already have a
 #  Bitcoin Core, Redis, and Postgres instance running.
 
 version: '3.8'
 services:
-  bam-otf-server:
-    image: bam-otf-server:latest
-    container_name: bam-otf-server
+  bamotf-server:
+    image: bamotf-server:latest
+    container_name: bamotf-server
     restart: always
     environment:
       - REDIS_URL=redis://redis:6379
@@ -42,7 +42,7 @@ services:
 
   # Bitcoin-core for development
   bitcoin-core:
-    image: bam-otf-core-dev:latest
+    image: bamotf-core-dev:latest
     container_name: bitcoin-core
     restart: always
 
