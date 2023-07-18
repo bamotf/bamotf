@@ -26,7 +26,7 @@ function LandingPage() {
           </div>
           <p className="button">
             <Link className="button-link" href="/docs">
-              Get started <span>→</span>
+              Get started
             </Link>
           </p>
         </div>
