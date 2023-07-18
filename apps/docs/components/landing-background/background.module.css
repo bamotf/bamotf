@@ -44,7 +44,7 @@
 }
 
 :global(.dark) .lines {
-  --right: #4c4226;
+  --right: #f7931a;
   --left: #223b67;
 }
 
@@ -158,7 +158,7 @@
   background-image: linear-gradient(
     180deg,
     rgba(236, 151, 207, 0.4) 0%,
-    #ffac1c 100%
+    #f7931a 100%
   );
   filter: blur(125px);
   transform: rotate(15deg);
@@ -185,7 +185,7 @@
   background: linear-gradient(
     180deg,
     rgba(236, 151, 207, 0.4) 0%,
-    #ffac1c 100%
+    #f7931a 100%
   );
   transform: matrix(-1, 0, 0, 1, 0, 0);
   filter: blur(125px);
@@ -199,7 +199,7 @@
   --padding: 1px;
   --border-bg: conic-gradient(
     from 180deg at 50% 50%,
-    #ffac1c 0deg,
+    #f7931a 0deg,
     #a853ba 112.5deg,
     #2a8af6 228.75deg,
     rgba(42, 138, 246, 0) 360deg
@@ -284,7 +284,7 @@
   height: 404px;
   left: calc(50% - 387px / 2 + 81px);
   bottom: -32px;
-  background: linear-gradient(180deg, #ff3358 0%, #ffac1c 100%);
+  background: linear-gradient(180deg, #ff3358 0%, #f7931a 100%);
   mix-blend-mode: normal;
   opacity: 0.15;
   filter: blur(50px);
