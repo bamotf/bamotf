@@ -1,25 +1,6 @@
-# @bamotf/utils
+# Welcome to bamotf!
 
-A typescript utility library to help with formatting and stuff like that.
+[bamotf](https://bamotf.com) is a toolkit that helps you receive payments on
+your website with Bitcoin.
 
-## Getting started
-
-```bash
-npm install @bamotf/utils
-```
-
-## Usage
-
-```js
-import { ... } from '@bamotf/utils';
-```
-
-## API
-
-- `currency.format` - Format a given amount in a given currency.
-
-- `currency.toFraction` - Convert a given amount to the smallest fraction of a
-  given currency.
-
-- `currency.getFractionDigits` - Get the number of fraction digits for a given
-  currency.
+For more information about bamotf, [visit bamotf.com](https://bamotf.com)!

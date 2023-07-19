@@ -13,6 +13,8 @@
     <b>⚠️ This is a Work in Progress ⚠️</b> - Do not use it in production!
     <br />
     <br />
+    <a href="https://discord.gg/d82cacFt">Discord</a> · 
+    <a href="https://bamotf.com">Website</a> · 
     <a href="https://github.com/bamotf/bamotf/issues">Issues</a>
   </p>
 </p>
@@ -21,7 +23,7 @@
 
 ## About the Project
 
-<img width="100%" alt="booking-screen" src="https://user-images.githubusercontent.com/8019099/176390354-f1bc7069-0341-437a-9bb8-eb41092b4016.gif">
+<img width="100%" alt="booking-screen" src="https://github.com/bamotf/bamotf/blob/main/.github/Jul-18-2023%2020-56-57.gif?raw=true">
 
 # Bitcoin Payments Infrastructure
 
@@ -48,90 +50,14 @@ libraries, further easing implementation for developers.
 - [Prisma.io](https://prisma.io/?ref=bamotf)
 - [Turbo](https://turbo.build/?ref=bamotf)
 
-<!-- GETTING STARTED -->
+## Documentation
 
-## Getting Started
+For documentation about bamotf, please visit our [website](https://bamotf.com).
 
-To get it and running, please follow these simple steps.
+Also, please [join our community on Discord](https://discord.gg/d82cacFt).
 
-### Prerequisites
-
-Here is what you need to be able to run _bamotf_.
-
-- docker-compose
-
-### 1. Running the [Server](./apps/server/README.md)
-
-Create a `docker-compose.yml` file in the root of your project and paste the
-following:
-
-```yaml
-# docker-compose.yml
-#
-#  This is an example of how you can configure for running
-#  bamotf/server in development mode if you don't already have a
-#  Bitcoin Core, Redis, and Postgres instance running.
-
-version: '3.8'
-services:
-  bamotf:
-    image: bamotf/server:latest
-    restart: always
-    environment:
-      - REDIS_URL=redis://redis:6379
-      - POSTGRES_URL=postgresql://halfinney:randompassword@postgres:5432
-      - BITCOIN_CORE_URL=http://username:wc7eFmVwEeZCDYTMaOqxRnLWSR7aI76bGmHl6pRFtAU@bitcoin-core:18443
-      - WEBHOOK_URL=<my-webhook-url>
-      - WEBHOOK_SECRET=my-fancy-webhook-secret
-      - API_KEY=my-fancy-api-key
-    ports:
-      - 21000:21000
-    depends_on:
-      - postgres
-      - redis
-      - bitcoin-core
-
-  # Bitcoin-core for development
-  bitcoin-core:
-    image: bamotf-core-dev:latest
-    restart: always
-
-  postgres:
-    image: postgres:latest
-    restart: always
-    environment:
-      - POSTGRES_USER=halfinney
-      - POSTGRES_PASSWORD=randompassword
-
-  redis:
-    image: redis:latest
-```
-
-Then run `docker-compose up` and you should be good to go! This will expose the
-server on port [21000](http://localhost:21000) with the following credentials:
-
-- Username: `satoshi`
-- Password: `satoshi`
-
-### 2. Interact with the server
-
-You can either access the [API](./apps/server/README.md#api) directly or use the
-[Node.js client](./packages/node/README.md) to create and manage Payment
-Intents.
-
-Here's a full example of how to integrate using
-[Next.js](./examples/donation/README.md).
-
-## What's in this repo?
-
-- **[bamotf/server](apps/server/README.md)** - A server that exposes a REST API
-  to create and manage payments.
-- **[bamotf/node](packages/node/README.md)** - A Node.js client to interact with
-  the _bamotf_ server.
-- **[bamotf/react](packages/react/README.md)** - A React component library to
-  easily integrate bitcoin payments in your React app.
-- **[bamotf/utils](packages/utils/README.md)** - A utility library to help with
-  formatting and stuff like that.
+The documentation is automatically generated on each release from the files in
+the [docs directory](./apps/docs).
 
 <!-- ACTIVITY -->
 
