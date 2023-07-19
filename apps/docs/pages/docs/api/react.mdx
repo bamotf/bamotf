@@ -1,16 +1,13 @@
 # @bamotf/react
 
 This package contains React components that help you build bitcoin related
-interfaces.
+interfaces. You can see them in action on our
+[storybook](https://storybook.bamotf.com).
 
 ## Installation
 
-```bash
+```sh npm2yarn
 npm install @bamotf/react
-# or
-yarn add @bamotf/react
-# or
-pnpm add @bamotf/react
 ```
 
 ## Usage
@@ -33,54 +30,24 @@ export function App() {
 
 ## Components
 
-### `Copyable`
+### `<PaymentDetails />`
 
-This file contains a React component called `Copyable` that allows the user to
-copy a text to the clipboard. It has the following props:
+This component displays payment details, including a QR code, address, and
+amount in bitcoins the user needs to transfer. It has the following props:
 
-- `prefix` (optional): Text that will prefix the copyable text.
-- `text`: The text that will be copied when the user clicks on the copy button.
-- `onCopied` (optional): Callback function that is called when the user clicks
-  on the copy button.
-
-The component utilizes the `lucide-react` library for the `Check` and `Copy`
-icons.
-
-### `Currency Selector`
-
-This file contains a React component called `CurrencySelector` that allows the
-user to select a currency from a dropdown list. It has the following props:
-
-- `selectedCurrency`: The currently selected currency code.
-- `onCurrencyChange`: Callback function that is called when the selected
-  currency changes.
-
-The component relies on the `CURRENCY_CODES` constant from the
-`../../../config/currency` module, which contains an array of available currency
-codes.
-
-### `Payment Details`
-
-This file contains a React component called `PaymentDetails` that displays
-payment details, including a QR code, address, and amount. It has the following
-props:
-
+- `amount`: The amount of the payment in the given currency.
+- `currency`: The 3-letter currency code.
 - `address`: The address where the payment should be sent.
-- `amount`: The amount of the payment returned from the server.
-- `currency`: The currency code.
 - `price`: The current price of Bitcoin.
 - `label` (optional): A label to be shown in the wallet.
 - `message` (optional): A message to be shown in the wallet.
-- `redirectUrl` (optional): The URL to redirect to after the payment is
+- `redirectUrl` (optional): The URL to redirect the user after the payment is
   complete.
 
-The component uses the `currencyUtil` module from `@bamotf/utils` for
-currency-related calculations.
+### `<QRCode />`
 
-### `QR Code`
-
-This file contains a React component called `QRCode` that renders a QR code
-readable by a Bitcoin wallet. It has the following props:
+This component renders a QR code readable by a Bitcoin wallet. It has the
+following props:
 
 - `address`: The Bitcoin address that will receive the payment.
 - `amount`: The amount to be received in Bitcoins.
@@ -89,16 +56,23 @@ readable by a Bitcoin wallet. It has the following props:
 - `label` (optional): A label to be shown in the wallet.
 - `message` (optional): A message to be shown in the wallet.
 
-The component utilizes the `qrcode.react` library for generating the QR code and
-spits out a SVG that translates to the following URL format:
+This generates the QR code and spits out a SVG that translates to the following
+URL format:
 
 ```jsx
 bitcoin:BC1QYLH3U67J673H6Y6ALV70M0PL2YZ53TZHVXGG7U
   ?amount=0.00001
   &label=sbddesign%3A%20For%20lunch%20Tuesday
   &message=For%20lunch%20Tuesday
+  &r=https%3A%2F%2Fexample.com%2Fsuccess
 ```
 
-Please note that the above documentation is provided in Markdown format and may
-require additional formatting or further explanation based on your specific
-needs.
+### `<Copyable />`
+
+This component allows the user to copy a text to the clipboard. It has the
+following props:
+
+- `prefix` (optional): Text that will prefix the copyable text.
+- `text`: The text that will be copied when the user clicks on the copy button.
+- `onCopied` (optional): Callback function that is called when the user clicks
+  on the copy button.

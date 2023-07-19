@@ -1,0 +1,129 @@
+# Customizing the UI
+
+Building the UI for bitcoin payments is not something challenging but it is
+something time consuming. To solve that, we have built a set of
+[React component library](../api/react) that you can use to build your own UI or
+use a pre-built one. You can see all the components in action
+[here](https://storybook.bamotf.com).
+
+## Pre-built UI
+
+The easiest way to get started is to use our pre-built UI. For that, you can
+just use the `PaymentDetails` component. It will take care of everything for
+you.
+
+```tsx
+import {PaymentDetails} from '@bamotf/react'
+
+export default function PaymentPage() {
+  return (
+    // show a payment details for 10.00 BRL
+    <PaymentDetails
+      amount={1000n}
+      currency="BRL"
+      address="bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwfxxxx"
+      price={69420.0}
+      label="Donation to bamotf"
+      message="Thank you for your donation!"
+    />
+  )
+}
+```
+
+But that component only shows the HTML markup, you'll still need to import the
+CSS to format it.
+
+```tsx {3}
+import {PaymentDetails} from '@bamotf/react'
+
+import '@bamotf/react/base.css'
+
+export default function PaymentPage() {
+  return (
+    // show a payment details for 10.00 BRL
+    <PaymentDetails
+      amount={1000n}
+      currency="BRL"
+      address="bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwfxxxx"
+      price={69420.0}
+      label="Donation to bamotf"
+      message="Thank you for your donation!"
+    />
+  )
+}
+```
+
+the `@bamotf/react/base.css` will import all the CSS needed format the
+components but sometimes you don't want it to change any other style in the page
+like when you already have Tailwind setup and working on your website. For that
+reason, the `@bamotf/react/components.css` is also exported by the package. It
+will only import the CSS needed for the components to work with the bareminimun
+opnions styles. You'll need to add your own styles to make it look good.
+
+```css filename="my-custom.css" copy
+/* colors are in HSL format */
+.payment-details {
+  --foreground: 222.2 84% 4.9%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+
+  --radius: 0.5rem;
+
+  --success: 162 92% 44%;
+}
+
+.dark .payment-details {
+  --foreground: 210 40% 98%;
+
+  --card: 222.2 84% 4.9%;
+  --card-foreground: 210 40% 98%;
+
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+
+  --success: 160 96% 84%;
+}
+```
+
+Then you can import them in your page.
+
+```tsx {3,4}
+import {PaymentDetails} from '@bamotf/react'
+
+import './my-custom.css'
+import '@bamotf/react/components.css'
+
+export default function PaymentPage() {
+  return (
+    // show a payment details for 10.00 BRL
+    <PaymentDetails
+      amount={1000n}
+      currency="BRL"
+      address="bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwfxxxx"
+      price={69420.0}
+      label="Donation to bamotf"
+      message="Thank you for your donation!"
+    />
+  )
+}
+```
+
+## Building your own UI
+
+If you want to build your own UI, the `@bamotf/react` package also exports all
+the components used by the pre-built. You can import them and use them in your
+own page.
+
+```tsx
+import {QRCode, Copyable} from '@bamotf/react'
+
+export default function PaymentPage() {
+  return (
+    ...
+  )
+}
+```

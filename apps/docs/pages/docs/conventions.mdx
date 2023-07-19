@@ -36,3 +36,9 @@ time the payment is made. This is why we have a `tolerance` property. The
 tolerance is a percentage of the amount that is allowed to be lost during the
 exchange. If the amount changes more than the tolerance, the payment is
 considered not valid.
+
+## Amounts in bigint
+
+All amounts are in `bigint`. This is because we don't want to deal with floating
+point numbers rounding errors. This is why we have a `convertToBigInt` function
+to convert a `number` to a `bigint`. [See more](./api/utils)
