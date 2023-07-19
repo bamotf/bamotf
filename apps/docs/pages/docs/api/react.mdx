@@ -1,7 +1,5 @@
 # @bamotf/react
 
-## Storybook
-
 This package contains React components that help you build bitcoin related
 interfaces. You can see them in action on our
 [storybook](https://storybook.bamotf.com).
@@ -45,6 +43,29 @@ amount in bitcoins the user needs to transfer. It has the following props:
 - `message` (optional): A message to be shown in the wallet.
 - `redirectUrl` (optional): The URL to redirect the user after the payment is
   complete.
+
+### `<QRCode />`
+
+This component renders a QR code readable by a Bitcoin wallet. It has the
+following props:
+
+- `address`: The Bitcoin address that will receive the payment.
+- `amount`: The amount to be received in Bitcoins.
+- `redirectUrl` (optional): The URL to redirect to after the payment is
+  complete.
+- `label` (optional): A label to be shown in the wallet.
+- `message` (optional): A message to be shown in the wallet.
+
+This generates the QR code and spits out a SVG that translates to the following
+URL format:
+
+```jsx
+bitcoin:BC1QYLH3U67J673H6Y6ALV70M0PL2YZ53TZHVXGG7U
+  ?amount=0.00001
+  &label=sbddesign%3A%20For%20lunch%20Tuesday
+  &message=For%20lunch%20Tuesday
+  &r=https%3A%2F%2Fexample.com%2Fsuccess
+```
 
 ### `<Copyable />`
 
