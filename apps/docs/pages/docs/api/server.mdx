@@ -4,11 +4,6 @@ A server that exposes a REST API to create and manage payments in Bitcoin.
 
 ![alt](../../../public/bamotf-server.png)
 
-## Getting started
-
-Follow [Running the Server](../#1-running-the-server) section in the main
-README.
-
 ## Notes
 
 - `tolerance` is a percentage of the `amount` that is allowed to be lost to
@@ -27,7 +22,26 @@ README.
   supported currencies can be found [here](../conventions/currency). _DEFAULT:
   BTC_
 
-## API
+## Configuration
+
+When starting you server, you need to certain environment variables for it to
+run:
+
+```ts
+POSTGRES_URL // is the url to the postgres database
+REDIS_URL // is the url to the redis server
+BITCOIN_CORE_URL // is the url to the bitcoin core node
+WEBHOOK_URL // is the url to which the server will send webhooks
+WEBHOOK_SECRET // is the secret used to sign the webhooks
+API_KEY // is the api key used to authenticate requests to the server
+
+/* optionals */
+MODE // default: development
+PRICE_DATA_SERVER_CLEARNET_URL // default: price data will be fetched from the bisq network
+SESSION_SECRET // default: a random string will be used
+```
+
+## REST APIs
 
 ### Requests
 
@@ -65,274 +79,3 @@ README.
     }
     ```
 - `[GET] /api/price/:currency` - Get the price of Bitcoin in a specific currency
-
-### Queues
-
-#### Transaction server
-
-###### Description
-
-This file contains the implementation of a queue that checks if the wallet has a
-new transaction and updates the database accordingly. It also triggers a webhook
-if the payment was successful.
-
-###### Imports
-
-- `currency` from `@bamotf/utils`: Utility function for currency operations.
-- `UnrecoverableError` from `bullmq`: Error class for unrecoverable errors.
-- `format` and `logger` from `logger`: Utility functions for logging.
-- `listUnspent` from `~/utils/bitcoin-core`: Function for listing unspent
-  transactions.
-- `getCurrencyValueFromSatoshis` from `~/utils/price`: Function for converting
-  satoshis to the original currency.
-- `prisma`, `Prisma`, and `Transaction` from `~/utils/prisma.server`: Prisma
-  client and type definitions.
-- `createQueue` from `~/utils/queue.server`: Function for creating a queue.
-- `FiatCurrencyCode` from `../../../../config/currency`: Type definition for
-  fiat currency codes.
-- `webhookQueue` from `./webhook.server`: Queue for triggering webhooks.
-
-###### Types
-
-- `QueueData`: Type definition for the payload of the queue job.
-
-###### Constants
-
-- `QUEUE_ID`: Identifier for the queue.
-
-##### queue
-
-###### Description
-
-This is the main queue function that processes the job payload and performs the
-necessary operations.
-
-###### Signature
-
-```typescript
-export const queue: Queue<QueueData>
-```
-
-###### Example Usage
-
-```typescript
-import {queue} from './transaction.server'
-
-const payload = {
-  paymentIntentId: 'payment_12345',
-}
-
-queue.add(payload)
-```
-
-##### updatePaymentIntentStatus
-
-###### Description
-
-Updates the status of a payment intent in the database.
-
-###### Signature
-
-```typescript
-function updatePaymentIntentStatus(
-  paymentIntentId: string,
-  status: 'processing' | 'succeeded',
-): Promise<void>
-```
-
-##### getTotalTransferred
-
-###### Description
-
-Calculates the total amount received in the given transactions.
-
-###### Signature
-
-```typescript
-function getTotalTransferred(
-  transactions: Transaction[],
-  confirmations: number,
-): {
-  btc: {
-    confirmed: bigint
-    unconfirmed: bigint
-  }
-  fiat: {
-    confirmed: bigint
-    unconfirmed: bigint
-  }
-}
-```
-
-##### getTotal
-
-###### Description
-
-Sums the given key in the given transactions.
-
-###### Signature
-
-```typescript
-function getTotal(
-  transactions: Transaction[],
-  key: 'amount' | 'originalAmount' = 'amount',
-): bigint
-```
-
-##### isPaymentIntentPaid
-
-###### Description
-
-Checks if the payment intent is considered paid.
-
-###### Signature
-
-```typescript
-function isPaymentIntentPaid({
-  amountReceived,
-  currency,
-  amountRequested,
-  tolerance,
-}: {
-  amountReceived: ReturnType<typeof getTotalTransferred>
-  currency: string
-  amountRequested: bigint
-  tolerance: Prisma.Decimal
-}): boolean
-```
-
-#### Webhook Server
-
-###### Description
-
-This file contains the implementation of a queue that triggers a webhook if the
-payment was successful.
-
-###### Imports
-
-- `UnrecoverableError` from `bullmq`: Error class for unrecoverable errors.
-- `format` and `logger` from `logger`: Utility functions for logging.
-- `symmetric` from `secure-webhooks`: Utility function for symmetric key
-  operations.
-- `uuidv4` from `uuid`: Function for generating UUID v4.
-- `env` from `~/utils/env.server`: Environment variables.
-- `prisma` and `Prisma` from `~/utils/prisma.server`: Prisma client and type
-  definitions.
-- `createQueue` from `~/utils/queue.server`: Function for creating a queue.
-
-###### Types
-
-- `Event`: Type definition for webhook event types.
-- `QueueData`: Type definition for the payload of the queue job.
-
-###### Constants
-
-- `QUEUE_ID`: Identifier for the queue.
-
-##### queue
-
-###### Description
-
-This is the main queue function that processes the job payload and triggers a
-webhook.
-
-###### Signature
-
-```typescript
-export const queue: Queue<QueueData>
-```
-
-###### Example Usage
-
-```typescript
-import {queue} from './webhook.server'
-
-const payload = {
-  paymentIntentId: 'payment_12345',
-  event: 'payment_intent.succeeded',
-}
-
-queue.add(payload)
-```
-
-### Utils
-
-#### Bitcoin Core
-
-This file contains functions that interact with Bitcoin Core using RPC calls. It
-abstracts the Bitcoin Core RPC calls and provides various functionalities
-related to wallet management, address handling, transaction listing, balance
-retrieval, payment simulation, etc.
-
-##### Dependencies
-
-- `@bamotf/utils`: A utility library.
-- `@remix-run/node`: A library for handling server-side rendering and routing.
-- `logger`: A logging library.
-- `~/utils/prisma.server`: A server-side utility for interacting with Prisma.
-- `env.server`: A server-side environment configuration.
-
-##### Functions
-
-- `cmd`: A function that sends an RPC command to Bitcoin Core.
-- `createWatchOnlyWallet`: Creates a watch-only wallet with the given name.
-- `getDescriptor`: Gets the descriptor for a given address to import it into the
-  watch-only wallet.
-- `addWatchOnlyAddress`: Adds a watch-only address to the watch-only wallet.
-- `listUnspent`: Lists all unspent transactions for the given wallet.
-- `getBalance`: Gets the balance for the given wallet.
-- `simulatePayment`: Simulates a payment to the given address.
-- `listWallets`: Lists all wallets (only for testing purposes).
-- `unloadWallet`: Unloads the specified wallet (only for testing purposes).
-
----
-
-#### Contract
-
-This file defines types and utility functions for creating REST API contracts.
-
-##### Types
-
-- `ApiRoute`: Represents a generic API route with optional metadata.
-- `QueryRoute`: Represents a query endpoint (GET) with optional metadata.
-- `MutationRoute`: Represents a mutation endpoint (POST, PUT, PATCH, DELETE)
-  with optional metadata and request body schema.
-- `Route`: Represents a union of all possible endpoint types.
-- `AppRouter`: Represents a router or contract in the REST API, consisting of
-  loaders and actions.
-
-##### Functions
-
-- `parseSchema`: Parses a Zod schema and throws an error if it fails validation.
-- `createContract`: Creates a contract from a router configuration, which
-  includes loaders and actions.
-
----
-
-#### Misc
-
-This file contains miscellaneous utility functions.
-
-##### Functions
-
-- `safeRedirect`: Safely redirects the user to a provided destination.
-- `getErrorMessage`: Retrieves the error message from an error object.
-
----
-
-#### Price
-
-This file provides functions for retrieving the price of Bitcoin in different
-fiat currencies and converting amounts between BTC and fiat currencies.
-
-##### Dependencies
-
-- `@bamotf/utils/currency`: A utility library for currency-related operations.
-- `env.server`: A server-side environment configuration.
-
-##### Functions
-
-- `getBitcoinPrice`: Retrieves the price of Bitcoin in the given fiat currency.
-- `getBtcAmountFromFiat`: Converts the given amount in fiat currency to BTC.
-- `getCurrencyValueFromSatoshis`: Converts the given amount in BTC to fiat
-  currency.

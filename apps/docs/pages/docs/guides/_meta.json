@@ -1,5 +1,6 @@
 {
-  "deploy-production": "",
-  "pre-production": "",
-  "testing-development": ""
+  "webhooks": "Webhooks",
+  "testing-development": "Testing Integration",
+  "pre-production": "Using Preview mode",
+  "deploy-production": "Deploying to Production"
 }
