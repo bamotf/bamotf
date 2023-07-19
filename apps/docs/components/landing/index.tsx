@@ -1,6 +1,5 @@
 import React from 'react'
 import Link from 'next/link'
-import Typed from 'react-typed'
 
 import LandingBackground from '../landing-background/background'
 import BamotfLogo from '../logo/bamotf-logo'
@@ -16,13 +15,6 @@ function LandingPage() {
             <h1 className="heading max-w-lg md:max-w-xl lg:max-w-4xl">
               The Bitcoin toolkit for developers
             </h1>
-            <Typed
-              className="typed"
-              strings={['Fast', 'Simple', 'Easy', 'Secure', 'Powerful']}
-              typeSpeed={120}
-              backSpeed={140}
-              loop
-            />
             <p className="description max-w-lg md:max-w-xl lg:max-w-4xl">
               A streamlined, efficient, and open source way to integrate Bitcoin
               as payment method.
