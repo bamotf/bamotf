@@ -23,7 +23,7 @@
 
 ## About the Project
 
-<img width="100%" alt="booking-screen" src="https://user-images.githubusercontent.com/8019099/176390354-f1bc7069-0341-437a-9bb8-eb41092b4016.gif">
+<img width="100%" alt="booking-screen" src="https://github.com/bamotf/bamotf/blob/main/.github/Jul-18-2023%2020-56-57.gif?raw=true">
 
 # Bitcoin Payments Infrastructure
 
