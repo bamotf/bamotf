@@ -13,7 +13,7 @@ const config: DocsThemeConfig = {
   },
   docsRepositoryBase: 'https://github.com/bamotf/bamotf',
   footer: {
-    text: 'Made in João Pessoa, Brazil',
+    text: '© bamotf. 2023',
   },
 }
 
