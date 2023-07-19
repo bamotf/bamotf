@@ -55,3 +55,7 @@ following props:
 - `text`: The text that will be copied when the user clicks on the copy button.
 - `onCopied` (optional): Callback function that is called when the user clicks
   on the copy button.
+
+The Copyable component relies on the navigator.clipboard.writeText API to copy
+the text to the clipboard, it's only available in secure contexts. If the API is
+not available, an error message will be logged to the console.
