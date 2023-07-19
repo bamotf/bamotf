@@ -24,11 +24,6 @@ instructions:
 
 **👇👇👇 READ THIS 👇👇👇**
 
-> You might get a TypeScript error when running `setup` that looks like this
-> `error TS2420: Class 'NodeOnDiskFile' incorrectly implements interface 'File'.`
-> The workaround is to just add a `// @ts-expect-error` on the line of the
-> error. See more: https://github.com/remix-run/remix/issues/4371
-
 1.  Fork and clone the repo
 2.  Copy .env.example into .env
 3.  Run `pnpm setup` to install dependencies and run validation
