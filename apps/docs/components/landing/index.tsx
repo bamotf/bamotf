@@ -1,6 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 
+import Card from '../bullet-point/card'
 import LandingBackground from '../landing-background/background'
 import BamotfLogo from '../logo/bamotf-logo'
 
@@ -21,7 +22,7 @@ function LandingPage() {
             </p>
           </div>
 
-          <div className="flex flex-col w-2/6 gap-3 md:!flex-row">
+          <div className="flex flex-col w-2/4 gap-3 md:!flex-row">
             <button className="w-full min-w-[120px] h-12 text-base font-medium no-underline dark:text-black text-white border-transparent bg-black dark:bg-white rounded md:leading-6 transition-all duration-300">
               <Link href="/docs">Get started</Link>
             </button>
@@ -31,40 +32,64 @@ function LandingPage() {
           </div>
         </div>
 
-        <section className="flex flex-col items-center justify-between w-1/2 h-screen text-center">
-          <div>
-            <h1>Why bamotf?</h1>
-            <p>
+        <section className="flex flex-col items-center w-full h-[80%] lg:h-screen mt-8 mb-8">
+          <div className="gap-6 text-center flex flex-col h-full items-center justify-center">
+            <h1 className="font-bold text-3xl md:text-4xl lg:text-5xl">
+              Why bamotf?
+            </h1>
+            <p className="opacity-50 w-2/3 text-wrap-balance">
               bamoft integrates the whole infrastructure needed for getting
               started receiving payments, including a server, components and
               packages.
             </p>
           </div>
 
-          {/* <div>
-            <h2>1. Easy integration with bitcoin network</h2>
-            <p>Understanding how bitcoin network operates is painful enough, bamotf streamline the complexity and made it more digestible.</p>
-          </div>
+          <div className="h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <Card
+              title="Easy integration with bitcoin network"
+              subtitle="Understanding how the bitcoin network operates is painful enough, bamotf streamlines the complexity and makes it more digestible."
+            />
 
-          <div>
-            <h2>2. Autocomplete and type-safe</h2>
-            <p>The best code is the code that writes itself, so you can move quickly and be sure you don't break stuff accidentally.</p>
-          </div>
+            <Card
+              title="Autocomplete and type-safe"
+              subtitle="The best code is the code that writes itself, so you can move quickly and be sure you don't break stuff accidentally."
+            />
 
-          <div>
-            <h2>3. Dev environment</h2>
-            <p>Built with a strong typed programming language, so it doesn't require PhD to learn or xxxxxx.</p>
-          </div>
+            <Card
+              title="Dev environment"
+              subtitle="Built with a strongly typed programming language, so it doesn't require a PhD to learn or xxxxxx."
+            />
 
-          <div>
-            <h2>4. xxxxx</h2>
-            <p>Pre-built components and utilities that speed up development and makes it the perfect starting point for your next project.</p>
-          </div>
+            <Card
+              title="Ready-to-use components"
+              subtitle="Pre-built components and utilities that speed up development and make it the perfect starting point for your next project."
+            />
 
-          <div>
-            <h2>5. Bitcoin for dev couldn’t be easier - or faster</h2>
-            <p>bamotf automates your build, test, and deployment into the 3 Bitcoin network.</p>
-          </div> */}
+            <Card
+              title="Bitcoin for dev couldn't be easier"
+              subtitle="bamotf automates your build, test, and deployment into the 3 Bitcoin network."
+            />
+
+            <Card
+              title="Stay in Sync With Your Transactions"
+              subtitle="Streamline your payment integration with the Bitcoin network by utilizing our webhooks. Stay informed about the status of your payment updates."
+            />
+
+            <Card
+              title="Easy integration with bitcoin network"
+              subtitle="Understanding how the bitcoin network operates is painful enough, bamotf streamlines the complexity and makes it more digestible."
+            />
+
+            <Card
+              title="Easy integration with bitcoin network"
+              subtitle="Understanding how the bitcoin network operates is painful enough, bamotf streamlines the complexity and makes it more digestible."
+            />
+
+            <Card
+              title="Easy integration with bitcoin network"
+              subtitle="Understanding how the bitcoin network operates is painful enough, bamotf streamlines the complexity and makes it more digestible."
+            />
+          </div>
         </section>
       </main>
     </>

@@ -21,3 +21,7 @@
 .wrapper .description {
   @apply ml-6 mr-6 mt-6 text-xl font-normal opacity-50 md:text-2xl;
 }
+
+.text-wrap-balance {
+  text-wrap: balance;
+}
