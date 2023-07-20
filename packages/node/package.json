@@ -24,8 +24,8 @@
   "devDependencies": {
     "@bamotf/server": "workspace:*",
     "@types/hdkey": "^2.0.1",
-    "eslint-config-custom": "workspace:*",
     "eslint": "^7.32.0",
+    "eslint-config-custom": "workspace:*",
     "logger": "workspace:*",
     "msw": "^1.2.1",
     "tsconfig": "workspace:*",
@@ -34,8 +34,9 @@
   },
   "dependencies": {
     "axios": "^1.4.0",
+    "bip32": "^4.0.0",
     "bitcoinjs-lib": "^6.1.1",
-    "hdkey": "^2.1.0",
-    "secure-webhooks": "^0.3.0"
+    "secure-webhooks": "^0.3.0",
+    "tiny-secp256k1": "^2.2.1"
   }
 }
