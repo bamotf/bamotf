@@ -1,8 +1,11 @@
+import BIP32Factory from 'bip32'
 import * as bitcoin from 'bitcoinjs-lib'
-import HDKey from 'hdkey'
+import * as ecc from 'tiny-secp256k1'
+
+const bip32 = BIP32Factory(ecc)
 
 /**
- * Derive a bitcoin address from an Extendend Public Key (XPUB) at a given index and
+ * Derive a bitcoin address from an Extended Public Key (XPUB) at a given index and
  * environment. Since the addresses can very between networks, the environment
  * is used to determine which network to derive the address on.
  *
@@ -14,7 +17,7 @@ import HDKey from 'hdkey'
 export function derive(
   xpub: string,
   index: number,
-  environment: 'development' | 'preview' | 'production' = 'development',
+  environment: 'development' | 'preview' | 'production',
 ): string {
   const network =
     environment === 'production'
@@ -23,11 +26,17 @@ export function derive(
       ? bitcoin.networks.testnet
       : bitcoin.networks.regtest
 
-  const hdNode = HDKey.fromExtendedKey(xpub)
-  const childNode = hdNode.derive(`m/${index}`)
+  const hdNode = bip32.fromBase58(xpub, network)
+  const child = hdNode.derive(index)
 
-  return bitcoin.payments.p2pkh({
-    pubkey: childNode.publicKey,
+  const {address} = bitcoin.payments.p2pkh({
+    pubkey: child.publicKey,
     network,
-  }).address as string
+  })
+
+  if (!address) {
+    throw new Error('Could not derive address')
+  }
+
+  return address
 }

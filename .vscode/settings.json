@@ -12,12 +12,14 @@
     "Lucide",
     "nvmrc",
     "Quirrel",
+    "regtest",
     "satoshis",
     "secp",
     "tanstack",
     "treeshake",
     "txid",
-    "typedjson"
+    "typedjson",
+    "xpub"
   ],
   "vitest.exclude": [
     "**/node_modules/**",
