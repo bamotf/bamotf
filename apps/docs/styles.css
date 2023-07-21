@@ -7,21 +7,22 @@
 }
 
 .wrapper h1 {
-  @apply pb-6 pt-6 text-5xl font-bold opacity-80 md:text-7xl;
+  @apply pb-6 pt-6 text-5xl font-bold opacity-100 md:text-7xl;
 }
 
 .landingContainer {
   @apply flex flex-col items-center justify-around;
 }
 
-.typed {
-  @apply pl-4 pr-4 text-3xl font-bold md:text-5xl;
-}
-
 .wrapper .description {
-  @apply ml-6 mr-6 mt-6 text-xl font-normal opacity-50 md:text-2xl;
+  @apply ml-6 mr-6 text-xl font-normal opacity-50;
 }
 
 .text-wrap-balance {
   text-wrap: balance;
+}
+
+.landingContainer svg {
+  width: 184px;
+  height: 60px;
 }

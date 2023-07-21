@@ -2,8 +2,7 @@ import React from 'react'
 
 const BamotfLogo = () => (
   <svg
-    width="100"
-    height="30"
+    className="w-24 h-8"
     viewBox="0 0 389 98"
     fill="currentColor"
     xmlns="http://www.w3.org/2000/svg"
