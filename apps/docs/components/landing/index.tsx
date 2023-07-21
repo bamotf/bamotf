@@ -32,8 +32,8 @@ function LandingPage() {
           </div>
         </div>
 
-        <section className="flex flex-col items-center w-full h-[80%] lg:h-screen mt-8 mb-8">
-          <div className="gap-6 text-center flex flex-col h-full items-center justify-center">
+        <section className="flex flex-col items-center w-full lg:h-[968px] mt-8 mb-48 lg:mb-16">
+          <div className="gap-6 text-center flex flex-col h-52 mt-24 items-center justify-center">
             <h1 className="font-bold text-3xl md:text-4xl lg:text-5xl">
               Why bamotf?
             </h1>
@@ -44,7 +44,7 @@ function LandingPage() {
             </p>
           </div>
 
-          <div className="h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             <Card
               title="Easy integration with bitcoin network"
               subtitle="Understanding how the bitcoin network operates is painful enough, bamotf streamlines the complexity and makes it more digestible."
