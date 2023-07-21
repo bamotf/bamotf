@@ -8,8 +8,8 @@ import BamotfLogo from '../logo/bamotf-logo'
 function LandingPage() {
   return (
     <>
-      <main className="flex flex-col items-center justify-between w-full h-full">
-        <div className="wrapper">
+      <main className="flex flex-col items-center justify-between w-full">
+        <div className="wrapper pt-12 md:pb-24 lg:pb-32 md:pt-16 lg:pt-20 xl:h-screen gap-8 relative z-0">
           <LandingBackground />
           <div className="landingContainer pb-8">
             <BamotfLogo />
@@ -32,7 +32,7 @@ function LandingPage() {
           </div>
         </div>
 
-        <section className="flex flex-col items-center w-full lg:h-[968px] mt-8 mb-48 lg:mb-16">
+        <section className="flex flex-col items-center w-full lg:h-[968px] mb-48 lg:mb-16">
           <div className="gap-6 text-center flex flex-col h-52 mt-24 items-center justify-center">
             <h1 className="font-bold text-3xl md:text-4xl lg:text-5xl">
               Why bamotf?

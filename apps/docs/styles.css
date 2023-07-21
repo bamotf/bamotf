@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 .wrapper {
-  @apply flex h-screen w-full flex-col items-center justify-center text-center lg:h-[90vh];
+  @apply flex w-full flex-col items-center justify-center text-center;
 }
 
 .wrapper h1 {
-  @apply pb-6 pt-6 text-5xl font-bold opacity-100 md:text-7xl;
+  @apply pb-6 pt-6 text-4xl font-bold opacity-100 sm:text-5xl md:text-7xl;
 }
 
 .landingContainer {
@@ -23,5 +23,5 @@
 }
 
 .landingContainer svg {
-  @apply h-16 w-52;
+  @apply h-12 w-40 md:h-16 md:w-52;
 }
