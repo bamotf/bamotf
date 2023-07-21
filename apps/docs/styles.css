@@ -23,6 +23,5 @@
 }
 
 .landingContainer svg {
-  width: 184px;
-  height: 60px;
+  @apply h-16 w-52;
 }
