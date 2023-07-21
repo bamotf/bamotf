@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .wrapper {
-  @apply flex h-screen w-full flex-col items-center justify-center text-center;
+  @apply flex h-screen w-full flex-col items-center justify-center text-center lg:h-[90vh];
 }
 
 .wrapper h1 {
