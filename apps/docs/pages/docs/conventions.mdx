@@ -1,0 +1,44 @@
+# Conventions
+
+## `MODE` environment variable
+
+One hard concept for web developers to grasp is the concept of having differents
+networks that the application can run on. For them, mainnet, testnet, regtest,
+are all the same thing. They are all just "the blockchain". But technically,
+they are all different networks, with different rules, different coins,
+different blockchains. Web developers are used to the concept of the application
+is either running in production, or pre-production (or staging), or development.
+
+This is why we have the `MODE` environment variable. It can be set to
+`development`, `preview` or `production`. This is used to determine certain
+features that should or should not be enabled depending on the environment.
+
+| Mode        | Network |
+| ----------- | ------- |
+| development | regtest |
+| preview     | testnet |
+| production  | mainnet |
+
+## Price index
+
+When creating a payment intentet in a Fiat currency, the amount is converted to
+the corresponding amount in Bitcoin. This is done using a price index that is
+available on Bisq servers `https://price.bisq.wiz.biz/getAllMarketPrices`. If
+you don't like it, you can run your own price index server and set the
+`PRICE_DATA_SERVER_CLEARNET_URL` environment variable to your own server.
+
+## Tolerance
+
+When creating a payment intentet in a Fiat currency, the amount is converted to
+the corresponding amount in Bitcoin. But, because of the volatility of Bitcoin,
+the amount can change between the time the payment intentet is created and the
+time the payment is made. This is why we have a `tolerance` property. The
+tolerance is a percentage of the amount that is allowed to be lost during the
+exchange. If the amount changes more than the tolerance, the payment is
+considered not valid.
+
+## Amounts in bigint
+
+All amounts are in `bigint`. This is because we don't want to deal with floating
+point numbers rounding errors. This is why we have a `convertToBigInt` function
+to convert a `number` to a `bigint`. [See more](./api/utils)

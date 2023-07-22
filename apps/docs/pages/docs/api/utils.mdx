@@ -1,0 +1,103 @@
+# @bamotf/utils
+
+A typescript utility library to help with formatting and stuff like that.
+
+## Getting started
+
+```sh npm2yarn
+npm install @bamotf/utils
+```
+
+## Usage
+
+```js
+import { ... } from '@bamotf/utils';
+```
+
+## API
+
+### `format`
+
+```ts
+format(locale: string, opts: FormatOpts): string
+format(opts: FormatOpts): string
+```
+
+Formats a currency amount visually.
+
+- `locale` (optional): The locale to use for formatting. Defaults to `'en-US'`.
+- `opts`: The formatting options.
+  - `amount`: The amount to be formatted (as a `bigint`).
+  - `currency`: The currency code.
+
+Returns the formatted currency amount as a string.
+
+### `toFraction`
+
+```ts
+toFraction(opts: FractionOpts)
+```
+
+Converts a `bigint` amount to a fractionated number based on the currency
+decimal places.
+
+- `opts`: The conversion options.
+  - `amount`: The amount to be converted (as a `bigint`).
+  - `currency`: The currency code.
+
+### `getFractionDigits`
+
+```ts
+getFractionDigits(currency: CurrencyCode): { minimumFractionDigits: number, maximumFractionDigits: number }
+```
+
+Returns the minimum and maximum fraction digits for a given currency.
+
+- `currency`: The currency code.
+
+Returns an object with the following properties:
+
+- `minimumFractionDigits`: The minimum number of fraction digits.
+- `maximumFractionDigits`: The maximum number of fraction digits.
+
+### `convertToSats`
+
+```ts
+convertToSats(opts: { amount: bigint, currency: FiatCurrencyCode, price: number }): bigint
+```
+
+Calculates the number of satoshis that are equivalent to a given amount of fiat.
+
+- `opts`: The conversion options.
+  - `amount`: The amount of fiat to be converted (as a `bigint`).
+  - `currency`: The fiat currency code.
+  - `price`: The price of 1 BTC in the given currency (fractionated).
+
+Returns the converted number of satoshis as a `bigint`.
+
+### `convertFromSats`
+
+```ts
+convertFromSats(opts: { amount: bigint, currency: FiatCurrencyCode, price: number }): bigint
+```
+
+Calculates the amount of fiat that is equivalent to a given number of satoshis.
+
+- `opts`: The conversion options.
+  - `amount`: The amount of satoshis to be converted (as a `bigint`).
+  - `currency`: The fiat currency code.
+  - `price`: The price of 1 BTC in the given currency (fractionated).
+
+Returns the converted amount of fiat as a `bigint`.
+
+### `convertToBigInt`
+
+```ts
+convertToBigInt(opts: { amount: bigint, currency: CurrencyCode }): bigint
+```
+
+Convert the given amount to a `bigint` based on the currency decimal places.
+
+- `opts`: The conversion options.
+  - `amount`: The amount of satoshis to be converted (as a `bigint`).
+  - `currency`: The currency code.
