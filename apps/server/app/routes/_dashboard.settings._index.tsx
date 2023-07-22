@@ -23,7 +23,7 @@ import {
   authenticator,
   getPasswordHash,
   requireUserId,
-  verifyLogin,
+  verifyUserPassword,
 } from '~/utils/auth.server'
 import {prisma} from '~/utils/prisma.server'
 
@@ -69,7 +69,7 @@ export async function action({request}: DataFunctionArgs) {
   const submission = await parse(formData, {
     async: true,
     schema: profileFormSchema.superRefine(
-      async ({username, currentPassword, newPassword}, ctx) => {
+      async ({currentPassword, newPassword}, ctx) => {
         if (newPassword && !currentPassword) {
           ctx.addIssue({
             path: ['currentPassword'],
@@ -85,7 +85,7 @@ export async function action({request}: DataFunctionArgs) {
           })
         }
         if (currentPassword && newPassword) {
-          const user = await verifyLogin(username, currentPassword)
+          const user = await verifyUserPassword({id: userId}, currentPassword)
           if (!user) {
             ctx.addIssue({
               path: ['currentPassword'],
