@@ -16,6 +16,7 @@ module.exports = {
     '**/storybook-static',
     '**/prisma/client',
     '**/.next/*',
-    '**/dist',
+    '**/dist/*',
+    '**/build/*',
   ],
 }
