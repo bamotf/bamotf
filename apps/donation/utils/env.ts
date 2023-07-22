@@ -15,7 +15,9 @@ export const env = createEnv({
     PUSHER_SECRET: STRING_REQUIRED,
     XPUB: STRING_REQUIRED,
     WEBHOOK_SECRET: STRING_REQUIRED,
-    VERCEL_ENV: z.enum(['development', 'preview', 'production']),
+    VERCEL_ENV: z
+      .enum(['development', 'preview', 'production'])
+      .default('development'),
     VERCEL_URL: z.string().optional(),
   },
   client: {
