@@ -1,0 +1,8 @@
+.gradients_hero {
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.text_balance {
+  text-wrap: balance;
+}

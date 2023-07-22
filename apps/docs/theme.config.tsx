@@ -1,21 +1,21 @@
 import React from 'react'
 import type {DocsThemeConfig} from 'nextra-theme-docs'
 
-import BamotfLogo from './components/logo/bamotf-logo'
+import {Logo} from './components/logo'
+import {links} from './config/links'
 
 const config: DocsThemeConfig = {
-  logo: <BamotfLogo />,
+  logo: <Logo className="h-8 w-24" />,
   project: {
-    link: 'https://github.com/bamotf/bamotf',
+    link: links.github,
   },
   chat: {
-    link: 'https://discord.com',
+    link: links.discord,
   },
-  docsRepositoryBase: 'https://github.com/bamotf/bamotf',
+  docsRepositoryBase: links.github,
   footer: {
     text: '© bamotf. 2023',
   },
 }
 
 export default config
-0
