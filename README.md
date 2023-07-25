@@ -13,7 +13,7 @@
     <b>⚠️ This is a Work in Progress ⚠️</b> - Do not use it in production!
     <br />
     <br />
-    <a href="https://discord.gg/d82cacFt">Discord</a> · 
+    <a href="https://discord.gg/rUWTfmAHrG">Discord</a> · 
     <a href="https://bamotf.com">Website</a> · 
     <a href="https://github.com/bamotf/bamotf/issues">Issues</a>
   </p>
@@ -54,7 +54,7 @@ libraries, further easing implementation for developers.
 
 For documentation about bamotf, please visit our [website](https://bamotf.com).
 
-Also, please [join our community on Discord](https://discord.gg/d82cacFt).
+Also, please [join our community on Discord](https://discord.gg/rUWTfmAHrG).
 
 The documentation is automatically generated on each release from the files in
 the [docs directory](./apps/docs).
