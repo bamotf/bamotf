@@ -13,22 +13,21 @@ import {env} from './env.server'
 
 const BITCOIN_CORE_URL = `${env.BITCOIN_CORE_URL.protocol}://${env.BITCOIN_CORE_URL.host}`
 
-type BitcoinCoreResponse =
+type BitcoinCoreResponse = {
+  id: string
+} & (
   | {
-      id: string
-    } & (
-      | {
-          result: null
-          error: {
-            code: number
-            message: string
-          }
-        }
-      | {
-          result: any
-          error: null
-        }
-    )
+      result: null
+      error: {
+        code: number
+        message: string
+      }
+    }
+  | {
+      result: any
+      error: null
+    }
+)
 
 /**
  * Abstracts the Bitcoin Core RPC calls.
