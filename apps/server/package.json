@@ -41,7 +41,7 @@
     "bitcoinjs-lib": "^6.1.1",
     "bullmq": "^2.1.0",
     "class-variance-authority": "^0.6.0",
-    "clsx": "^1.2.1",
+    "clsx": "^2.0.0",
     "cmdk": "^0.2.0",
     "connection-string": "^4.3.6",
     "date-fns": "^2.30.0",
