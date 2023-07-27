@@ -43,6 +43,8 @@ model PaymentIntent {
   logs               Log[]
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @updatedAt
+  account            Account?            @relation(fields: [accountId], references: [id])
+  accountId          String? // TODO: remove optional after creating migration
 }
 
 // Logs are used to track the status of the payment intent and make a timeline of events
@@ -110,6 +112,7 @@ model User {
   password Password?
   roles    Role[]
   session  Session[]
+  account  Account[]
 }
 
 model Password {
@@ -153,4 +156,20 @@ model Session {
   user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId         String
   expirationDate DateTime
+}
+
+model Account {
+  id             String          @id @default(cuid())
+  owner          User            @relation(fields: [ownerId], references: [id])
+  ownerId        String
+  apis           Api[]
+  paymentIntents PaymentIntent[]
+}
+
+model Api {
+  id        String   @id @default(cuid())
+  name      String
+  key       String
+  account   Account? @relation(fields: [accountId], references: [id])
+  accountId String?
 }
