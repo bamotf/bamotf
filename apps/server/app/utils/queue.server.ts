@@ -53,21 +53,21 @@ export function createQueue<Payload>(
     if (err instanceof UnrecoverableError) {
       return logger.error(
         `[${format.yellow(name)}][${format.magenta(
-          job.id,
+          job?.id,
         )}] ⏹ Job has failed: ${format.red(err.message)}`,
       )
     }
 
-    if (job.opts.attempts && job.attemptsMade < job.opts.attempts) {
+    if (job?.opts.attempts && job?.attemptsMade < job?.opts.attempts) {
       return logger.verbose(
         `[${format.yellow(name)}](${format.magenta(
-          job.id,
+          job?.id,
         )}) ♺ Job rescheduled: ${err.message}`,
       )
     }
 
     return logger.error(
-      `[${format.yellow(name)}](${format.magenta(job.id)}) ⚰︎ Job failed: ${
+      `[${format.yellow(name)}](${format.magenta(job?.id)}) ⚰︎ Job failed: ${
         err.message
       }`,
     )
@@ -75,13 +75,13 @@ export function createQueue<Payload>(
 
   worker.on('completed', async (job, result) => {
     logger.verbose(
-      `[${format.yellow(name)}](${format.magenta(job.id)}) ✓ Job completed`,
+      `[${format.yellow(name)}](${format.magenta(job?.id)}) ✓ Job completed`,
     )
   })
 
   worker.on('active', async job => {
     logger.verbose(
-      `[${format.yellow(name)}](${format.magenta(job.id)}) ▸ Job started`,
+      `[${format.yellow(name)}](${format.magenta(job?.id)}) ▸ Job started`,
     )
   })
 
