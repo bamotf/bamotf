@@ -244,8 +244,8 @@ model Webhook {
   mode        Mode
   /// The url of the webhook that will be called
   url         String
-  /// The token of the webhook
-  token       String
+  /// The secret of the webhook
+  secret      String
   /// The description of the webhook
   description String?
   /// The version of the webhook
