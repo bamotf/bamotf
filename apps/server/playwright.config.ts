@@ -5,13 +5,15 @@ import {defineConfig, devices} from '@playwright/test'
  */
 import {config} from 'dotenv'
 
-config()
+config({
+  path: './.env.test',
+})
 
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: 'app/routes',
+  testDir: 'e2e',
   fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
@@ -41,7 +43,7 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: {
     env: {
-      RUNNING_TESTS: 'true',
+      RUNNING_E2E: 'true',
     },
     command: 'pnpm dev',
     url: 'http://127.0.0.1:3000',

@@ -1,8 +1,10 @@
-import {expect, test} from 'tests/base.fixture'
+import {describe, expect, test} from 'tests/base.fixture'
 
-test.describe('[POST] /api/payment-intents/:id/cancel', () => {
+import {action} from './api.payment-intents.$id.cancel'
+
+describe('[POST] /api/payment-intents/:id/cancel', () => {
   test('should respond with a 200 status code', async ({
-    request,
+    request: {parseFormData},
     faker,
     headers,
   }) => {
@@ -10,12 +12,21 @@ test.describe('[POST] /api/payment-intents/:id/cancel', () => {
     const {id} = await faker.db.paymentIntent()
 
     // Cancel the payment intent
-    const pi = await request.post(`/api/payment-intents/${id}/cancel`, {
+    // const pi = await request.post(`/api/payment-intents/${id}/cancel`)
+
+    let request = new Request(`http://app.com/api/payment-intents`, {
+      method: 'POST',
       headers,
     })
 
+    const pi = await action({
+      request,
+      params: {id},
+      context: {},
+    })
+
     // Check that the response is correct
-    expect(pi.ok()).toBeTruthy()
+    expect(pi.ok).toBeTruthy()
     expect(await pi.json()).toStrictEqual(
       expect.objectContaining({
         status: 'canceled',

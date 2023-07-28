@@ -1,7 +1,8 @@
 import http from 'http'
-import {ConnectionString} from 'connection-string'
+import {format, logger} from 'logger'
 
 import {env} from '~/utils/env.server'
+import {vi} from './base.fixture'
 
 export class WebhookTestServer {
   /**
@@ -9,6 +10,7 @@ export class WebhookTestServer {
    * Good for testing if webhooks are called.
    */
   readonly server: http.Server
+  readonly port?: number
 
   constructor() {
     this.server = http.createServer()
@@ -19,10 +21,20 @@ export class WebhookTestServer {
    * @param next Function to be called after the server is listening.
    */
   public async listen() {
-    const webhookConnectionString = new ConnectionString(env.WEBHOOK_URL)
-
     return new Promise<void>(resolve => {
-      this.server.listen(webhookConnectionString.port, async () => {
+      logger.info('listening fake webserver...')
+
+      this.server.listen(0, async () => {
+        // @ts-expect-error
+        this.port = this.server.address().port
+
+        vi.spyOn(env, 'WEBHOOK_URL', 'get').mockReturnValue(
+          `http://localhost:${this.port}`,
+        )
+
+        vi.spyOn(env, 'WEBHOOK_SECRET', 'get').mockReturnValue('secret')
+
+        logger.info(`[${format.yellow(this.port)}] fake webserver started`)
         await resolve()
       })
     })
@@ -34,12 +46,18 @@ export class WebhookTestServer {
    */
   public onServerCalled() {
     return new Promise(resolve => {
+      logger.info(`[${format.yellow(this.port)}] waiting request`)
       this.server.on('request', (req, res) => {
         let body = ''
+        logger.silly(`[${format.yellow(this.port)}] request`)
+
         req.on('data', chunk => {
+          logger.silly(`[${format.yellow(this.port)}] data`)
+
           body += chunk
         })
         req.on('end', () => {
+          logger.info(`[${format.yellow(this.port)}] finished request`)
           const payload = JSON.parse(body)
           res.writeHead(200, {'Content-Type': 'text/plain'})
           res.end('OK')

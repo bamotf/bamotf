@@ -10,9 +10,11 @@
     "typecheck": "tsc",
     "lint": "eslint .",
     "prisma": "prisma",
-    "test:unit": "vitest run",
-    "test:unit:watch": "vitest",
-    "test:integration": "playwright test",
+    "test:unit": "vitest -c vitest.config.unit.ts run",
+    "test:unit:watch": "vitest -c vitest.config.unit.ts",
+    "test:integration": "vitest -c vitest.config.integration.ts run",
+    "test:integration:watch": "vitest -c vitest.config.integration.ts",
+    "test:e2e": "playwright test",
     "postinstall": "prisma generate"
   },
   "dependencies": {
@@ -70,7 +72,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^8.0.2",
-    "@playwright/test": "^1.34.3",
+    "@playwright/test": "^1.35.1",
     "@remix-run/dev": "^1.18.0",
     "@types/bcryptjs": "^2.4.2",
     "@types/ioredis": "^4.28.10",

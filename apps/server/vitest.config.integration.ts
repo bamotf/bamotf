@@ -13,13 +13,9 @@ export default defineProject({
   // @ts-expect-error vitest was updated
   plugins: [tsconfigPaths()],
   test: {
-    name: 'bamotf/server',
-    include: ['tests/**/*.test.ts', 'app/**/*.test.ts'],
-    exclude: [
-      'build/**/*',
-      // If you want to test a route, you are probably looking for an integration test.
-      'app/routes/**/*.test.ts',
-    ],
-    setupFiles: ['./tests/setup.unit.ts'],
+    threads: false,
+    name: 'bamotf/server:integration',
+    include: ['app/routes/**/*.test.ts'],
+    setupFiles: ['tests/setup.integration.ts'],
   },
 })

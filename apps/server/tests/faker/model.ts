@@ -39,7 +39,6 @@ export function paymentIntent(
   if (chosenCurrency !== 'BTC') {
     // FIX: the amount in fiat can be much less than 1000 sats
     // depending on the currency selected and the payment will fail
-    // chosenCurrency = fiat()
     chosenCurrency = 'USD'
     amount = faker.number.bigInt({min: 10000, max: 20000})
   }

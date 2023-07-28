@@ -26,7 +26,7 @@
     "**/dist/**",
     "**/cypress/**",
     "**/.{idea,git,cache,output,temp}/**",
-    "**/routes/**/*.test.ts"
+    "**/*.spec.ts"
   ],
   "editor.codeActionsOnSave": {
     "source.fixAll": true
