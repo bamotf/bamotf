@@ -36,7 +36,7 @@ module.exports = {
   // pnpm doesn't support plugin autoloading
   // https://github.com/tailwindlabs/prettier-plugin-tailwindcss#installation
   plugins: [
-    require('prettier-plugin-tailwindcss'),
-    require('@ianvs/prettier-plugin-sort-imports'),
+    'prettier-plugin-tailwindcss',
+    '@ianvs/prettier-plugin-sort-imports',
   ],
 }
