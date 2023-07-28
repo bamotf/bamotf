@@ -3,18 +3,19 @@ import {describe, expect, test} from 'tests/base.fixture'
 import {action, loader} from './api.payment-intents.$id._index'
 
 describe('[GET] /api/payment-intents/:id', () => {
-  test('should respond with a 200 status code', async ({
-    request,
-    faker,
-    headers,
-  }) => {
+  test('should respond with a 200 status code', async ({faker, headers}) => {
     // Create a fake payment intent
     const {id, amount} = await faker.db.paymentIntent()
 
     // Update the payment intent
     // const pi = await request.get(`/api/payment-intents/${id}`)
+    const request = new Request(`http://app.com/api/payment-intents/${id}`, {
+      method: 'GET',
+      headers,
+    })
+
     const pi = await loader({
-      request: new Request(`http://app.com/api/payment-intents/${id}`),
+      request,
       params: {
         id,
       },
