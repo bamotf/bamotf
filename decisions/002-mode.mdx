@@ -1,0 +1,40 @@
+# Mode selection depending on the bitcoin core network provided
+
+Date: 2023-07-28
+
+Status: proposed
+
+## Context
+
+bamotf is designed to run on all stages of the software development (local,
+pre-production and production). The main idea is that devs can quickly prototype
+something that receives bitcoin payments and rapidly make it to production. On
+the version 0.0.1, as we needed to validate the interest around the tool so we
+had cut some corners and one of those were the MODE. We needed a way to
+represent those 3 scenarios and we chose to expose an ENV VAR for devs to select
+the mode. This was a bad idea as it added another layer of complexity to the
+initial setup, you could technically have a MODE=development with a production
+bitcoin core, meaning you could theoretically enable the simulate payment
+methods over a non valid network.
+
+## Decision
+
+First, remove the bitcoin core from the initial docker-compose.yml that devs use
+to start the local bamotf. There's no apparent need for them to use bitcoin core
+regtest locally since they only need to simulate that a payment was done, that
+can be done bypassing the bitcoin core communication during development.
+Maintain the bitcoin core regtest for bamotf team development and testing
+purposes only.
+
+Second, remove the MODE from the ENV VARS and instead allow users to set bitcoin
+core connection strings for the testnet and for the mainnet, if the dev provide
+those connections strings, the mode should be enabled for the user to select
+them on the dashboard.
+
+Third, add a new ENV VAR called `BAMOTF_DEVELOPMENT_ENABLED` that can be used to
+enable the development mode... which enables the bypass of the bitcoin core.
+
+## Consequences
+
+1. Cost savings on the infrastructure (single instance)
+2. Less complexity on the setup

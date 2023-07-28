@@ -1,0 +1,70 @@
+# BigInt for Value Representation
+
+Date: 2023-07-28
+
+Status: accepted
+
+## Context
+
+In the development of our software, we came across a decision point regarding
+the representation of financial values in our system. We deal with traditional
+currencies and also Bitcoin, which inherently requires support for a large
+number of decimal places.
+
+The system needs to be robust and accurate in dealing with all transactions,
+both small and large, without risking precision or overflow errors. As we
+studied the best practices in the financial tech industry, we noticed that
+Stripe, a leading financial services company, uses integers to represent
+monetary values. This approach ensures precision, avoiding the usual pitfalls of
+floating-point arithmetic that could lead to inaccuracies in calculations.
+
+However, unlike Stripe, our system is not limited to traditional currencies; we
+also handle Bitcoin. This presents a unique challenge as Bitcoin values can
+extend up to 8 decimal places and the total number of Bitcoins that will ever
+exist is 21 million. Therefore, the system must be capable of accurately
+handling these large values while also maintaining precision down to the Satoshi
+level (0.00000001 Bitcoin).
+
+## Decision
+
+After careful consideration, we have decided to use BigInt for representing
+values in our system. BigInt is a built-in object in JavaScript that provides a
+way to represent whole numbers larger than 2^53 - 1, which is the largest number
+JavaScript can reliably represent with the Number primitive.
+
+This decision aligns with Stripe's reasoning to use integers to ensure accuracy
+and precision, but it extends that reasoning to accommodate the demands of
+Bitcoin transactions. Using BigInt will allow us to accurately and efficiently
+represent values up to 2^64-1, which is far beyond the largest possible Bitcoin
+value (2.1 quadrillion Satoshis, or 21 million Bitcoins).
+
+Moreover, it will provide the necessary precision required for Bitcoin
+transactions down to the Satoshi level. Given these requirements, the use of
+BigInts provides the most logical and robust solution to our needs.
+
+## Consequences
+
+Adopting BigInt as our numerical representation has several impacts:
+
+1. **Precision**: By using BigInt, we ensure the precision of calculations and
+   eliminate the risk of overflow and rounding errors, which can be a
+   significant concern in financial transactions, especially with Bitcoin.
+
+2. **Performance**: Although BigInts can be slower than Numbers in JavaScript
+   for small numerical values, the differences are negligible for our use case,
+   and the added precision and overflow safety is worth the minor performance
+   trade-off.
+
+3. **Compatibility**: BigInt is well-supported in modern browsers, but it is not
+   supported in Internet Explorer and some older versions of other browsers. We
+   must ensure that this decision is compatible with our software's target
+   platforms.
+
+4. **Development and Maintenance**: Developers will need to familiarize
+   themselves with BigInt and its usage. Additionally, care must be taken when
+   mixing BigInts and Numbers in calculations, as JavaScript does not implicitly
+   convert between the two.
+
+Overall, we believe the use of BigInt will provide a significant net benefit to
+our software by ensuring precise and reliable handling of all financial
+transactions.
