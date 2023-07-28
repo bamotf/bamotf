@@ -12,7 +12,7 @@ const envSchema = z.object({
    * This is used to determine if we should enable certain features.
    * It is also used to determine if we should enable certain security features.
    *
-   * @note development is the developer time and production after built.
+   * @note development is the bamotf team developer time and production after built (docker).
    * @default development
    */
   NODE_ENV: z
@@ -28,6 +28,7 @@ const envSchema = z.object({
    * @note development = regtest, preview = testnet and production = bitcoin.
    * @default development
    */
+  // FIX: change this
   MODE: z.enum(['development', 'preview', 'production']).default('development'),
 
   /**
@@ -43,6 +44,7 @@ const envSchema = z.object({
   /**
    * The bitcoin core we use to check for payments.
    */
+  // FIX: change this
   BITCOIN_CORE_URL: URL_REQUIRED.transform(url => {
     return new ConnectionString(url, {
       protocol: 'http',
@@ -54,12 +56,14 @@ const envSchema = z.object({
    * event happens in the server.
    * For example, when a payment is received, we send a webhook
    */
+  // FIX: remove this
   WEBHOOK_URL: URL_REQUIRED,
 
   /**
    * This is the secret that we use to sign the webhook events
    * that we send to the webhook url.
    */
+  // FIX: remove this
   WEBHOOK_SECRET: STRING_REQUIRED,
 
   /**
@@ -95,6 +99,7 @@ const envSchema = z.object({
    * This is the API key that the server will use to authenticate clients
    * that want to use the API.
    */
+  // FIX: remove this
   API_KEY: STRING_REQUIRED,
 })
 
