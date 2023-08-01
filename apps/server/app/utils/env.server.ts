@@ -52,21 +52,6 @@ const envSchema = z.object({
   }),
 
   /**
-   * This is the webhook url that we send events to when some
-   * event happens in the server.
-   * For example, when a payment is received, we send a webhook
-   */
-  // FIX: remove this
-  WEBHOOK_URL: URL_REQUIRED,
-
-  /**
-   * This is the secret that we use to sign the webhook events
-   * that we send to the webhook url.
-   */
-  // FIX: remove this
-  WEBHOOK_SECRET: STRING_REQUIRED,
-
-  /**
    * When running tests, we don't want wait.
    */
   RUNNING_E2E: z.coerce.boolean().default(false),
@@ -94,13 +79,6 @@ const envSchema = z.object({
    * This is used to prevent people from tampering with the session cookie.
    */
   SESSION_SECRET: z.string().default(createSecret()),
-
-  /**
-   * This is the API key that the server will use to authenticate clients
-   * that want to use the API.
-   */
-  // FIX: remove this
-  API_KEY: STRING_REQUIRED,
 })
 
 /**
