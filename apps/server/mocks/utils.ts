@@ -36,13 +36,13 @@ export async function skip(
   res: ResponseComposition<DefaultBodyType>,
   ctx: RestContext,
 ) {
-  console.info(`⏩ mock request skipped: ${req.url.href}`)
+  logger.info(`⏩ mock request skipped: ${req.url.href}`)
 
   // Perform an original request to the intercepted request URL
   const originalResponse = await ctx.fetch(req)
   const originalResponseData = await originalResponse.json()
 
-  console.debug('⏩ original response:', originalResponseData)
+  logger.debug('⏩ original response:', originalResponseData)
 
   return res(ctx.status(200), ctx.json(originalResponseData))
 }

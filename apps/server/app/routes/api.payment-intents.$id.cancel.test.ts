@@ -4,9 +4,8 @@ import {action} from './api.payment-intents.$id.cancel'
 
 describe('[POST] /api/payment-intents/:id/cancel', () => {
   test('should respond with a 200 status code', async ({
-    request: {parseFormData},
     faker,
-    headers,
+    request: {authorize},
   }) => {
     // Create a fake payment intent
     const {id} = await faker.db.paymentIntent()
@@ -16,7 +15,7 @@ describe('[POST] /api/payment-intents/:id/cancel', () => {
 
     let request = new Request(`http://app.com/api/payment-intents`, {
       method: 'POST',
-      headers,
+      headers: await authorize(),
     })
 
     const pi = await action({
