@@ -9,6 +9,7 @@ import {Badge as BaseBadge} from '~/components/ui/badge'
 import {Separator} from '~/components/ui/separator'
 import {useFreshData} from '~/hooks/use-fresh-data'
 import {PaymentIntentSchema} from '~/schemas'
+import {getAccountByUser} from '~/utils/account.server'
 import {requireUserId} from '~/utils/auth.server'
 import {createContract} from '~/utils/contract'
 import {cn} from '~/utils/css'
@@ -30,13 +31,20 @@ export const contract = createContract({
  * Retrieves a PaymentIntent object.
  */
 export async function loader({params, request}: LoaderArgs) {
-  await requireUserId(request)
+  const userId = await requireUserId(request)
+  const account = await getAccountByUser(userId)
+
   const {path} = await contract.loader({params})
 
   const {id} = path
 
-  const paymentIntent = await prisma.paymentIntent.findUniqueOrThrow({
-    where: {id},
+  const paymentIntent = await prisma.paymentIntent.findUnique({
+    where: {
+      id,
+      accountId: account.id,
+      // FIX: this should be a query param
+      mode: 'DEV',
+    },
     include: {
       transactions: true,
       webhookAttempts: true,
@@ -45,6 +53,13 @@ export async function loader({params, request}: LoaderArgs) {
       },
     },
   })
+
+  if (!paymentIntent) {
+    throw new Response('', {
+      status: 404,
+      statusText: `Payment intent not found`,
+    })
+  }
 
   const riskScore = await calculateRiskScore({
     amount: paymentIntent.amount,

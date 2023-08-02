@@ -6,16 +6,19 @@ import {CalendarDateRangePicker} from '~/components/date-range-picker'
 import {columns} from '~/components/payments/columns'
 import {DataTable} from '~/components/payments/data-table'
 import {useFreshData} from '~/hooks/use-fresh-data'
+import {getAccountByUser} from '~/utils/account.server'
 import {requireUserId} from '~/utils/auth.server'
-import {listPaymentIntents} from './api.payment-intents._index'
+import {listPaymentIntents} from '~/utils/payment-intent.server'
 
 export const meta: V2_MetaFunction = () => {
   return [{title: 'Payments'}]
 }
 
 export async function loader({request}: LoaderArgs) {
-  await requireUserId(request)
-  const [paymentIntents, total] = await listPaymentIntents()
+  const userId = await requireUserId(request)
+  const account = await getAccountByUser(userId)
+  // FIX: this should be a query param
+  const [paymentIntents, total] = await listPaymentIntents(account.id, 'DEV')
 
   return typedjson({
     data: paymentIntents.map(pi => ({
