@@ -35,6 +35,8 @@ export const PaymentIntentSchema = z.object({
   metadata: zpu.json().nullish(),
   canceledAt: z.date().optional(),
   cancellationReason: z.string().optional(),
+  accountId: z.string(),
+  mode: z.enum(['DEV', 'TEST', 'PROD']),
 } satisfies SchemaType)
 
 export const NewPaymentIntentSchema = PaymentIntentSchema.pick({

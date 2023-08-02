@@ -4,14 +4,14 @@ import {typedjson} from 'remix-typedjson'
 
 import {queue} from '~/queues/transaction.server'
 import {NewPaymentIntentSchema} from '~/schemas'
-import {requireToken} from '~/utils/auth.server'
+import {requireValidApiKey} from '~/utils/auth.server'
 import {
   addWatchOnlyAddress,
   createWatchOnlyWallet,
   getDescriptor,
 } from '~/utils/bitcoin-core'
 import {createContract} from '~/utils/contract'
-import {env} from '~/utils/env.server'
+import {listPaymentIntents} from '~/utils/payment-intent.server'
 import {prisma} from '~/utils/prisma.server'
 
 export const contract = createContract({
@@ -24,9 +24,9 @@ export const contract = createContract({
  * Shows a list of all PaymentIntent objects.
  */
 export async function loader({request}: LoaderArgs) {
-  await requireToken(request)
+  const {accountId, mode} = await requireValidApiKey(request)
 
-  const [paymentIntents, total] = await listPaymentIntents()
+  const [paymentIntents, total] = await listPaymentIntents(accountId, mode)
 
   return typedjson({
     data: paymentIntents,
@@ -34,26 +34,19 @@ export async function loader({request}: LoaderArgs) {
   })
 }
 
-export async function listPaymentIntents() {
-  return await Promise.all([
-    prisma.paymentIntent.findMany({
-      orderBy: {createdAt: 'desc'},
-    }),
-    prisma.paymentIntent.count(),
-  ])
-}
-
 /**
  * Creates a PaymentIntent object.
  */
 export async function action({request}: LoaderArgs) {
-  await requireToken(request)
+  const {accountId, mode} = await requireValidApiKey(request)
 
   const {body: data} = await contract.action({request})
 
   const pi = await prisma.paymentIntent.create({
     data: {
       ...data,
+      mode,
+      accountId,
       logs: {
         create: [
           {
