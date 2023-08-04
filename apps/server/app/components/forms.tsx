@@ -174,7 +174,7 @@ export function Button({
 
   return (
     <ButtonBase type={type} {...props}>
-      <div>{props.children}</div>
+      {props.children}
       {companion}
     </ButtonBase>
   )

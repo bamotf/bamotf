@@ -12,6 +12,14 @@ const CONFIG = [
     name: 'Payments',
     href: '/payments',
   },
+  {
+    name: 'API',
+    href: '/apikeys',
+  },
+  {
+    name: 'Webhooks',
+    href: '/webhooks',
+  },
 ]
 
 export function MainNav({
