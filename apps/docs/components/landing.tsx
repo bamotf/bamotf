@@ -14,7 +14,7 @@ export function LandingPage() {
               Why bamotf?
             </h1>
             <p className="opacity-50 w-2/3 text-wrap-balance">
-              <i className="italic">bamoft</i> integrates the whole
+              <i className="italic">bamotf</i> integrates the whole
               infrastructure needed for starting receiving bitcoin payments,
               including server, react components, utility packages and webhooks.
             </p>
