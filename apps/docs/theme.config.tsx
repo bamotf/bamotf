@@ -125,7 +125,7 @@ const config: DocsThemeConfig = {
       </a>
     ),
   },
-  docsRepositoryBase: `${links.github}/tree/main/apps/docs/pages`,
+  docsRepositoryBase: `${links.github}/tree/main/apps/docs`,
   footer: {
     text: <Footer />,
   },
