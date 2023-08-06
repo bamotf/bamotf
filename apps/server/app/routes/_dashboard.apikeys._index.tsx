@@ -5,6 +5,7 @@ import {typedjson} from 'remix-typedjson'
 import {columns} from '~/components/apis/columns'
 import {DataTable} from '~/components/data-table'
 import {Icons} from '~/components/icons'
+import {Alert, AlertDescription, AlertTitle} from '~/components/ui/alert'
 import {Button} from '~/components/ui/button'
 import {useFreshData} from '~/hooks/use-fresh-data'
 import {getAccountByUser} from '~/utils/account.server'
@@ -54,7 +55,6 @@ export async function action({request}: ActionArgs) {
   const account = await getAccountByUser(userId)
 
   const formData = await request.formData()
-  console.log('🔥 ~ ')
   await prisma.api.delete({
     where: {
       id: formData.get('id') as string,
@@ -74,7 +74,7 @@ export default function AllApiKeysPage() {
       <div className="flex items-center justify-between space-y-2">
         <h2 className="text-3xl font-bold tracking-tight">API Keys</h2>
         <div className="flex items-center space-x-2">
-          <Button size="sm" asChild>
+          <Button size="sm" variant="outline" asChild>
             <Link to="/apikeys/create">
               <Icons.Add className="mr-2 h-4 w-4" />
               Create API Key
@@ -85,20 +85,18 @@ export default function AllApiKeysPage() {
 
       <div className="space-y-3">
         {key && (
-          // TODO: created by copilot, should be styled using the foreground/background color from the theme
-          <div className="bg-green-50 border-l-4 border-green-400 p-4">
-            <div className="flex">
-              <div className="flex-shrink-0">
-                <Icons.CheckCircle className="h-5 w-5 text-green-400" />
-              </div>
-              <div className="ml-3">
-                <p className="text-sm leading-5 text-green-800">
-                  API key <code className="font-mono font-semibold">{key}</code>{' '}
-                  created
-                </p>
-              </div>
-            </div>
-          </div>
+          // TODO: Make sure the copy aligns with github PTA
+          <Alert>
+            <Icons.CheckCircle className="h-4 w-4" />
+            <AlertTitle>
+              API key <code className="font-mono font-semibold">{key}</code>{' '}
+              created
+            </AlertTitle>
+            <AlertDescription>
+              This key is only shown once, so make sure to copy it somewhere
+              safe.
+            </AlertDescription>
+          </Alert>
         )}
 
         <DataTable columns={columns} data={data} />
