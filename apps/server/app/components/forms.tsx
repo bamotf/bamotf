@@ -6,6 +6,7 @@ import {Button as ButtonBase, type ButtonProps} from '~/components/ui/button'
 import {Checkbox} from '~/components/ui/checkbox'
 import {Input} from '~/components/ui/input'
 import {Label} from '~/components/ui/label'
+import {Textarea} from '~/components/ui/textarea'
 import {cn} from '~/utils/css'
 import {Icons} from './icons'
 
@@ -72,8 +73,8 @@ export function TextareaField({
   errors,
   className,
 }: {
-  labelProps: Omit<JSX.IntrinsicElements['label'], 'className'>
-  textareaProps: Omit<JSX.IntrinsicElements['textarea'], 'className'>
+  labelProps: React.ComponentPropsWithoutRef<typeof Label>
+  textareaProps: React.ComponentPropsWithoutRef<typeof Textarea>
   errors?: ListOfErrors
   className?: string
 }) {
@@ -83,13 +84,12 @@ export function TextareaField({
   return (
     <div className={twMerge('space-y-2', className)}>
       <label htmlFor={id} {...labelProps} />
-      <textarea
+      <Textarea
         id={id}
         aria-invalid={errorId ? true : undefined}
         aria-describedby={errorId}
         placeholder=" "
         {...textareaProps}
-        className="h-48 w-full rounded-lg border border-night-400 bg-night-700 px-4 pt-8 text-body-xs caret-white outline-none focus:border-brand-primary disabled:bg-night-400"
       />
       {errorId ? <ErrorList id={errorId} errors={errors} /> : null}
     </div>
