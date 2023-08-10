@@ -23,6 +23,7 @@ import {
   Trash,
   Twitter,
   User,
+  Webhook,
   X,
   type Icon as LucideIcon,
   type LucideProps,
@@ -85,4 +86,5 @@ export const Icons = {
   ),
   Twitter: Twitter,
   Check: Check,
+  Webhook: Webhook,
 }

@@ -9,6 +9,10 @@ async function main() {
     where: {name: 'Initial Account'},
   })
 
+  const {id: webhookId} = await prisma.webhook.findFirstOrThrow({
+    where: {url: 'http://localhost:3000/webhook/bamotf'},
+  })
+
   console.time(`🦺 Created example payment intents`)
   // Create a test payment intents
   prisma.$transaction([
@@ -42,6 +46,29 @@ async function main() {
               id: 'transaction-1',
               amount: 42069,
               confirmations: 6,
+            },
+          ],
+        },
+        webhookAttempts: {
+          create: [
+            {
+              id: 'webhook-attempt-1',
+              webhookId,
+              status: 200,
+              body: {
+                userId: 1,
+                id: 1,
+                title: 'delectus aut autem',
+                completed: false,
+              },
+              response: {
+                userId: 1,
+                id: 1,
+                title: 'delectus aut autem',
+                completed: false,
+              },
+              event: 'payment_intent.created',
+              url: 'http://localhost:3000/webhook/bamotf',
             },
           ],
         },
