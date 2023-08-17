@@ -5,7 +5,6 @@ import invariant from 'tiny-invariant'
 
 import {prisma, type Password, type User} from '~/utils/prisma.server'
 import {decrypt, encrypt} from './encryption.server'
-import {env} from './env.server'
 import {sessionStorage} from './session.server'
 
 export type {User}
@@ -44,6 +43,9 @@ authenticator.use(
   FormStrategy.name,
 )
 
+/**
+ * Requires a session from the request and returns the user ID.
+ */
 export async function requireUserId(
   request: Request,
   {redirectTo}: {redirectTo?: string | null} = {},
@@ -72,6 +74,9 @@ export async function requireUserId(
   return session.userId
 }
 
+/**
+ * Requires a session from the request and returns the user ID.
+ */
 export async function getUserId(request: Request) {
   const sessionId = await authenticator.isAuthenticated(request)
   if (!sessionId) return null
@@ -171,17 +176,23 @@ export async function verifyUserPassword(
   return {id: userWithPassword.id}
 }
 
-export async function requireToken(request: Request) {
+export async function requireValidApiKey(request: Request) {
   // Get the bearer token from the request
-  const bearerToken = request.headers.get('Authorization')?.split(' ')[1]
+  const key = request.headers.get('Authorization')?.split(' ')[1]
+
+  const api = await prisma.api.findUnique({
+    where: {
+      key,
+    },
+  })
 
   // If there is no bearer token or the token doesn't match the settings, throw an error
-  if (!bearerToken || bearerToken !== env.DEV_API_KEY) {
+  if (!api) {
     throw json("You don't have permission to access this resource.", {
       status: 401,
       statusText: 'Unauthorized',
     })
   }
 
-  return
+  return api
 }

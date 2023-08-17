@@ -1,3 +1,5 @@
+import {prisma} from '~/utils/prisma.server'
+
 // TODO: this file is just a placeholder for now, see
 // https://discord.com/channels/770287896669978684/940264701785423992/1126622590614655127
 
@@ -35,4 +37,19 @@ export function parseFormData<T extends object>(data: T) {
   })
 
   return body
+}
+
+/**
+ * Returns the authorization header for the first API key found in the database.
+ */
+export const authorize = async () => {
+  const api = await prisma.api.findFirst()
+
+  if (!api) {
+    throw new Error('No API key found. You need to create an account first.')
+  }
+
+  return {
+    Authorization: `Bearer ${api.key}`,
+  }
 }

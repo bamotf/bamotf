@@ -19,21 +19,12 @@ const envSchema = z.object({
    * This is used to determine if we should enable certain features.
    * It is also used to determine if we should enable certain security features.
    *
-   * @note development is the developer time and production after built.
+   * @note development is the bamotf team developer time and production after built (docker).
    * @default development
    */
   NODE_ENV: z
     .enum(['development', 'test', 'production'])
     .default('development'),
-
-  /**
-   * When DEV_MODE_ENABLED is true, the server will make the bitcoin core
-   * connection optional and will enable the simulate payment function that
-   * bypass the checks on network. This is used to determine the network.
-   *
-   * @default true
-   */
-  DEV_MODE_ENABLED: BOOLEAN.default(true),
 
   /**
    * Connection string for prisma.
@@ -46,14 +37,23 @@ const envSchema = z.object({
   REDIS_URL: URL_REQUIRED,
 
   /**
-   * The bitcoin core connection string we use to check for payments.
+   * The bitcoin core connection string we use to check for payments on mainnet.
    */
   MAINNET_BITCOIN_CORE_URL: CONNECTION_STRING.optional(),
 
   /**
-   * The bitcoin core we use to check for payments.
+   * The bitcoin core connection string we use to check for payments on testnet.
    */
   TESTNET_BITCOIN_CORE_URL: CONNECTION_STRING.optional(),
+
+  /**
+   * When DEV_MODE_ENABLED is true, the server will make the bitcoin core
+   * connection optional and will enable the simulate payment function that
+   * bypass the checks on network. This is used to determine the network.
+   *
+   * @default true
+   */
+  DEV_MODE_ENABLED: BOOLEAN.default(true),
 
   /**
    * This is the webhook url that we send events to when some

@@ -45,28 +45,21 @@ export async function action({request}: ActionArgs) {
   return json(submission, {status: 200})
 }
 
-export default function SimulateForm({
-  redirectTo,
-  formError,
-}: {
-  redirectTo?: string
-  formError?: string | null
-}) {
-  const [status, setStatus] = useState<
-    'pending' | 'idle' | 'error' | 'success'
-  >('idle')
-
+export default function SimulateForm() {
   const lastSubmission = useActionData<typeof action>()
 
   const [form, fields] = useForm({
     id: 'inline-login',
-    defaultValue: {redirectTo},
     constraint: getFieldsetConstraint(schema),
     lastSubmission,
     shouldRevalidate: 'onBlur',
   })
 
   const navigation = useNavigation()
+
+  const [status, setStatus] = useState<
+    'pending' | 'idle' | 'error' | 'success'
+  >('idle')
 
   useEffect(() => {
     if (navigation.state === 'submitting') {
@@ -115,7 +108,7 @@ export default function SimulateForm({
             errors={fields.amount.errors}
           />
 
-          <ErrorList errors={[...form.errors, formError]} id={form.errorId} />
+          <ErrorList errors={[...form.errors]} id={form.errorId} />
 
           <div className="flex items-center justify-between gap-6 pt-3">
             <Button

@@ -9,12 +9,14 @@ import {Badge as BaseBadge} from '~/components/ui/badge'
 import {Separator} from '~/components/ui/separator'
 import {useFreshData} from '~/hooks/use-fresh-data'
 import {PaymentIntentSchema} from '~/schemas'
+import {getAccountByUser} from '~/utils/account.server'
 import {requireUserId} from '~/utils/auth.server'
 import {createContract} from '~/utils/contract'
 import {cn} from '~/utils/css'
 import {prisma, type LogType} from '~/utils/prisma.server'
 import {calculateRiskScore} from '~/utils/risk-score'
 import type {CurrencyCode} from '../../../../config/currency'
+import {WebhookBadge} from './../components/webhook-badge'
 
 export const meta: V2_MetaFunction = ({params, data}) => {
   return [{title: `Payment ${params.id}`}]
@@ -30,13 +32,20 @@ export const contract = createContract({
  * Retrieves a PaymentIntent object.
  */
 export async function loader({params, request}: LoaderArgs) {
-  await requireUserId(request)
+  const userId = await requireUserId(request)
+  const account = await getAccountByUser(userId)
+
   const {path} = await contract.loader({params})
 
   const {id} = path
 
-  const paymentIntent = await prisma.paymentIntent.findUniqueOrThrow({
-    where: {id},
+  const paymentIntent = await prisma.paymentIntent.findUnique({
+    where: {
+      id,
+      accountId: account.id,
+      // FIX: this should be a query param
+      mode: 'DEV',
+    },
     include: {
       transactions: true,
       webhookAttempts: true,
@@ -45,6 +54,13 @@ export async function loader({params, request}: LoaderArgs) {
       },
     },
   })
+
+  if (!paymentIntent) {
+    throw new Response('', {
+      status: 404,
+      statusText: `Payment intent not found`,
+    })
+  }
 
   const riskScore = await calculateRiskScore({
     amount: paymentIntent.amount,
@@ -229,7 +245,7 @@ export default function PaymentsPage() {
         {webhookAttempts.length ? (
           <div>
             {webhookAttempts.map(attempt => (
-              <div key={attempt.id} className="flex gap-2 justify-between">
+              <div key={attempt.id} className="grid gap-2 grid-cols-2">
                 <div>
                   <p className="text-xs text-muted-foreground">
                     <Formatter date={attempt.createdAt} />
@@ -290,22 +306,6 @@ function LogItem({
         </div>
       </div>
     </div>
-  )
-}
-
-function WebhookBadge({status}: {status: number}) {
-  return (
-    <BaseBadge
-      className={cn({
-        'bg-green-100 text-green-900 hover:bg-green-100/80':
-          status > 200 && status < 300,
-        'bg-gray-100 text-gray-900 hover:bg-gray-100/80':
-          status >= 300 && status < 500,
-        'bg-red-100 text-red-900 hover:bg-red-100/80': status >= 500,
-      })}
-    >
-      {status}
-    </BaseBadge>
   )
 }
 

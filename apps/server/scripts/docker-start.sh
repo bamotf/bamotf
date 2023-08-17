@@ -15,8 +15,5 @@ $DIR/wait-for-it.sh "${DB_HOSTNAME}:${DB_PORT}" -- echo '🟢 - Database is read
 pnpm prisma migrate deploy
 pnpm prisma generate
 
-# Apply seed data
-pnpm prisma db seed
-
 # Start the server
 pnpm -C apps/server start
