@@ -32,8 +32,14 @@
 
     --radius: 0.5rem;
 
-    --success: 162 92% 44%;
-    --success-foreground: 160 96% 89%;
+    --success: 126 71% 56%;
+    --success-foreground: 210 40% 98%;
+
+    --warning: 35 92% 50%;
+    --warning-foreground: 210 40% 98%;
+
+    --info: 223 74% 60%;
+    --info-foreground: 210 40% 98%;
   }
 
   .dark {
@@ -66,8 +72,14 @@
 
     --ring: 217.2 32.6% 17.5%;
 
-    --success: 160 96% 84%;
-    --success-foreground: 162 88% 43%;
+    --success: 126 71% 56%;
+    --success-foreground: 210 40% 98%;
+
+    --warning: 35 92% 50%;
+    --warning-foreground: 210 40% 98%;
+
+    --info: 223 74% 60%;
+    --info-foreground: 210 40% 98%;
   }
 }
 

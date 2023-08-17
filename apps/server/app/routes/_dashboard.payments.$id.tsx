@@ -341,9 +341,9 @@ function ColumnValue(props: {children: React.ReactNode}) {
 function RiskScore({score}: {score: number}) {
   const MAX_SCORE = 100
   const COLORS = [
-    'bg-green-100 text-green-900 hover:bg-green-100/80',
-    'bg-yellow-100 text-yellow-900 hover:bg-yellow-100/80',
-    'bg-red-100 text-red-900 hover:bg-red-100/80',
+    'text-success bg-success/10 hover:bg-success/5',
+    'text-warning bg-warning/10 hover:bg-warning/5',
+    'text-destructive bg-destructive/10 hover:bg-destructive/5',
   ]
   const DESCRIPTIONS = [
     'Low risk',

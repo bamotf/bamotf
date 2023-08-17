@@ -1,4 +1,7 @@
-import type {BadgeProps as BadgeBaseProps} from '~/components/ui/badge'
+import {
+  Badge as BadgeBase,
+  type BadgeProps as BadgeBaseProps,
+} from '~/components/ui/badge'
 import {cn} from '~/utils/css'
 import type {PaymentIntentStatus} from '~/utils/prisma.server'
 import {Icons} from '../icons'
@@ -9,10 +12,10 @@ export type BadgeProps = Omit<BadgeBaseProps, 'children'> & {
 
 export function Badge({status, className, ...props}: BadgeProps) {
   const color: Record<PaymentIntentStatus, string> = {
-    succeeded: 'bg-green-100 text-green-900 hover:bg-green-100/80',
-    canceled: 'bg-red-100 text-red-900 hover:bg-red-100/80',
-    pending: 'bg-gray-100 text-gray-900 hover:bg-gray-100/80',
-    processing: 'bg-yellow-100 text-yellow-900 hover:bg-yellow-100/80',
+    succeeded: 'text-success bg-success/10 hover:bg-success/5',
+    canceled: 'text-destructive bg-destructive/10 hover:bg-destructive/5',
+    pending: '',
+    processing: 'text-warning bg-warning/10 hover:bg-warning/5',
   }
 
   const content = {
@@ -39,15 +42,16 @@ export function Badge({status, className, ...props}: BadgeProps) {
   }
 
   return (
-    <div
+    <BadgeBase
       {...props}
+      variant="secondary"
       className={cn(
         color[status],
-        'inline-flex items-center border rounded-sm px-1.5 py-px text-xs font-normal transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent',
+        // 'inline-flex items-center border rounded-sm px-1.5 py-px text-xs font-normal transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent',
         className,
       )}
     >
       {content[status]}
-    </div>
+    </BadgeBase>
   )
 }
