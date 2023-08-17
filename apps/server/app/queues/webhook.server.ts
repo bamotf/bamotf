@@ -59,9 +59,11 @@ export const queue = createQueue<QueueData>(
     }
 
     const bodyString = JSON.stringify(body)
-    const signature = symmetric.sign(bodyString, env.WEBHOOK_SECRET)
 
-    const result = await fetch(env.WEBHOOK_URL, {
+    // FIX: ts will be fixed in the api-per-user branch
+    const signature = symmetric.sign(bodyString, env.DEV_WEBHOOK_SECRET!)
+
+    const result = await fetch(env.DEV_WEBHOOK_URL!, {
       method: 'POST',
       headers: {
         'x-webhook-signature': signature,
@@ -70,7 +72,7 @@ export const queue = createQueue<QueueData>(
     })
 
     logger.debug(
-      `⚑ Sending webhook to ${format.magenta(env.WEBHOOK_URL)}: ${
+      `⚑ Sending webhook to ${format.magenta(env.DEV_WEBHOOK_URL)}: ${
         result.ok ? format.green('OK') : format.red('FAILED')
       }`,
     )
@@ -86,7 +88,7 @@ export const queue = createQueue<QueueData>(
         event,
         paymentIntentId,
         status: result.status,
-        url: env.WEBHOOK_URL,
+        url: env.DEV_WEBHOOK_URL!,
         body: body as unknown as Prisma.JsonObject,
         response,
       },

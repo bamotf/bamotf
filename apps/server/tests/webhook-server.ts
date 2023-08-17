@@ -28,11 +28,11 @@ export class WebhookTestServer {
         // @ts-expect-error
         this.port = this.server.address().port
 
-        vi.spyOn(env, 'WEBHOOK_URL', 'get').mockReturnValue(
+        vi.spyOn(env, 'DEV_WEBHOOK_URL', 'get').mockReturnValue(
           `http://localhost:${this.port}`,
         )
 
-        vi.spyOn(env, 'WEBHOOK_SECRET', 'get').mockReturnValue('secret')
+        vi.spyOn(env, 'DEV_WEBHOOK_SECRET', 'get').mockReturnValue('secret')
 
         logger.info(`[${format.yellow(this.port)}] fake webserver started`)
         await resolve()

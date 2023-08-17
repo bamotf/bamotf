@@ -16,7 +16,7 @@ const schema = z.object({
 })
 
 export async function loader() {
-  if (env.MODE !== 'development') {
+  if (!env.DEV_MODE_ENABLED) {
     throw new Response('', {
       status: 404,
       statusText: `Page not found`,

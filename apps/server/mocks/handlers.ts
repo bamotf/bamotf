@@ -3,7 +3,9 @@ import {rest, type MockedRequest, type RestHandler} from 'msw'
 import {env} from '../app/utils/env.server'
 import {logMockedData} from './utils'
 
-const BITCOIN_CORE_URL = `${env.BITCOIN_CORE_URL.protocol}://${env.BITCOIN_CORE_URL.host}`
+const BITCOIN_CORE_URL = `${env.MAINNET_BITCOIN_CORE_URL!.protocol}://${
+  env.MAINNET_BITCOIN_CORE_URL!.host
+}`
 
 export const handlers = [
   // 🍚 Mock the Bitcoin Core API

@@ -176,7 +176,7 @@ export async function requireToken(request: Request) {
   const bearerToken = request.headers.get('Authorization')?.split(' ')[1]
 
   // If there is no bearer token or the token doesn't match the settings, throw an error
-  if (!bearerToken || bearerToken !== env.API_KEY) {
+  if (!bearerToken || bearerToken !== env.DEV_API_KEY) {
     throw json("You don't have permission to access this resource.", {
       status: 401,
       statusText: 'Unauthorized',

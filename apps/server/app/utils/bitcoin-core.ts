@@ -11,7 +11,9 @@ import {format, logger} from 'logger'
 
 import {env} from './env.server'
 
-const BITCOIN_CORE_URL = `${env.BITCOIN_CORE_URL.protocol}://${env.BITCOIN_CORE_URL.host}`
+const BITCOIN_CORE_URL = `${env.MAINNET_BITCOIN_CORE_URL!.protocol}://${
+  env.MAINNET_BITCOIN_CORE_URL!.host
+}`
 
 type BitcoinCoreResponse = {
   id: string
@@ -53,7 +55,11 @@ async function cmd({
       'Content-Type': 'application/json',
       Authorization:
         'Basic ' +
-        btoa(`${env.BITCOIN_CORE_URL.user}:${env.BITCOIN_CORE_URL.password}`),
+        btoa(
+          `${env.MAINNET_BITCOIN_CORE_URL!.user}:${
+            env.MAINNET_BITCOIN_CORE_URL!.password
+          }`,
+        ),
     },
     body: JSON.stringify({
       jsonrpc: '1.0',
@@ -203,7 +209,7 @@ export async function simulatePayment({
    */
   amount: bigint
 }) {
-  if (env.MODE !== 'development') {
+  if (!env.DEV_MODE_ENABLED) {
     throw new Error('You can only simulate payment in development mode')
   }
 
