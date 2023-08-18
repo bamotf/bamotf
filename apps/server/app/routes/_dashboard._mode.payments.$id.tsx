@@ -16,7 +16,7 @@ import {cn} from '~/utils/css'
 import {prisma, type LogType} from '~/utils/prisma.server'
 import {calculateRiskScore} from '~/utils/risk-score'
 import type {CurrencyCode} from '../../../../config/currency'
-import {WebhookBadge} from './../components/webhook-badge'
+import {WebhookBadge} from '../components/webhook-badge'
 
 export const meta: V2_MetaFunction = ({params, data}) => {
   return [{title: `Payment ${params.id}`}]
