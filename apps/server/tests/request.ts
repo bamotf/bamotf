@@ -1,4 +1,6 @@
-import {prisma} from '~/utils/prisma.server'
+import {env} from '~/utils/env.server'
+import {type Mode} from '~/utils/prisma.server'
+import * as db from './faker/db'
 
 // TODO: this file is just a placeholder for now, see
 // https://discord.com/channels/770287896669978684/940264701785423992/1126622590614655127
@@ -40,14 +42,34 @@ export function parseFormData<T extends object>(data: T) {
 }
 
 /**
- * Returns the authorization header for the first API key found in the database.
+ * Returns the authorization header for the given mode and accountId, if no
+ * accountId is provided it will create an account. If no mode is provided it
+ * will use the dev mode
  */
-export const authorize = async () => {
-  const api = await prisma.api.findFirst()
+export const authorize = async (props?: {
+  /**
+   * @default 'dev'
+   */
+  mode?: Mode
+  accountId?: string
+}) => {
+  let {mode = 'dev', accountId} = props || {}
 
-  if (!api) {
-    throw new Error('No API key found. You need to create an account first.')
+  if (!accountId) {
+    accountId = (await db.account()).id
   }
+
+  if (mode === 'dev') {
+    if (!env.DEV_MODE_ENABLED) {
+      throw new Error('DEV_MODE_ENABLED should bre enabled during tests')
+    }
+
+    return {
+      Authorization: `Bearer ${env.DEV_API_KEY}`,
+    }
+  }
+
+  const api = await db.api({mode, accountId})
 
   return {
     Authorization: `Bearer ${api.key}`,

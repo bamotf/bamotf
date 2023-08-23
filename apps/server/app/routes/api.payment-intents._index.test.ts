@@ -8,14 +8,61 @@ import {getBtcAmountFromFiat} from '~/utils/price'
 import {action, loader} from './api.payment-intents._index'
 
 describe('[POST] /api/payment-intents', () => {
-  describe('when it works', async () => {
+  test('should respond with a 200 status code when passed correct data', async ({
+    request: {parseFormData, authorize},
+    faker,
+  }) => {
+    const data = faker.model.paymentIntent()
+
+    // const response = await request.post('/api/payment-intents', {
+    //   data,
+    // })
+    let request = new Request(`http://app.com/api/payment-intents`, {
+      method: 'POST',
+      body: parseFormData(data),
+      headers: await authorize(),
+    })
+
+    const response = await action({
+      request,
+      params: {},
+      context: {},
+    })
+
+    expect(response.ok).toBeTruthy()
+    expect(await response.json()).toStrictEqual(
+      expect.objectContaining({
+        id: expect.any(String),
+        ...data,
+        amount: data.amount.toString(),
+      }),
+    )
+  })
+
+  describe('when the webhook responds', async () => {
     let webhookRequests: Promise<MockedRequest<DefaultBodyType>>[]
+    let accountId: string | undefined
+    const mode = 'test'
 
     beforeEach(async () => {
-      webhookRequests = []
       // Initialize a fake account with a fake webhook
-      const {webhooks} = await faker.db.account()
-      webhooks.forEach(webhook => {
+      const account = await faker.db.account()
+      accountId = account.id
+      webhookRequests = []
+      const webhooks = faker.helpers.multiple(
+        () =>
+          faker.db.webhook({
+            accountId,
+            mode,
+          }),
+        {
+          count: {min: 1, max: 3},
+        },
+      )
+
+      webhooks.forEach(async webhookPromise => {
+        const webhook = await webhookPromise
+
         server.use(
           rest.post(webhook.url, async (req, res, ctx) => {
             return res(ctx.json({success: true}))
@@ -27,39 +74,8 @@ describe('[POST] /api/payment-intents', () => {
     })
 
     afterEach(async () => {
-      // wait for the webhook to be called and other stuff to finish
-      await new Promise(resolve => setTimeout(resolve, 100))
-    })
-
-    test('should respond with a 200 status code when passed correct data', async ({
-      request: {parseFormData, authorize},
-      faker,
-    }) => {
-      const data = faker.model.paymentIntent()
-
-      // const response = await request.post('/api/payment-intents', {
-      //   data,
-      // })
-      let request = new Request(`http://app.com/api/payment-intents`, {
-        method: 'POST',
-        body: parseFormData(data),
-        headers: await authorize(),
-      })
-
-      const response = await action({
-        request,
-        params: {},
-        context: {},
-      })
-
-      expect(response.ok).toBeTruthy()
-      expect(await response.json()).toStrictEqual(
-        expect.objectContaining({
-          id: expect.any(String),
-          ...data,
-          amount: data.amount.toString(),
-        }),
-      )
+      // HACK: this is a hack to make sure the test is finished and nothing else is running
+      await new Promise(resolve => setTimeout(resolve, 200))
     })
 
     test('should trigger webhook and stop job', async ({
@@ -84,7 +100,10 @@ describe('[POST] /api/payment-intents', () => {
           confirmations: 1,
           address,
         }),
-        headers: await authorize(),
+        headers: await authorize({
+          accountId,
+          mode,
+        }),
       })
 
       const response = await action({
@@ -95,35 +114,15 @@ describe('[POST] /api/payment-intents', () => {
       expect(response.ok).toBeTruthy()
 
       // Simulate the payment in the background
+      // FIX: the bitcoin core should match the mode
       await bitcoinCore.simulatePayment({
         address,
         amount,
       })
 
       // Wait for the webhooks to be called
-      await Promise.all(webhookRequests)
 
-      // TODO: test the payload in another test
-      // expect(await receivedPayload).toStrictEqual(
-      //   expect.objectContaining({
-      //     id: expect.any(String),
-      //     idempotenceKey: expect.any(String),
-      //     event: 'payment_intent.succeeded',
-      //     data: expect.objectContaining({
-      //       paymentIntent: expect.objectContaining({
-      //         id: expect.any(String),
-      //         status: 'succeeded',
-      //         transactions: expect.arrayContaining([
-      //           expect.objectContaining({
-      //             id: expect.any(String),
-      //             amount: amount.toString(),
-      //             confirmations: 1,
-      //           }),
-      //         ]),
-      //       }),
-      //     }),
-      //   }),
-      // )
+      await Promise.all(webhookRequests)
 
       // Make sure the job has been removed from the queue
       const jobs = await queue.getJobs('completed')
@@ -159,7 +158,10 @@ describe('[POST] /api/payment-intents', () => {
           address,
           tolerance,
         }),
-        headers: await authorize(),
+        headers: await authorize({
+          accountId,
+          mode,
+        }),
       })
 
       await action({
@@ -174,40 +176,39 @@ describe('[POST] /api/payment-intents', () => {
       })
 
       // Simulate the payment in the background
+      // FIX: the bitcoin core should match the mode
       await bitcoinCore.simulatePayment({
         address,
         amount: amountToPay,
       })
 
       // Wait for the webhook to be called
-      await Promise.all(webhookRequests)
+      const receivedPayloads = await Promise.all(webhookRequests)
 
-      // TODO: test the payload in another test
-      // const payload = await receivedPayload
-      // expect(payload).toStrictEqual(
-      //   expect.objectContaining({
-      //     data: expect.objectContaining({
-      //       paymentIntent: expect.objectContaining({
-      //         status: 'succeeded',
-      //         transactions: expect.arrayContaining([
-      //           expect.objectContaining({
-      //             amount: amountToPay.toString(),
-      //             // TODO: this should be the original amount at the time of the payment
-      //             originalAmount: expect.any(String),
-      //           }),
-      //         ]),
-      //       }),
-      //     }),
-      //   }),
-      // )
+      const payload = await receivedPayloads[0].json()
+      expect(payload).toStrictEqual(
+        expect.objectContaining({
+          data: expect.objectContaining({
+            paymentIntent: expect.objectContaining({
+              status: 'succeeded',
+              transactions: expect.arrayContaining([
+                expect.objectContaining({
+                  // TODO: this should be the original amount at the time of the payment
+                  originalAmount: expect.any(String),
+                }),
+              ]),
+            }),
+          }),
+        }),
+      )
 
-      // expect(
-      //   // @ts-ignore
-      //   Number(payload.data.paymentIntent.transactions[0].originalAmount),
-      // ).toBeGreaterThan(Number(amount) * tolerance)
+      expect(
+        // @ts-ignore
+        Number(payload.data.paymentIntent.transactions[0].originalAmount),
+      ).toBeGreaterThan(Number(amount) * tolerance)
     })
 
-    test('should accept payments after some payments have not been completed', async ({
+    test('should accept payments after some other PI have not been completed', async ({
       request: {parseFormData, authorize},
       bitcoinCore,
       faker,
@@ -233,7 +234,10 @@ describe('[POST] /api/payment-intents', () => {
             ...pi,
             confirmations: 1,
           }),
-          headers: await authorize(),
+          headers: await authorize({
+            accountId,
+            mode,
+          }),
         })
 
         const response = await action({
@@ -246,35 +250,36 @@ describe('[POST] /api/payment-intents', () => {
 
       // Simulate the payment to the last payment intent
       const lastPaymentIntent = paymentIntents[paymentIntents.length - 1]
+      // FIX: the bitcoin core should match the mode
       await bitcoinCore.simulatePayment({
         address: lastPaymentIntent.address,
         amount: lastPaymentIntent.amount,
       })
 
       // Wait for the webhook to be called
-      await Promise.all(webhookRequests)
+      const receivedPayloads = await Promise.all(webhookRequests)
 
-      // TODO: test the payload in another test
-      // expect(await receivedPayload).toStrictEqual(
-      //   expect.objectContaining({
-      //     id: expect.any(String),
-      //     idempotenceKey: expect.any(String),
-      //     event: 'payment_intent.succeeded',
-      //     data: expect.objectContaining({
-      //       paymentIntent: expect.objectContaining({
-      //         id: expect.any(String),
-      //         status: 'succeeded',
-      //         transactions: expect.arrayContaining([
-      //           expect.objectContaining({
-      //             id: expect.any(String),
-      //             amount: lastPaymentIntent.amount.toString(),
-      //             confirmations: 1,
-      //           }),
-      //         ]),
-      //       }),
-      //     }),
-      //   }),
-      // )
+      const payload = await receivedPayloads[0].json()
+      expect(payload).toStrictEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          idempotenceKey: expect.any(String),
+          event: 'payment_intent.succeeded',
+          data: expect.objectContaining({
+            paymentIntent: expect.objectContaining({
+              id: expect.any(String),
+              status: 'succeeded',
+              transactions: expect.arrayContaining([
+                expect.objectContaining({
+                  id: expect.any(String),
+                  amount: lastPaymentIntent.amount.toString(),
+                  confirmations: 1,
+                }),
+              ]),
+            }),
+          }),
+        }),
+      )
     })
   })
 

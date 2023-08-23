@@ -1,6 +1,6 @@
 import {faker} from '@faker-js/faker'
 
-import {prisma, type Mode} from '~/utils/prisma.server'
+import {prisma, type AccessMode, type Mode} from '~/utils/prisma.server'
 import type {CurrencyCode} from '../../../../config/currency'
 import {createRandomAddress} from './bitcoin'
 
@@ -18,39 +18,79 @@ export function user() {
 /**
  * Create a fake account and owner in the database
  */
-export async function account(props?: {
-  ownerId?: string
-  name?: string
-  mode?: Mode
-}) {
-  const {
-    name = faker.company.name(),
-    ownerId = (await user()).id,
-    mode = 'DEV',
-  } = props || {}
+export async function account(props?: {ownerId?: string; name?: string}) {
+  const {name = faker.company.name(), ownerId = (await user()).id} = props || {}
 
   return prisma.account.create({
     data: {
       name,
       ownerId: ownerId,
-      apis: {
-        create: {
-          mode,
-          key: faker.string.alphanumeric(32),
-          name: 'default',
-        },
-      },
-      webhooks: {
-        create: {
-          mode,
-          url: faker.internet.url(),
-          secret: faker.string.alphanumeric(32),
-        },
-      },
     },
-    include: {
-      apis: true,
-      webhooks: true,
+  })
+}
+
+/**
+ * Create a fake webhook in the database
+ * @param props
+ * @returns
+ */
+export async function webhook(props?: {
+  url?: string
+  /**
+   * @default 'test'
+   */
+  mode?: AccessMode
+  secret?: string
+  accountId?: string
+}) {
+  const {
+    url = faker.internet.url(),
+    mode = 'test',
+    secret = faker.string.alphanumeric(32),
+    accountId = (await account()).id,
+    ...rest
+  } = props || {}
+
+  return prisma.webhook.create({
+    data: {
+      url,
+      mode,
+      secret,
+      accountId,
+      ...rest,
+    },
+  })
+}
+
+/**
+ * Create a fake api in the database
+ * @param props
+ * @returns
+ */
+export async function api(props?: {
+  /**
+   * @default 'test'
+   */
+  mode?: AccessMode
+  name?: string
+  key?: string
+  accountId?: string
+}) {
+  const {
+    mode = 'test',
+    name = faker.internet.displayName(),
+    key = faker.string.alphanumeric(32),
+    accountId = (await account()).id,
+    ...rest
+  } = props || {}
+
+  return prisma.api.create({
+    data: {
+      mode,
+      name,
+      key,
+      accountId,
+      ...rest,
     },
   })
 }
@@ -59,17 +99,17 @@ export async function account(props?: {
  * Create a fake payment intent in the database
  */
 export async function paymentIntent(props?: {
+  mode?: Mode
   accountId?: string
   amount?: number
   address?: string
   currency?: CurrencyCode
-  mode?: Mode
 }) {
   const {
     amount = 100,
     address = createRandomAddress(),
-    accountId = (await account({mode: props?.mode})).id,
-    mode = 'DEV',
+    accountId = (await account()).id,
+    mode = 'dev',
     ...rest
   } = props || {}
 
