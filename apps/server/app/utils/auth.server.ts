@@ -5,6 +5,7 @@ import invariant from 'tiny-invariant'
 
 import {prisma, type Password, type User} from '~/utils/prisma.server'
 import {decrypt, encrypt} from './encryption.server'
+import {env} from './env.server'
 import {sessionStorage} from './session.server'
 
 export type {User}
@@ -180,9 +181,28 @@ export async function requireValidApiKey(request: Request) {
   // Get the bearer token from the request
   const key = request.headers.get('Authorization')?.split(' ')[1]
 
+  // Check if the bearer token matches the dev API key
+  // and if so, return the default account
+  if (env.DEV_MODE_ENABLED && key === env.DEV_API_KEY) {
+    const account = await prisma.account.findFirst()
+    if (!account) {
+      throw new Error('No default account found')
+    }
+
+    return {
+      mode: 'dev' as const,
+      accountId: account.id,
+    }
+  }
+
+  // if it isn't the dev API key, check if it's a valid API key
   const api = await prisma.api.findUnique({
     where: {
       key,
+    },
+    select: {
+      mode: true,
+      accountId: true,
     },
   })
 
