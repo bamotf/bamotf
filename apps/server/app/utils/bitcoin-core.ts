@@ -197,7 +197,8 @@ export async function getBalance(wallet: string) {
 }
 
 /**
- * Simulates a payment to the given address.
+ * Makes an onchain transaction to the given address.
+ * NOTE: This is only used by the bamotf team to simulate payments during development.
  */
 export async function simulatePayment({
   address,
@@ -209,8 +210,10 @@ export async function simulatePayment({
    */
   amount: bigint
 }) {
-  if (!env.DEV_MODE_ENABLED) {
-    throw new Error('You can only simulate payment in development mode')
+  if (env.NODE_ENV !== 'test') {
+    throw new Error(
+      'This is only used by the bamotf team to simulate payments during development',
+    )
   }
 
   const convertedAmount = BigInt(providedAmount)
