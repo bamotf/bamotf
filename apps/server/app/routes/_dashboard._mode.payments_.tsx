@@ -8,6 +8,7 @@ import {columns} from '~/components/payments/columns'
 import {useFreshData} from '~/hooks/use-fresh-data'
 import {getAccountByUser} from '~/utils/account.server'
 import {requireUserId} from '~/utils/auth.server'
+import {requireEnabledMode} from '~/utils/mode.server'
 import {listPaymentIntents} from '~/utils/payment-intent.server'
 
 export const meta: V2_MetaFunction = () => {
@@ -17,8 +18,9 @@ export const meta: V2_MetaFunction = () => {
 export async function loader({request}: LoaderArgs) {
   const userId = await requireUserId(request)
   const account = await getAccountByUser(userId)
-  // FIX: this should be a query param
-  const [paymentIntents, total] = await listPaymentIntents(account.id, 'DEV')
+  const mode = await requireEnabledMode(request)
+
+  const [paymentIntents, total] = await listPaymentIntents(account.id, mode)
 
   return typedjson({
     data: paymentIntents.map(pi => ({

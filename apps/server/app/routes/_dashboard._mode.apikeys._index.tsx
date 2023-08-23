@@ -10,19 +10,28 @@ import {Button} from '~/components/ui/button'
 import {useFreshData} from '~/hooks/use-fresh-data'
 import {getAccountByUser} from '~/utils/account.server'
 import {requireUserId} from '~/utils/auth.server'
+import {env} from '~/utils/env.server'
+import {requireEnabledMode} from '~/utils/mode.server'
 import {prisma} from '~/utils/prisma.server'
 import {commitSession, getSession} from '~/utils/session.server'
 
-export async function loader({request}: LoaderArgs) {
+export async function loader({request, params}: LoaderArgs) {
   const userId = await requireUserId(request)
   const account = await getAccountByUser(userId)
+  const mode = await requireEnabledMode(request)
+
+  if (mode === 'dev') {
+    return typedjson({
+      mode,
+      devApiKey: env.DEV_API_KEY,
+    })
+  }
 
   // Get all the API keys for this account
   const apis = await prisma.api.findMany({
     where: {
       accountId: account.id,
-      // FIX: should come from query param
-      mode: 'DEV',
+      mode,
     },
     select: {
       id: true,
@@ -39,7 +48,8 @@ export async function loader({request}: LoaderArgs) {
 
   return typedjson(
     {
-      data: apis,
+      mode,
+      apis: apis,
       key: session.get('apikey') as string | undefined,
     },
     {
@@ -50,17 +60,24 @@ export async function loader({request}: LoaderArgs) {
   )
 }
 
-export async function action({request}: ActionArgs) {
+export async function action({request, params}: ActionArgs) {
   const userId = await requireUserId(request)
   const account = await getAccountByUser(userId)
+  const mode = await requireEnabledMode(request)
+
+  if (mode === 'dev') {
+    throw new Response(`Cannot delete API keys in dev mode`, {
+      status: 400,
+      statusText: 'Cannot delete API keys in dev mode',
+    })
+  }
 
   const formData = await request.formData()
   await prisma.api.delete({
     where: {
       id: formData.get('id') as string,
       accountId: account.id,
-      // FIX: should come from query param
-      mode: 'DEV',
+      mode,
     },
   })
 
@@ -68,39 +85,58 @@ export async function action({request}: ActionArgs) {
 }
 
 export default function AllApiKeysPage() {
-  const {data, key} = useFreshData<typeof loader>()
+  const data = useFreshData<typeof loader>()
+
   return (
     <>
       <div className="flex items-center justify-between space-y-2">
         <h2 className="text-3xl font-bold tracking-tight">API Keys</h2>
-        <div className="flex items-center space-x-2">
-          <Button size="sm" variant="outline" asChild>
-            <Link to="/apikeys/create">
-              <Icons.Add className="mr-2 h-4 w-4" />
-              Create API Key
-            </Link>
-          </Button>
-        </div>
-      </div>
 
-      <div className="space-y-3">
-        {key && (
-          // TODO: Make sure the copy aligns with github PTA
-          <Alert>
-            <Icons.CheckCircle className="h-4 w-4" />
-            <AlertTitle>
-              API key <code className="font-mono font-semibold">{key}</code>{' '}
-              created
-            </AlertTitle>
-            <AlertDescription>
-              This key is only shown once, so make sure to copy it somewhere
-              safe.
-            </AlertDescription>
-          </Alert>
+        {data.mode !== 'dev' && (
+          <div className="flex items-center space-x-2">
+            <Button size="sm" variant="outline" asChild>
+              <Link to="/apikeys/create">
+                <Icons.Add className="mr-2 h-4 w-4" />
+                Create API Key
+              </Link>
+            </Button>
+          </div>
         )}
-
-        <DataTable columns={columns} data={data} />
       </div>
+
+      {data.mode === 'dev' ? (
+        <Alert>
+          <Icons.CheckCircle className="h-4 w-4" />
+          <AlertTitle>
+            Using the dev API key{' '}
+            <code className="font-mono font-semibold">{data.devApiKey}</code>
+          </AlertTitle>
+          <AlertDescription>
+            This key is used for local development and is usually set in your{' '}
+            <code className="font-mono">.env</code> file.
+          </AlertDescription>
+        </Alert>
+      ) : (
+        <div className="space-y-3">
+          {data.key && (
+            // TODO: Make sure the copy aligns with github PTA
+            <Alert>
+              <Icons.CheckCircle className="h-4 w-4" />
+              <AlertTitle>
+                API key{' '}
+                <code className="font-mono font-semibold">{data.key}</code>{' '}
+                created
+              </AlertTitle>
+              <AlertDescription>
+                This key is only shown once, so make sure to copy it somewhere
+                safe.
+              </AlertDescription>
+            </Alert>
+          )}
+
+          <DataTable columns={columns} data={data.apis} />
+        </div>
+      )}
     </>
   )
 }

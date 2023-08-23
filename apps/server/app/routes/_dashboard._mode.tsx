@@ -59,8 +59,8 @@ export default function DashboardLayout() {
               Test
             </EnvTabTrigger>
           )}
-          {enabledModes.production && (
-            <EnvTabTrigger current={currentMode} value="production">
+          {enabledModes.prod && (
+            <EnvTabTrigger current={currentMode} value="prod">
               Production
             </EnvTabTrigger>
           )}

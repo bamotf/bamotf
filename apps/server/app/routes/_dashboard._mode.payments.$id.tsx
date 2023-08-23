@@ -1,4 +1,5 @@
 import type {LoaderArgs, V2_MetaFunction} from '@remix-run/node'
+import {redirect} from '@remix-run/router'
 import {typedjson} from 'remix-typedjson'
 
 import {Formatter} from '~/components/formatter'
@@ -13,6 +14,7 @@ import {getAccountByUser} from '~/utils/account.server'
 import {requireUserId} from '~/utils/auth.server'
 import {createContract} from '~/utils/contract'
 import {cn} from '~/utils/css'
+import {requireEnabledMode} from '~/utils/mode.server'
 import {prisma, type LogType} from '~/utils/prisma.server'
 import {calculateRiskScore} from '~/utils/risk-score'
 import type {CurrencyCode} from '../../../../config/currency'
@@ -34,6 +36,7 @@ export const contract = createContract({
 export async function loader({params, request}: LoaderArgs) {
   const userId = await requireUserId(request)
   const account = await getAccountByUser(userId)
+  const mode = await requireEnabledMode(request)
 
   const {path} = await contract.loader({params})
 
@@ -43,8 +46,6 @@ export async function loader({params, request}: LoaderArgs) {
     where: {
       id,
       accountId: account.id,
-      // FIX: this should be a query param
-      mode: 'DEV',
     },
     include: {
       transactions: true,
@@ -60,6 +61,10 @@ export async function loader({params, request}: LoaderArgs) {
       status: 404,
       statusText: `Payment intent not found`,
     })
+  }
+
+  if (paymentIntent.mode !== mode) {
+    throw redirect('/payments')
   }
 
   const riskScore = await calculateRiskScore({

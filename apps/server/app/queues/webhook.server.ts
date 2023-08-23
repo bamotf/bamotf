@@ -35,7 +35,7 @@ export const queue = createQueue<QueueData>(QUEUE_ID, async job => {
 
   const {accountId, mode} = paymentIntent
 
-  if (mode === 'DEV') {
+  if (mode === 'dev') {
     return await queueAttempt.add('trigger webhook', {
       event,
       paymentIntentId,

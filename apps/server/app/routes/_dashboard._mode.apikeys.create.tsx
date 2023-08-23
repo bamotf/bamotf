@@ -1,7 +1,12 @@
 import {conform, useForm} from '@conform-to/react'
 import {getFieldsetConstraint, parse} from '@conform-to/zod'
 import {Separator} from '@radix-ui/react-select'
-import {json, redirect, type DataFunctionArgs} from '@remix-run/node'
+import {
+  json,
+  redirect,
+  type DataFunctionArgs,
+  type LoaderArgs,
+} from '@remix-run/node'
 import {
   Form,
   useActionData,
@@ -13,6 +18,7 @@ import {Button, ErrorList, Field} from '~/components/forms'
 import {getAccountByUser} from '~/utils/account.server'
 import {requireUserId} from '~/utils/auth.server'
 import {createSecret} from '~/utils/encryption.server'
+import {requireEnabledMode} from '~/utils/mode.server'
 import {prisma} from '~/utils/prisma.server'
 import {commitSession, getSession} from '~/utils/session.server'
 import {z} from '~/utils/zod'
@@ -21,9 +27,27 @@ const schema = z.object({
   name: z.string().min(1, 'Name is required').min(3, 'Name is too short'),
 })
 
+export async function loader({request}: LoaderArgs) {
+  const mode = await requireEnabledMode(request)
+
+  if (mode === 'dev') {
+    return redirect(`/apikeys`)
+  }
+
+  return null
+}
+
 export async function action({request}: DataFunctionArgs) {
   const userId = await requireUserId(request)
   const account = await getAccountByUser(userId)
+  const mode = await requireEnabledMode(request)
+
+  if (mode === 'dev') {
+    throw new Response(`Cannot create API keys in dev mode`, {
+      status: 400,
+      statusText: 'Cannot create API keys in dev mode',
+    })
+  }
 
   // Validate the form submission
   const formData = await request.formData()
@@ -55,7 +79,7 @@ export async function action({request}: DataFunctionArgs) {
       key,
       accountId: account.id,
       // FIX: should come from query param
-      mode: 'DEV',
+      mode,
     },
   })
 

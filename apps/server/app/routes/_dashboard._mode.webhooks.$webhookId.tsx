@@ -1,4 +1,4 @@
-import type {LoaderArgs} from '@remix-run/node'
+import {redirect, type LoaderArgs} from '@remix-run/node'
 import {typedjson, useTypedLoaderData} from 'remix-typedjson'
 
 import {Formatter} from '~/components/formatter'
@@ -10,19 +10,24 @@ import {Separator} from '~/components/ui/separator'
 import {WebhookBadge} from '~/components/webhook-badge'
 import {getAccountByUser} from '~/utils/account.server'
 import {requireUserId} from '~/utils/auth.server'
+import {requireEnabledMode} from '~/utils/mode.server'
 import {prisma} from '~/utils/prisma.server'
 
 export async function loader({request, params}: LoaderArgs) {
   const userId = await requireUserId(request)
   const account = await getAccountByUser(userId)
+  const mode = await requireEnabledMode(request)
+
+  if (mode === 'dev') {
+    throw redirect('/webhooks')
+  }
 
   // Get the webhook for this route/account
   const webhook = await prisma.webhook.findUnique({
     where: {
       id: params.webhookId,
       accountId: account.id,
-      // FIX: should come from query param
-      mode: 'DEV',
+      mode,
     },
     select: {
       id: true,

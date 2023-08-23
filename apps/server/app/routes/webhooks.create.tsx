@@ -1,7 +1,12 @@
 import {conform, useForm} from '@conform-to/react'
 import {getFieldsetConstraint, parse} from '@conform-to/zod'
 import {Separator} from '@radix-ui/react-select'
-import {json, redirect, type DataFunctionArgs} from '@remix-run/node'
+import {
+  json,
+  redirect,
+  type DataFunctionArgs,
+  type LoaderArgs,
+} from '@remix-run/node'
 import {
   Form,
   Link,
@@ -16,6 +21,7 @@ import {Button as UIButton} from '~/components/ui/button'
 import {getAccountByUser} from '~/utils/account.server'
 import {requireUserId} from '~/utils/auth.server'
 import {createSecret} from '~/utils/encryption.server'
+import {requireEnabledMode} from '~/utils/mode.server'
 import {prisma} from '~/utils/prisma.server'
 import {z} from '~/utils/zod'
 import {StyledLink} from '../components/styled-link'
@@ -26,9 +32,27 @@ const schema = z.object({
   description: z.string().optional(),
 })
 
+export async function loader({request}: LoaderArgs) {
+  const mode = await requireEnabledMode(request)
+
+  if (mode === 'dev') {
+    return redirect(`/apikeys`)
+  }
+
+  return null
+}
+
 export async function action({request}: DataFunctionArgs) {
   const userId = await requireUserId(request)
   const account = await getAccountByUser(userId)
+  const mode = await requireEnabledMode(request)
+
+  if (mode === 'dev') {
+    throw new Response(`Cannot create webhooks in dev mode`, {
+      status: 400,
+      statusText: 'Cannot create webhooks in dev mode',
+    })
+  }
 
   // Validate the form submission
   const formData = await request.formData()
@@ -39,7 +63,7 @@ export async function action({request}: DataFunctionArgs) {
         where: {
           url,
           accountId: account.id,
-          mode: 'DEV',
+          mode,
         },
       })
 
@@ -76,8 +100,7 @@ export async function action({request}: DataFunctionArgs) {
       description,
       secret: createSecret(),
       accountId: account.id,
-      // FIX: should come from query param
-      mode: 'DEV',
+      mode,
     },
     select: {
       id: true,
