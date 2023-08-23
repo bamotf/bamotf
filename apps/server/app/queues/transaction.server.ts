@@ -3,8 +3,12 @@ import {UnrecoverableError} from 'bullmq'
 import {format, logger} from 'logger'
 
 import {listUnspent} from '~/utils/bitcoin-core'
+import {
+  isPaymentIntentPaid,
+  updatePaymentIntentStatus,
+} from '~/utils/payment-intent.server'
 import {getCurrencyValueFromSatoshis} from '~/utils/price'
-import {prisma, type Prisma, type Transaction} from '~/utils/prisma.server'
+import {prisma} from '~/utils/prisma.server'
 import {createQueue} from '~/utils/queue.server'
 import type {FiatCurrencyCode} from '../../../../config/currency'
 import {queue as webhookQueue} from './webhook.server'
@@ -94,20 +98,15 @@ export const queue = createQueue<QueueData>(
       throw new Error('No transactions found')
     }
 
-    const amountReceived = getTotalTransferred(
-      savedTransactions,
-      paymentIntent.confirmations,
-    )
-
     const isPaid = isPaymentIntentPaid({
-      amountReceived,
-      currency: paymentIntent.currency,
-      amountRequested: paymentIntent.amount,
-      tolerance: paymentIntent.tolerance,
+      ...paymentIntent,
+      transactions: savedTransactions,
     })
 
     if (!isPaid) {
       await updatePaymentIntentStatus(paymentIntentId, 'processing')
+      // TODO: call webhook with payment_intent.processing
+
       throw new Error('Payment not made yet')
     }
 
@@ -134,117 +133,3 @@ export const queue = createQueue<QueueData>(
     },
   },
 )
-
-function updatePaymentIntentStatus(
-  paymentIntentId: string,
-  status: 'processing' | 'succeeded',
-) {
-  return prisma.paymentIntent.update({
-    where: {id: paymentIntentId},
-    data: {
-      status,
-      logs: {
-        create: [
-          {
-            status: `status_${status}`,
-          },
-        ],
-      },
-    },
-  })
-}
-
-/**
- * Get the total amount received in the given transactions.
- *
- * @param transactions list of transactions
- * @param confirmations number of block confirmations required for the payment to be considered confirmed
- * @returns
- */
-function getTotalTransferred(
-  transactions: Transaction[],
-  confirmations: number,
-) {
-  const confirmedTransactions = transactions.filter(
-    transaction => transaction.confirmations >= confirmations,
-  )
-
-  const unconfirmedTransactions = transactions.filter(
-    transaction => transaction.confirmations < confirmations,
-  )
-
-  const btc = {
-    confirmed: getTotal(confirmedTransactions),
-    unconfirmed: getTotal(unconfirmedTransactions),
-  }
-
-  const fiat = {
-    confirmed: getTotal(confirmedTransactions, 'originalAmount'),
-    unconfirmed: getTotal(unconfirmedTransactions, 'originalAmount'),
-  }
-
-  logger.debug(
-    `🟠 Amount received: ${format.yellow(
-      btc.confirmed,
-    )} satoshis (confirmed) + ${format.yellow(
-      btc.unconfirmed,
-    )} satoshis (unconfirmed)`,
-  )
-
-  logger.debug(
-    `            FIAT   ${format.yellow(
-      fiat.confirmed,
-    )} (confirmed) + ${format.yellow(fiat.unconfirmed)} (unconfirmed)`,
-  )
-
-  return {btc, fiat}
-}
-
-/**
- * Simply sums the given key in the given transactions.
- *
- * @param transactions
- * @param key
- * @returns
- */
-function getTotal(
-  transactions: Transaction[],
-  key: 'amount' | 'originalAmount' = 'amount',
-) {
-  return transactions.reduce(
-    (acc, tx) => acc + (tx[key] || BigInt(0)),
-    BigInt(0),
-  )
-}
-
-/**
- * Check if the payment intent is considered paid.
- */
-function isPaymentIntentPaid({
-  amountReceived,
-  currency,
-  amountRequested,
-  tolerance,
-}: {
-  amountReceived: ReturnType<typeof getTotalTransferred>
-  currency: string
-  amountRequested: bigint
-  tolerance: Prisma.Decimal
-}) {
-  // If the payment intent is in BTC, we can simply compare the amount received
-  // to the amount requested
-  if (currency === 'BTC') {
-    return amountReceived.btc.confirmed >= amountRequested
-  }
-
-  // Subtract the tolerance from 1 to get the percentage of the amount requested
-  // that we can consider as paid
-  const acceptablePercentage = 1 - tolerance.toNumber()
-
-  // If the PI is in FIAT, we need check if the amount when user first sent the
-  // payment is somewhat close to the amount requested
-  return (
-    amountReceived.fiat.confirmed >=
-    Number(amountRequested) * acceptablePercentage
-  )
-}
