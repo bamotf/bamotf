@@ -1,5 +1,3 @@
-import {redirect} from '@remix-run/node'
-
 import {env} from '~/utils/env.server'
 import {commitSession, getSession} from './session.server'
 
@@ -14,7 +12,7 @@ export type Mode = keyof typeof enabledModes
 export const enabledModes = {
   dev: env.DEV_MODE_ENABLED,
   test: !!env.TESTNET_BITCOIN_CORE_URL,
-  production: !!env.MAINNET_BITCOIN_CORE_URL,
+  prod: !!env.MAINNET_BITCOIN_CORE_URL,
 }
 
 /**
@@ -24,30 +22,23 @@ export const enabledModes = {
  * @returns
  */
 export async function requireEnabledMode(request: Request) {
-  let mode: Mode
-
-  let userMode = await getModeFromSession(request)
+  let mode = await getModeFromSession(request)
 
   // if the user has not set a mode yet, get the first enabled mode
-  if (!userMode) {
-    // The order of priority is dev, production, test
-    // so if dev is enabled, it will be the default mode
-    // while production will have priority over test
-    const priorityModes = ['dev', 'production', 'test'] as const
+  if (!mode) {
+    // The order of priority is so if dev is enabled,
+    // it will be the default mode while prod will have
+    // priority over test
+    const priorityModes = ['dev', 'prod', 'test'] as const
     // get the first mode that is enabled
-    userMode = priorityModes.find(mode => enabledModes[mode])
+    mode = priorityModes.find(m => enabledModes[m]) as Mode
   }
 
-  switch (userMode) {
-    case 'dev':
-      mode = 'dev'
-      break
-    case 'test':
-      mode = 'test'
-      break
-    default:
-      mode = 'production'
-      break
+  if (!enabledModes[mode]) {
+    throw new Response(`Mode disabled: ${mode}`, {
+      status: 400,
+      statusText: 'Mode disabled',
+    })
   }
 
   return mode
