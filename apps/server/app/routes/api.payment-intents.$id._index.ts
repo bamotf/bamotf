@@ -26,13 +26,20 @@ export async function loader({request, params}: LoaderArgs) {
 
   const {id} = path
 
-  const paymentIntent = await prisma.paymentIntent.findUniqueOrThrow({
+  const paymentIntent = await prisma.paymentIntent.findUnique({
     where: {
       id,
       accountId,
       mode,
     },
   })
+
+  if (!paymentIntent) {
+    throw new Response(`PaymentIntent not found: ${id}`, {
+      status: 404,
+      statusText: 'PaymentIntent not found',
+    })
+  }
 
   return typedjson({
     ...paymentIntent,
