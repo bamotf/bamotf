@@ -4,7 +4,7 @@ import {afterEach, describe, expect, test, vi} from 'tests/base.fixture'
 import {server, waitForRequest} from 'tests/setup.integration'
 
 import {env} from '~/utils/env.server'
-import {action} from './api.payment-intents.$id.simulate-payment'
+import {action} from './api.payment-intents.$idOrAddress.simulate-payment'
 
 afterEach(async () => {
   vi.restoreAllMocks()

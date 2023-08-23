@@ -3,7 +3,7 @@ import {type LoaderArgs} from '@remix-run/node'
 import {typedjson} from 'remix-typedjson'
 
 import {queue as webhookQueue} from '~/queues/webhook.server'
-import {PaymentIntentSchema} from '~/schemas'
+import {PaymentIntentIdSchema, PaymentIntentSchema} from '~/schemas'
 import {requireValidApiKey} from '~/utils/auth.server'
 import {createContract} from '~/utils/contract'
 import {env} from '~/utils/env.server'
@@ -13,11 +13,14 @@ import {
 } from '~/utils/payment-intent.server'
 import {getBtcAmountFromFiat, getCurrencyValueFromSatoshis} from '~/utils/price'
 import {prisma} from '~/utils/prisma.server'
+import {z} from '~/utils/zod'
 import type {FiatCurrencyCode} from '../../../../config/currency'
 
 export const contract = createContract({
   action: {
-    pathParams: PaymentIntentSchema.pick({id: true}),
+    pathParams: z.object({
+      idOrAddress: PaymentIntentIdSchema,
+    }),
     body: PaymentIntentSchema.pick({
       amount: true,
       currency: true,
@@ -41,10 +44,21 @@ export async function action({request, params}: LoaderArgs) {
 
   const {path, body} = await contract.action({request, params})
 
-  const {id} = path
+  const {idOrAddress} = path
 
   const pi = await prisma.paymentIntent.findUnique({
-    where: {id, accountId, mode},
+    where: {
+      id: idOrAddress,
+      accountId,
+      mode,
+      OR: [
+        {
+          address: idOrAddress,
+          accountId,
+          mode,
+        },
+      ],
+    },
     include: {transactions: true},
   })
 
