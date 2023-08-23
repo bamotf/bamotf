@@ -57,6 +57,13 @@ export async function action({request}: LoaderArgs) {
     },
   })
 
+  if (mode === 'dev') {
+    return typedjson({
+      ...pi,
+      tolerance: pi.tolerance.toNumber(),
+    })
+  }
+
   await createWatchOnlyWallet(pi.id)
   const descriptor = await getDescriptor(pi.address)
   await addWatchOnlyAddress({
