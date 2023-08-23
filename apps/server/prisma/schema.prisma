@@ -112,6 +112,13 @@ enum PaymentIntentStatus {
   canceled
 }
 
+/// Mode stores which in which state the data reprensents so that we can have different data for production, test, and development and switch between them easily
+enum Mode {
+  prod
+  test
+  dev
+}
+
 /// Payment intents are used to track payments. They are made up of one or more transactions.
 model PaymentIntent {
   id                 String              @id @default(uuid())
@@ -222,15 +229,15 @@ model WebhookAttempt {
 
 /// APIs store important information that are used to authenticate requests to the API
 model Api {
-  id        String  @id @default(cuid())
-  /// The mode of the webhook (e.g. prod, test, dev)
-  mode      Mode
+  id        String     @id @default(cuid())
+  /// The mode of the api (e.g. prod, test)
+  mode      AccessMode
   /// The name of the api
   name      String
   /// The secret key of the api
-  key       String  @unique
+  key       String     @unique
   /// The account that this api belongs to
-  account   Account @relation(fields: [accountId], references: [id])
+  account   Account    @relation(fields: [accountId], references: [id])
   /// The account that this api belongs to
   accountId String
 
@@ -240,8 +247,8 @@ model Api {
 /// Webhooks are used to notify external services of events that happen in the system (e.g. payment intent status changes)
 model Webhook {
   id          String           @id @default(uuid())
-  /// The mode of the webhook (e.g. prod, test, dev)
-  mode        Mode
+  /// The mode of the webhook (e.g. prod, test)
+  mode        AccessMode
   /// The url of the webhook that will be called
   url         String
   /// The secret of the webhook
@@ -263,9 +270,8 @@ model Webhook {
   @@unique([accountId, mode, url])
 }
 
-/// Mode stores which in which state the data reprensents so that we can have different data for production, test, and development and switch between them easily
-enum Mode {
-  PROD
-  TEST
-  DEV
+/// Mode in which the access to the API and webhooks is made
+enum AccessMode {
+  prod
+  test
 }

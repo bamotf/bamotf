@@ -1,5 +1,4 @@
--- 
-
+--  Add default admin user and role with permission to access admin panel and create the default account
 
 -- Enable uuid-ossp extension for uuid_generate_v4() function
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
@@ -44,11 +43,6 @@ BEGIN
   INSERT INTO "Account" (id, name, "ownerId", "createdAt", "updatedAt")
   VALUES (uuid_generate_v4(), 'Initial Account', user_id, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
   RETURNING "id" INTO account_id;
-
-  -- Create an API key for the account for development purposes
-  INSERT INTO "Api" (id, mode, name, key, "accountId", "createdAt")
-  VALUES (uuid_generate_v4(), 'DEV', 'Development API', 'DEV_API_KEY', account_id, CURRENT_TIMESTAMP);
-
 END;
 $$;
 

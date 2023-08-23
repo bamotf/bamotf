@@ -1,5 +1,7 @@
 import {PrismaClient} from '@prisma/client'
 
+import {createSecret} from '~/utils/encryption.server'
+
 const prisma = new PrismaClient()
 
 async function main() {
@@ -9,8 +11,13 @@ async function main() {
     where: {name: 'Initial Account'},
   })
 
-  const {id: webhookId} = await prisma.webhook.findFirstOrThrow({
-    where: {url: 'http://localhost:3000/webhook/bamotf'},
+  const {id: webhookId} = await prisma.webhook.create({
+    data: {
+      url: 'http://localhost:3000/webhook/bamotf',
+      accountId,
+      secret: createSecret(),
+      mode: 'prod',
+    },
   })
 
   console.time(`🦺 Created example payment intents`)
@@ -20,7 +27,7 @@ async function main() {
       where: {id: 'seed-1'},
       update: {},
       create: {
-        mode: 'DEV',
+        mode: 'dev',
         accountId,
         id: 'seed-1',
         amount: 1,
@@ -33,7 +40,7 @@ async function main() {
       where: {id: 'seed-2'},
       update: {},
       create: {
-        mode: 'DEV',
+        mode: 'prod',
         accountId,
         id: 'seed-2',
         amount: 42069,
@@ -79,7 +86,7 @@ async function main() {
       where: {id: 'seed-3'},
       update: {},
       create: {
-        mode: 'DEV',
+        mode: 'dev',
         accountId,
         id: 'seed-3',
         amount: 10_002_001,
@@ -103,7 +110,7 @@ async function main() {
       where: {id: 'seed-4'},
       update: {},
       create: {
-        mode: 'DEV',
+        mode: 'dev',
         accountId,
         id: 'seed-4',
         amount: 1000,
@@ -126,7 +133,7 @@ async function main() {
       where: {id: 'seed-5'},
       update: {},
       create: {
-        mode: 'DEV',
+        mode: 'dev',
         accountId,
         id: 'seed-5',
         amount: 10_000_00,
@@ -140,7 +147,7 @@ async function main() {
       where: {id: 'seed-6'},
       update: {},
       create: {
-        mode: 'DEV',
+        mode: 'dev',
         accountId,
         id: 'seed-6',
         amount: 13099,
@@ -187,7 +194,7 @@ async function main() {
       where: {id: 'seed-7'},
       update: {},
       create: {
-        mode: 'DEV',
+        mode: 'test',
         accountId,
         id: 'seed-7',
         amount: 13000099,

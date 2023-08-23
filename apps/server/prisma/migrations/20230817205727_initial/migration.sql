@@ -2,10 +2,13 @@
 CREATE TYPE "PaymentIntentStatus" AS ENUM ('pending', 'processing', 'succeeded', 'canceled');
 
 -- CreateEnum
+CREATE TYPE "Mode" AS ENUM ('prod', 'test', 'dev');
+
+-- CreateEnum
 CREATE TYPE "LogType" AS ENUM ('status_created', 'status_processing', 'status_succeeded', 'status_canceled', 'modified', 'note');
 
 -- CreateEnum
-CREATE TYPE "Mode" AS ENUM ('PROD', 'TEST', 'DEV');
+CREATE TYPE "AccessMode" AS ENUM ('prod', 'test');
 
 -- CreateTable
 CREATE TABLE "Role" (
@@ -133,7 +136,7 @@ CREATE TABLE "WebhookAttempt" (
     "status" INTEGER NOT NULL,
     "body" JSONB NOT NULL,
     "response" JSONB,
-    "webhookId" TEXT NOT NULL,
+    "webhookId" TEXT,
     "paymentIntentId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -143,7 +146,7 @@ CREATE TABLE "WebhookAttempt" (
 -- CreateTable
 CREATE TABLE "Api" (
     "id" TEXT NOT NULL,
-    "mode" "Mode" NOT NULL,
+    "mode" "AccessMode" NOT NULL,
     "name" TEXT NOT NULL,
     "key" TEXT NOT NULL,
     "accountId" TEXT NOT NULL,
@@ -155,9 +158,9 @@ CREATE TABLE "Api" (
 -- CreateTable
 CREATE TABLE "Webhook" (
     "id" TEXT NOT NULL,
-    "mode" "Mode" NOT NULL,
+    "mode" "AccessMode" NOT NULL,
     "url" TEXT NOT NULL,
-    "token" TEXT NOT NULL,
+    "secret" TEXT NOT NULL,
     "description" TEXT,
     "version" TEXT NOT NULL DEFAULT '2023-07-28',
     "accountId" TEXT NOT NULL,
@@ -207,7 +210,10 @@ CREATE UNIQUE INDEX "Verification_target_type_key" ON "Verification"("target", "
 CREATE UNIQUE INDEX "PaymentIntent_address_key" ON "PaymentIntent"("address");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Webhook_accountId_url_key" ON "Webhook"("accountId", "url");
+CREATE UNIQUE INDEX "Api_key_key" ON "Api"("key");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Webhook_accountId_mode_url_key" ON "Webhook"("accountId", "mode", "url");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_RoleToUser_AB_unique" ON "_RoleToUser"("A", "B");
@@ -240,7 +246,7 @@ ALTER TABLE "Log" ADD CONSTRAINT "Log_paymentIntentId_fkey" FOREIGN KEY ("paymen
 ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_paymentIntentId_fkey" FOREIGN KEY ("paymentIntentId") REFERENCES "PaymentIntent"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "WebhookAttempt" ADD CONSTRAINT "WebhookAttempt_webhookId_fkey" FOREIGN KEY ("webhookId") REFERENCES "Webhook"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "WebhookAttempt" ADD CONSTRAINT "WebhookAttempt_webhookId_fkey" FOREIGN KEY ("webhookId") REFERENCES "Webhook"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "WebhookAttempt" ADD CONSTRAINT "WebhookAttempt_paymentIntentId_fkey" FOREIGN KEY ("paymentIntentId") REFERENCES "PaymentIntent"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
