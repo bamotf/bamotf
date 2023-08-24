@@ -57,7 +57,7 @@ describe('[POST] /api/payment-intents/:id/simulate-payment', () => {
 
     const res = await action({
       request,
-      params: {id},
+      params: {idOrAddress: id},
       context: {},
     })
 
