@@ -53,13 +53,19 @@ export const queue = createQueue<QueueData>(
     const signature = symmetric.sign(bodyString, webhook.secret)
 
     // Send the webhook.
-    const result = await fetch(webhook.url, {
-      method: 'POST',
-      headers: {
-        'x-webhook-signature': signature,
-      },
-      body: bodyString,
-    })
+    let result
+
+    try {
+      result = await fetch(webhook.url, {
+        method: 'POST',
+        headers: {
+          'x-webhook-signature': signature,
+        },
+        body: bodyString,
+      })
+    } catch (error) {
+      result = new Response(`Url didn't respond`, {status: 404})
+    }
 
     logger.debug(
       `⚑ Sending webhook to ${format.magenta(webhook.url)}: ${
@@ -103,6 +109,7 @@ export const queue = createQueue<QueueData>(
         attempts: 3,
         backoff: {
           type: 'exponential',
+          delay: 1000,
         },
       },
     },
