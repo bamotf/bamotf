@@ -1,6 +1,5 @@
 import {faker} from '@faker-js/faker'
 
-import {queue as webhookQueue} from '~/queues/webhook.server'
 import {
   isPaymentIntentPaid,
   updatePaymentIntentStatus,
@@ -78,25 +77,18 @@ export async function simulatePayment(
       },
     }),
   )
+  const isPaid = isPaymentIntentPaid(pi)
 
   // Update the payment intent status
-  let {transactions, ...result} = pi
+  let result: Awaited<ReturnType<typeof updatePaymentIntentStatus>> | undefined
 
-  const isPaid = isPaymentIntentPaid(pi)
   if (!isPaid && pi.status === 'pending') {
     result = await updatePaymentIntentStatus(pi.id, 'processing')
-    // TODO: call webhook with payment_intent.processing
   }
+
   if (isPaid) {
     result = await updatePaymentIntentStatus(pi.id, 'succeeded')
   }
-
-  // TODO: call webhook with payment_intent.processing
-  // Call webhook
-  await webhookQueue.add('trigger success webhook', {
-    paymentIntentId: pi.id,
-    event: 'payment_intent.succeeded',
-  })
 
   return result
 }

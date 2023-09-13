@@ -11,7 +11,6 @@ import {getCurrencyValueFromSatoshis} from '~/utils/price'
 import {prisma} from '~/utils/prisma.server'
 import {createQueue} from '~/utils/queue.server'
 import type {FiatCurrencyCode} from '../../../../config/currency'
-import {queue as webhookQueue} from './webhook.server'
 
 type QueueData = {
   paymentIntentId: string
@@ -47,6 +46,23 @@ export const queue = createQueue<QueueData>(
       throw new UnrecoverableError(
         `Payment intent was canceled ${format.red(paymentIntentId)}`,
       )
+    }
+
+    // If there are no transactions, reschedule the job
+    if (!transactions.length) {
+      throw new Error('No transactions found')
+    }
+
+    // If there are no NEW transactions, reschedule the job
+    const oldTransactionIds = await prisma.transaction.findMany({
+      where: {paymentIntentId},
+      select: {id: true},
+    })
+    const hasNewItem = transactions.some(
+      transaction => !oldTransactionIds.find(({id}) => id === transaction.txid),
+    )
+    if (!hasNewItem) {
+      throw new Error('No new transactions found')
     }
 
     logger.debug(
@@ -93,11 +109,6 @@ export const queue = createQueue<QueueData>(
       }),
     )
 
-    // If there are no transactions, reschedule the job
-    if (!savedTransactions.length) {
-      throw new Error('No transactions found')
-    }
-
     const isPaid = isPaymentIntentPaid({
       ...paymentIntent,
       transactions: savedTransactions,
@@ -105,25 +116,17 @@ export const queue = createQueue<QueueData>(
 
     if (!isPaid) {
       await updatePaymentIntentStatus(paymentIntentId, 'processing')
-      // TODO: call webhook with payment_intent.processing
-
-      throw new Error('Payment not made yet')
+      throw new Error('Payment not confirmed yet')
     }
 
     await updatePaymentIntentStatus(paymentIntentId, 'succeeded')
-
-    // Trigger a webhook for successful payment
-    await webhookQueue.add('trigger success webhook', {
-      paymentIntentId,
-      event: 'payment_intent.succeeded',
-    })
   },
   {
     queue: {
       defaultJobOptions: {
         attempts: Number.MAX_SAFE_INTEGER,
         backoff: {
-          // TODO: add more delay as it go to preview and production
+          // TODO: add more delay as it go to test and production
           //  delay: 1000 * 60 * 5, // 5 minutes
           delay: 1000, // 1 second
           type: 'fixed',

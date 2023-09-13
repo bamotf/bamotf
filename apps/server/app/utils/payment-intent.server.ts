@@ -1,3 +1,4 @@
+import {queue as webhookQueue} from '~/queues/webhook.server'
 import {
   prisma,
   type Mode,
@@ -32,16 +33,17 @@ export async function listPaymentIntents(accountId: string, mode: Mode) {
 
 /**
  * Update the payment intent status according to the given status.
- * It also creates a log entry for the new status.
+ * It also creates a log entry for the new status and trigger the webhook
+ * to notify the client that a change has occurred.
  *
  * @param paymentIntentId
  * @param status
  */
-export function updatePaymentIntentStatus(
+export async function updatePaymentIntentStatus(
   paymentIntentId: string,
   status: 'processing' | 'succeeded',
 ) {
-  return prisma.paymentIntent.update({
+  const pi = await prisma.paymentIntent.update({
     where: {id: paymentIntentId},
     data: {
       status,
@@ -54,6 +56,13 @@ export function updatePaymentIntentStatus(
       },
     },
   })
+
+  await webhookQueue.add('trigger pi webhook', {
+    paymentIntentId,
+    event: `payment_intent.${status}`,
+  })
+
+  return pi
 }
 
 /**
