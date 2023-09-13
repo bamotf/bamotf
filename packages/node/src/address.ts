@@ -17,12 +17,12 @@ const bip32 = BIP32Factory(ecc)
 export function derive(
   xpub: string,
   index: number,
-  environment: 'development' | 'preview' | 'production',
+  environment: 'development' | 'test' | 'production',
 ): string {
   const network =
     environment === 'production'
       ? bitcoin.networks.bitcoin
-      : environment === 'preview'
+      : environment === 'test'
       ? bitcoin.networks.testnet
       : bitcoin.networks.regtest
 

@@ -12,7 +12,7 @@ test.each([
   {
     xpub: 'tpubD6NzVbkrYhZ4WqDXB2micwhW8FN4LPM1tz3Jp2Bx8SnVsbcRQPSbePpV5MUwLxtVgaC6NE8h9ouV5pfw4d4YG4Waw44YggcBsP7fftmpQK8',
     index: 0,
-    environment: 'preview',
+    environment: 'test',
     expected: 'mmMXig7KfytM6DHXHMsZxW5aGDigXENJ2c',
   },
   {
@@ -25,11 +25,7 @@ test.each([
   'should derive a extended public key on ($xpub, $index, $environment) -> $expected',
   ({xpub, index, environment, expected}) => {
     expect(
-      derive(
-        xpub,
-        index,
-        environment as 'development' | 'preview' | 'production',
-      ),
+      derive(xpub, index, environment as 'development' | 'test' | 'production'),
     ).toBe(expected)
   },
 )
