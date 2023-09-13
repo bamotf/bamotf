@@ -2,4 +2,4 @@ import {Bamotf} from '@bamotf/node'
 
 import {env} from './env'
 
-export const bamotf = new Bamotf(env.API_KEY)
+export const bamotf = new Bamotf(env.BAMOTF_API_KEY)

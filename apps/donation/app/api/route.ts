@@ -10,7 +10,7 @@ export async function POST(request: Request) {
   const signatureHeader = request.headers.get('x-webhook-signature') || ''
   logger.info(`🫡 Webhook triggered`)
 
-  const secret = env.WEBHOOK_SECRET!
+  const secret = env.BAMOTF_WEBHOOK_SECRET!
   const {success, parsed} = bamotf.webhooks.constructEvent(
     rawBody,
     signatureHeader,
@@ -32,6 +32,7 @@ export async function POST(request: Request) {
   } = parsed
 
   switch (event) {
+    case 'payment_intent.processing':
     case 'payment_intent.succeeded':
       // Trigger an event on the client
       await pusherServer.trigger(paymentIntent.id, event, {
@@ -39,7 +40,7 @@ export async function POST(request: Request) {
       })
 
       logger.info(
-        `✅ Payment intent succeeded: ${format.magenta(paymentIntent.id)}`,
+        `✅ Payment intent ${event}: ${format.magenta(paymentIntent.id)}`,
       )
       return NextResponse.json({success: true})
 
