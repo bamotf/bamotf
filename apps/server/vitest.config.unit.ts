@@ -10,7 +10,6 @@ process.env.LOG_LEVEL = 'error'
 process.env.MODE = 'development'
 
 export default defineProject({
-  // @ts-expect-error vitest was updated
   plugins: [tsconfigPaths()],
   test: {
     name: 'bamotf/server:unit',
