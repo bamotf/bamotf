@@ -27,13 +27,8 @@ Using it with CJS:
 const bamotf = require('@bamotf/node')('secret-key...')
 
 bamotf.paymentIntents
-  .retrieve({
-    amount: 50,
-    currency: 'USD',
-    tolerance: 0.05,
-    address: 'bc1q00hf9mlaxzej30cx5q6200c636ufdc4gjmqyuh',
-  })
-  .then(pi => console.log(pi.id))
+  .retrieve(pi.id)
+  .then(pi => console.log(pi))
   .catch(error => console.error(error))
 ```
 
@@ -54,21 +49,7 @@ const pi = await bamotf.paymentIntents.create({
 console.log(pi.id)
 ```
 
-### Usage with Deno
-
-TODO: add instructions for Deno
-
-`@bamotf/node` provides a `deno` export target. In your Deno project, import
-`@bamotf/node` using an npm specifier:
-
-Import using npm specifiers:
-
-```js
-import Bamotf from 'npm:@bamotf/node'
-```
-
-Please see [examples/bamotf-node-deno-sample][] for more detailed example and
-instructions on how to use bamotf/node in Deno.
+{/* TODO: add instructions for Deno */}
 
 ## Configuration
 
