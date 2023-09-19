@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "next": "^13.1.1",
-    "typescript": "^5.0.4"
+    "typescript": "^5.2.2"
   },
   "publishConfig": {
     "access": "public"
