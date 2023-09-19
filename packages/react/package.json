@@ -54,8 +54,8 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "@types/react-dom": "18.2.4",
-    "@types/react": "18.2.11",
+    "@types/react-dom": "18.2.7",
+    "@types/react": "18.2.22",
     "autoprefixer": "^10.4.14",
     "eslint-config-custom": "workspace:*",
     "eslint": "^8.0.0",
