@@ -1,0 +1,140 @@
+import {Callout, Steps} from 'nextra/components'
+
+# Testing integration with fake Bitcoins
+
+Given the nature of Bitcoin's scarcity. Testing your application can be
+challening specially if you want to test it in the closest scenario to the
+production as possible. This is why the Bitcoin core team have come up with the
+`Testnet`, which is a network with the same rules as the actual Bitcoin network
+but the coins have no value.
+
+This guide will walk you through the process of testing bamotf with a testnet
+wallet. This includes setting up the Bitcoin core over the testnet, configuring
+bamotf, and setting up your testnet wallet.
+
+## Setting up the Bitcoin Core over the Testnet
+
+To set up the Bitcoin Core over the testnet, you will need to download and
+install the Bitcoin Core on your server. You can find lots of guides on how to
+do this online. This approach can be time-consuming and resource-intensive so it
+can get expensive.
+
+Optionally, you can use Docker to run the Bitcoin Core over the testnet on your
+own machine or server using the `ruimarinho/bitcoin-core` Docker image. This is
+a lightweight image that is easy to set up and use. You can find more
+information about this image on its
+[Docker Hub page](https://hub.docker.com/r/ruimarinho/bitcoin-core). Or you can
+use the following `docker-compose.yml` file to run the Bitcoin Core
+
+```yml filename="docker-compose.yml" copy
+version: '3.8'
+
+services:
+  bamotf: ...
+
+  bitcoin-core-testnet:
+    image: ruimarinho/bitcoin-core:latest
+    command: [
+        '-printtoconsole',
+        '-testnet=1',
+        '-prune=550',
+        '-debug=http',
+        '-rpcbind=0.0.0.0',
+        '-rpcallowip=0.0.0.0/0',
+        '-rpcuser=myrpcuser', # Replace with your own RPC username
+        '-rpcpassword=myrpcpassword', # Replace with your own RPC password
+      ]
+    ports:
+      - 18332:18332
+    volumes:
+      - ./bitcoin:/home/bitcoin/.bitcoin
+```
+
+Be aware that this may take some time to download and sync the blockchain. You
+can check the status of the blockchain sync by running the following command:
+
+```bash copy
+docker logs -f bitcoin-core-testnet
+```
+
+<Callout>
+  If you prefer, you can [download the snapshot of the
+  blockchain](https://bitcoin-snapshots.jaonoct.us/) and unpack it on the
+  `./bitcoin/testnet3` folder to speed up the process.
+</Callout>
+
+## Configuring bamotf
+
+To configure bamotf to use the Bitcoin Core over the testnet, you will need to
+set the `TESTNET_BITCOIN_CORE_URL` environment variable to your bamotf server.
+_This URL should include the user and password for the RPC connection_.
+
+If you want to test it locally, you just need to set the
+`TESTNET_BITCOIN_CORE_URL` environment variable on your docker-compose file.
+
+```yml filename="docker-compose.yml" copy
+version: '3.8'
+services:
+  bamotf:
+    ...
+    environment:
+      ...
+      - TESTNET_BITCOIN_CORE_URL=http://myrpcuser:myrpcpassword@localhost:18332
+
+  bitcoin-core-testnet:
+    ...
+```
+
+## Setting up Your Testnet Wallet
+
+<Steps>
+### Install the Blockstream's Green Wallet
+
+Download and install the
+[`Blockstream's Green Wallet`](https://apps.apple.com/br/app/green-bitcoin-wallet/id1402243590?l=en-GB)
+on your phone.
+
+### Create a Testnet Wallet
+
+In order to create a testnet wallet, you first need to create a mainet wallet.
+After creating the mainet wallet, head back to the list of wallets screen and
+click on the `App Settings` button and turn on `Enable testnet` then, click on
+`Save`.
+
+After that just follow the normal "New Wallet" flow.
+
+### Get Some Testnet Coins
+
+Now that you have a testnet wallet, you need to get some testnet coins. Go to
+one of the following testnet faucets and enter your testnet wallet address to
+get some testnet coins:
+
+- https://testnet-faucet.com/btc-testnet/
+- https://tbtc.bitaps.com/
+- https://testnet-faucet.mempool.co/
+- https://bitcoinfaucet.uo1.net/
+- https://kuttler.eu/en/bitcoin/btc/faucet/
+- https://coinfaucet.eu/en/btc-testnet/
+
+Remember, the testnet network is separate from the main Bitcoin network. Coins
+on the testnet have no real-world value and are useful for testing purposes
+only.
+
+</Steps>
+
+## The `bamotf/core-dev` image
+
+<Callout type="info">
+  This is mainly used by the bamotf team to test the integration.
+</Callout>
+
+We also ship this `bamotf/core-dev` image which is a base image for building and
+testing the Bitcoin core under the **regtest** network. During the
+inicialization, it creates a `test-wallet` and mine 101 blocks to it so you can
+start testing your application right away.
+
+You probably don't need it but in case you do, you can access this image with
+the following RPC access:
+
+- user: `username`
+- password: `wc7eFmVwEeZCDYTMaOqxRnLWSR7aI76bGmHl6pRFtAU`

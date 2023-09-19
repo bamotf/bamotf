@@ -1,0 +1,46 @@
+import {Tab, Tabs} from 'nextra/components'
+
+# Creating payment Intents
+
+Payment Intents are the recommended way to accept payments with bamotf. They
+represent your customer's intent to pay you for goods or services and they are
+confirmed once the payment is complete.
+
+You can create payment intents by using the SDKs and libraries we provide or by
+calling the API directly
+
+## Creating a payment intent using libraries
+
+To create a payment intent with the libraries, you need to call the `create`
+method on the `PaymentIntent` class which may vary depending on the language
+you're using. Here's an example:
+
+<Tabs items={['javascript', 'typescript']}>
+    <Tab>
+    Make sure you have the **bamotf** Node library installed. See the [installation guide](/reference/node#installation) for more information.
+
+    ```js
+    import bamotf from 'bamotf'
+
+    {/* FIXME: missing stuff */}
+    const pi = await bamotf.paymentIntents.create({
+            amount,
+            address,
+            currency: 'USD',
+            confirmations: 6,
+            description: 'Donation',
+            tolerance: 0.02,
+        })
+    ```
+    </Tab>
+
+</Tabs>
+
+## Creating a payment intent using the API
+
+To create a payment intent with the API, you need to make a `POST` request to
+the `/FIXME` endpoint. The request should include the following parameters:
+{/* FIXME: Maybe add the link to the openapi specs */}
+
+- `amount`: The amount of the payment intent in cents.
+- `currency`: The currency of the payment intent. {/* FIXME: missing stuff */}

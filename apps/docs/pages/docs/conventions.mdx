@@ -1,22 +1,22 @@
 # Conventions
 
-## `MODE` environment variable
+## `MODE`
 
-One hard concept for web developers to grasp is the concept of having differents
-networks that the application can run on. For them, mainnet, testnet, regtest,
-are all the same thing. They are all just "the blockchain". But technically,
-they are all different networks, with different rules, different coins,
-different blockchains. Web developers are used to the concept of the application
-is either running in production, or pre-production (or staging), or development.
+One hard concept for new web developers to grasp is the concept of having
+differents networks that the application can run on. For them, mainnet, testnet,
+regtest, are all the same thing. They are all just "the blockchain". But
+technically, they are all different networks, with different rules, different
+coins, different blockchains. Web developers are used to the concept of the
+application is either running in production, or test (staging), or development.
 
-This is why we have the `MODE` environment variable. It can be set to
-`development`, `preview` or `production`. This is used to determine certain
+This is why we have this `MODE` selector in the dashboard. It can be set to
+`development`, `test` or `production`. This is used to determine certain
 features that should or should not be enabled depending on the environment.
 
 | Mode        | Network |
 | ----------- | ------- |
-| development | regtest |
-| preview     | testnet |
+| development | n/a     |
+| test        | testnet |
 | production  | mainnet |
 
 ## Price index

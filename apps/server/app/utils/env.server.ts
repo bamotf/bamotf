@@ -5,30 +5,26 @@ import {z} from './zod'
 
 const STRING_REQUIRED = z.string().min(1, 'Required')
 const URL_REQUIRED = STRING_REQUIRED.url()
+const URL = z.string().url()
+const BOOLEAN = z.preprocess(a => a === 'true', z.boolean())
+const CONNECTION_STRING = URL.transform(url => {
+  return new ConnectionString(url, {
+    protocol: 'https',
+  })
+})
 
 const envSchema = z.object({
   /**
-   * The environment that the code is running in.
+   * The environment that the code is running in for the bamotf team.
    * This is used to determine if we should enable certain features.
    * It is also used to determine if we should enable certain security features.
    *
-   * @note development is the developer time and production after built.
+   * @note development is the bamotf team developer time and production after built (docker).
    * @default development
    */
   NODE_ENV: z
     .enum(['development', 'test', 'production'])
     .default('development'),
-
-  /**
-   * The mode that the server is running in. This is used to determine the network
-   * that the server is checking for payments on. And it is also used to determine
-   * if we should enable certain features.
-   * For example, we don't want to enable the `/simulate` when not running in development.
-   *
-   * @note development = regtest, preview = testnet and production = bitcoin.
-   * @default development
-   */
-  MODE: z.enum(['development', 'preview', 'production']).default('development'),
 
   /**
    * Connection string for prisma.
@@ -41,31 +37,47 @@ const envSchema = z.object({
   REDIS_URL: URL_REQUIRED,
 
   /**
-   * The bitcoin core we use to check for payments.
+   * The bitcoin core connection string we use to check for payments on mainnet.
    */
-  BITCOIN_CORE_URL: URL_REQUIRED.transform(url => {
-    return new ConnectionString(url, {
-      protocol: 'http',
-    })
-  }),
+  MAINNET_BITCOIN_CORE_URL: CONNECTION_STRING.optional(),
+
+  /**
+   * The bitcoin core connection string we use to check for payments on testnet.
+   */
+  TESTNET_BITCOIN_CORE_URL: CONNECTION_STRING.optional(),
+
+  /**
+   * When DEV_MODE_ENABLED is true, the server will make the bitcoin core
+   * connection optional and will enable the simulate payment function that
+   * bypass the checks on network. This is used to determine the network.
+   *
+   * @default true
+   */
+  DEV_MODE_ENABLED: BOOLEAN.default(true),
 
   /**
    * This is the webhook url that we send events to when some
    * event happens in the server.
    * For example, when a payment is received, we send a webhook
    */
-  WEBHOOK_URL: URL_REQUIRED,
+  DEV_WEBHOOK_URL: URL.optional(),
 
   /**
    * This is the secret that we use to sign the webhook events
    * that we send to the webhook url.
    */
-  WEBHOOK_SECRET: STRING_REQUIRED,
+  DEV_WEBHOOK_SECRET: z.string().optional(),
+
+  /**
+   * This is the API key that the server will use to authenticate clients
+   * that want to use the API.
+   */
+  DEV_API_KEY: z.string().optional(),
 
   /**
    * When running tests, we don't want wait.
    */
-  RUNNING_E2E: z.coerce.boolean().default(false),
+  RUNNING_E2E: BOOLEAN.default(false),
 
   /**
    * The url of the price data server.
@@ -90,15 +102,94 @@ const envSchema = z.object({
    * This is used to prevent people from tampering with the session cookie.
    */
   SESSION_SECRET: z.string().default(createSecret()),
-
-  /**
-   * This is the API key that the server will use to authenticate clients
-   * that want to use the API.
-   */
-  API_KEY: STRING_REQUIRED,
 })
+
+type EnvSchema = z.infer<typeof envSchema>
+type EnvSchemaPartial = Omit<
+  EnvSchema,
+  | 'DEV_MODE_ENABLED'
+  | 'DEV_API_KEY'
+  | 'DEV_WEBHOOK_SECRET'
+  | 'DEV_WEBHOOK_URL'
+  | 'MAINNET_BITCOIN_CORE_URL'
+  | 'TESTNET_BITCOIN_CORE_URL'
+>
+
+const refinedEnvSchema = envSchema.superRefine(
+  (
+    arg,
+    ctx,
+  ): arg is EnvSchemaPartial &
+    (
+      | {
+          DEV_MODE_ENABLED: true
+          DEV_API_KEY: string
+          DEV_WEBHOOK_SECRET: string
+          DEV_WEBHOOK_URL: string
+          MAINNET_BITCOIN_CORE_URL: ConnectionString | undefined
+          TESTNET_BITCOIN_CORE_URL: ConnectionString | undefined
+        }
+      | {
+          DEV_MODE_ENABLED: false
+          DEV_API_KEY: string | undefined
+          DEV_WEBHOOK_SECRET: string | undefined
+          DEV_WEBHOOK_URL: string | undefined
+          MAINNET_BITCOIN_CORE_URL: ConnectionString | undefined
+          TESTNET_BITCOIN_CORE_URL: ConnectionString | undefined
+        }
+    ) => {
+    const {
+      DEV_MODE_ENABLED,
+      DEV_API_KEY,
+      DEV_WEBHOOK_SECRET,
+      DEV_WEBHOOK_URL,
+      MAINNET_BITCOIN_CORE_URL,
+      TESTNET_BITCOIN_CORE_URL,
+    } = arg
+
+    // When DEV_MODE_ENABLED is false, we require the MAINNET_BITCOIN_CORE_URL
+    //  or TESTNET_BITCOIN_CORE_URL to be set.
+    if (!DEV_MODE_ENABLED) {
+      if (!MAINNET_BITCOIN_CORE_URL && !TESTNET_BITCOIN_CORE_URL) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message:
+            'MAINNET_BITCOIN_CORE_URL or TESTNET_BITCOIN_CORE_URL is required when DEV_MODE_ENABLED is false',
+          path: ['MAINNET_BITCOIN_CORE_URL', 'TESTNET_BITCOIN_CORE_URL'],
+        })
+      }
+    } else {
+      // When DEV_MODE_ENABLED is true, we require the DEV_WEBHOOK_URL,
+      // DEV_WEBHOOK_SECRET, and DEV_API_KEY to be set.
+      if (!DEV_WEBHOOK_URL) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'DEV_WEBHOOK_URL is required when DEV_MODE_ENABLED is true',
+          path: ['DEV_WEBHOOK_URL'],
+        })
+      }
+      if (!DEV_WEBHOOK_SECRET) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message:
+            'DEV_WEBHOOK_SECRET is required when DEV_MODE_ENABLED is true',
+          path: ['DEV_WEBHOOK_SECRET'],
+        })
+      }
+      if (!DEV_API_KEY) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'DEV_API_KEY is required when DEV_MODE_ENABLED is true',
+          path: ['DEV_API_KEY'],
+        })
+      }
+    }
+
+    return z.NEVER
+  },
+)
 
 /**
  * Environment variables that are required for the server to run
  */
-export const env = envSchema.parse(process.env)
+export const env = refinedEnvSchema.parse(process.env)

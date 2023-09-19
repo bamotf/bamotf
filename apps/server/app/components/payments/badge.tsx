@@ -21,7 +21,7 @@ export function Badge({status, className, ...props}: BadgeProps) {
   const content = {
     succeeded: (
       <>
-        OK <Icons.Check className="ml-1 w-4 h-4" />
+        OK <Icons.CheckCheck className="ml-1 w-4 h-4" />
       </>
     ),
     canceled: (
@@ -36,7 +36,7 @@ export function Badge({status, className, ...props}: BadgeProps) {
     ),
     processing: (
       <>
-        Confirming <Icons.Clock className="ml-1 w-3 h-3" />
+        Confirming <Icons.Check className="ml-1 w-3 h-3" />
       </>
     ),
   }

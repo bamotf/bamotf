@@ -60,7 +60,7 @@ export type WebhookEvent = {
   id: string
   idempotenceKey: string
   created: string
-  event: 'payment_intent.succeeded'
+  event: `payment_intent.${PaymentIntentStatus}`
   data: {
     paymentIntent: PaymentIntent
   }

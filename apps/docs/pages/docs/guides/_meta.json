@@ -1,7 +1,8 @@
 {
+  "creating-payment-intents": "Creating Payment Intents",
   "custom-ui": "Customizing the UI",
   "webhooks": "Webhooks",
-  "testing-development": "Testing Integration",
-  "pre-production": "Using Preview mode",
+  "testing-integration": "Testing Integration",
+  "testing-with-bitcoin": "Testing with Bitcoin",
   "deploy-production": "Deploying to Production"
 }

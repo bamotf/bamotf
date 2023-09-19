@@ -11,7 +11,9 @@ import {format, logger} from 'logger'
 
 import {env} from './env.server'
 
-const BITCOIN_CORE_URL = `${env.BITCOIN_CORE_URL.protocol}://${env.BITCOIN_CORE_URL.host}`
+const BITCOIN_CORE_URL = `${env.MAINNET_BITCOIN_CORE_URL!.protocol}://${
+  env.MAINNET_BITCOIN_CORE_URL!.host
+}`
 
 type BitcoinCoreResponse = {
   id: string
@@ -53,7 +55,11 @@ async function cmd({
       'Content-Type': 'application/json',
       Authorization:
         'Basic ' +
-        btoa(`${env.BITCOIN_CORE_URL.user}:${env.BITCOIN_CORE_URL.password}`),
+        btoa(
+          `${env.MAINNET_BITCOIN_CORE_URL!.user}:${
+            env.MAINNET_BITCOIN_CORE_URL!.password
+          }`,
+        ),
     },
     body: JSON.stringify({
       jsonrpc: '1.0',
@@ -174,6 +180,7 @@ export async function listUnspent(wallet: string): Promise<
   return await cmd({
     method: 'listunspent',
     wallet,
+    params: {minconf: 0},
   })
 }
 
@@ -191,7 +198,8 @@ export async function getBalance(wallet: string) {
 }
 
 /**
- * Simulates a payment to the given address.
+ * Makes an onchain transaction to the given address.
+ * NOTE: This is only used by the bamotf team to simulate payments during development.
  */
 export async function simulatePayment({
   address,
@@ -203,8 +211,10 @@ export async function simulatePayment({
    */
   amount: bigint
 }) {
-  if (env.MODE !== 'development') {
-    throw new Error('You can only simulate payment in development mode')
+  if (env.NODE_ENV !== 'test') {
+    throw new Error(
+      'This is only used by the bamotf team to simulate payments during development',
+    )
   }
 
   const convertedAmount = BigInt(providedAmount)

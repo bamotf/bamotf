@@ -6,15 +6,15 @@ const STRING_REQUIRED = z.string().min(1, 'Required')
 
 export const env = createEnv({
   server: {
-    API_KEY: STRING_REQUIRED,
+    BAMOTF_API_KEY: STRING_REQUIRED,
     BAMOTF_SERVER_URL: STRING_REQUIRED.url(),
+    BAMOTF_WEBHOOK_SECRET: STRING_REQUIRED,
     NODE_ENV: z
       .enum(['development', 'production', 'test'])
       .default('development'),
     PUSHER_APP_ID: STRING_REQUIRED,
     PUSHER_SECRET: STRING_REQUIRED,
     XPUB: STRING_REQUIRED,
-    WEBHOOK_SECRET: STRING_REQUIRED,
     VERCEL_ENV: z
       .enum(['development', 'preview', 'production'])
       .default('development'),

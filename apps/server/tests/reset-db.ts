@@ -2,7 +2,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 import {logger} from 'logger'
 
-import {getPasswordHash} from '~/utils/auth.server'
 import {PrismaClient} from '~/utils/prisma.server'
 
 const prisma = new PrismaClient()
@@ -16,15 +15,9 @@ export default async () => {
     prisma.webhookAttempt.deleteMany(),
     prisma.transaction.deleteMany(),
     prisma.paymentIntent.deleteMany(),
-    prisma.user.update({
-      where: {username: 'satoshi'},
-      data: {
-        password: {
-          update: {
-            hash: await getPasswordHash('satoshi'),
-          },
-        },
-      },
-    }),
+    prisma.webhook.deleteMany(),
+    prisma.api.deleteMany(),
+    prisma.account.deleteMany(),
+    prisma.user.deleteMany(),
   ])
 }

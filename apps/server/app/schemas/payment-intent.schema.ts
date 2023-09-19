@@ -6,11 +6,13 @@ import {CURRENCY_CODES} from '../../../../config/currency'
 
 type SchemaType = Schema<PaymentIntent, 'createdAt' | 'updatedAt'>
 
+export const PaymentIntentIdSchema = z.string()
+
 export const PaymentIntentSchema = z.object({
   /**
    * The id of the payment intent
    */
-  id: z.string(),
+  id: PaymentIntentIdSchema,
   /**
    * The address the user needs to pay to
    */
@@ -35,6 +37,8 @@ export const PaymentIntentSchema = z.object({
   metadata: zpu.json().nullish(),
   canceledAt: z.date().optional(),
   cancellationReason: z.string().optional(),
+  accountId: z.string(),
+  mode: z.enum(['DEV', 'TEST', 'PROD']),
 } satisfies SchemaType)
 
 export const NewPaymentIntentSchema = PaymentIntentSchema.pick({

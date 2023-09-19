@@ -3,7 +3,10 @@ import {describe, expect, test} from 'tests/base.fixture'
 import {action, loader} from './api.payment-intents.$id._index'
 
 describe('[GET] /api/payment-intents/:id', () => {
-  test('should respond with a 200 status code', async ({faker, headers}) => {
+  test('should respond with a 200 status code', async ({
+    faker,
+    request: {authorize},
+  }) => {
     // Create a fake payment intent
     const {id, amount} = await faker.db.paymentIntent()
 
@@ -11,7 +14,7 @@ describe('[GET] /api/payment-intents/:id', () => {
     // const pi = await request.get(`/api/payment-intents/${id}`)
     const request = new Request(`http://app.com/api/payment-intents/${id}`, {
       method: 'GET',
-      headers,
+      headers: await authorize(),
     })
 
     const pi = await loader({
@@ -34,7 +37,10 @@ describe('[GET] /api/payment-intents/:id', () => {
 })
 
 describe('[POST] /api/payment-intents/:id', () => {
-  test('should respond with a 200 status code', async ({faker, headers}) => {
+  test('should respond with a 200 status code', async ({
+    faker,
+    request: {authorize},
+  }) => {
     // Create a fake payment intent
     const {id} = await faker.db.paymentIntent()
 
@@ -52,7 +58,7 @@ describe('[POST] /api/payment-intents/:id', () => {
     let request = new Request(`http://app.com/api/payment-intents/${id}`, {
       method: 'POST',
       body,
-      headers,
+      headers: await authorize(),
     })
 
     const pi = await action({

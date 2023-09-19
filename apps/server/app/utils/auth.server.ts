@@ -44,6 +44,9 @@ authenticator.use(
   FormStrategy.name,
 )
 
+/**
+ * Requires a session from the request and returns the user ID.
+ */
 export async function requireUserId(
   request: Request,
   {redirectTo}: {redirectTo?: string | null} = {},
@@ -72,6 +75,9 @@ export async function requireUserId(
   return session.userId
 }
 
+/**
+ * Requires a session from the request and returns the user ID.
+ */
 export async function getUserId(request: Request) {
   const sessionId = await authenticator.isAuthenticated(request)
   if (!sessionId) return null
@@ -171,17 +177,42 @@ export async function verifyUserPassword(
   return {id: userWithPassword.id}
 }
 
-export async function requireToken(request: Request) {
+export async function requireValidApiKey(request: Request) {
   // Get the bearer token from the request
-  const bearerToken = request.headers.get('Authorization')?.split(' ')[1]
+  const key = request.headers.get('Authorization')?.split(' ')[1]
+
+  // Check if the bearer token matches the dev API key
+  // and if so, return the default account
+  if (env.DEV_MODE_ENABLED && key === env.DEV_API_KEY) {
+    const account = await prisma.account.findFirst()
+    if (!account) {
+      throw new Error('No default account found')
+    }
+
+    return {
+      mode: 'dev' as const,
+      accountId: account.id,
+    }
+  }
+
+  // if it isn't the dev API key, check if it's a valid API key
+  const api = await prisma.api.findUnique({
+    where: {
+      key,
+    },
+    select: {
+      mode: true,
+      accountId: true,
+    },
+  })
 
   // If there is no bearer token or the token doesn't match the settings, throw an error
-  if (!bearerToken || bearerToken !== env.API_KEY) {
+  if (!api) {
     throw json("You don't have permission to access this resource.", {
       status: 401,
       statusText: 'Unauthorized',
     })
   }
 
-  return
+  return api
 }

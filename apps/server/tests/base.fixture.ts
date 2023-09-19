@@ -7,20 +7,22 @@ import * as request from './request'
 export * from 'vitest'
 
 export type Options = {
-  bitcoinCore: typeof bitcoinCore
-  faker: typeof faker
-  headers: {
-    Authorization: string
-  }
   request: typeof request
+
+  /**
+   * A Bitcoin Core client.
+   */
+  bitcoinCore: typeof bitcoinCore
+
+  /**
+   * A Faker instance that can be used to generate fake data.
+   * You can also fake `db` data with `faker.db`.
+   */
+  faker: typeof faker
 }
 
 export const test = base.extend<Options>({
   bitcoinCore,
   faker,
-  headers: {
-    // eslint-disable-next-line turbo/no-undeclared-env-vars
-    Authorization: `Bearer ${process.env.API_KEY}`,
-  },
   request,
 })

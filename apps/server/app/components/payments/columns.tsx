@@ -1,20 +1,34 @@
-import {Link} from '@remix-run/react'
+import {conform} from '@conform-to/react'
+import {Link, useFetcher} from '@remix-run/react'
 import type {ColumnDef} from '@tanstack/react-table'
 
+import {Formatter} from '~/components/formatter'
+import {Icons} from '~/components/icons'
 import {Badge} from '~/components/payments/badge'
+import {Button} from '~/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '~/components/ui/dropdown-menu'
 import {cn} from '~/utils/css'
-import type {PaymentIntent, PaymentIntentStatus} from '~/utils/prisma.server'
-import {Formatter} from '../formatter'
+import type {PaymentIntent} from '~/utils/prisma.server'
 
-type Data = {
-  id: string
-  amount: bigint
-  address: string
-  status: PaymentIntentStatus
-  currency: string
-  description: string | null
-  createdAt: Date
-}
+type Data = Pick<
+  PaymentIntent,
+  | 'id'
+  | 'mode'
+  | 'amount'
+  | 'address'
+  | 'status'
+  | 'currency'
+  | 'description'
+  | 'confirmations'
+  | 'createdAt'
+>
 
 function LinkToItem({id, children}: {id: string; children: React.ReactNode}) {
   return (
@@ -50,11 +64,9 @@ export const columns: ColumnDef<Data>[] = [
     accessorKey: 'status',
     header: 'Status',
     cell: ({row}) => {
-      const status = row.getValue('status') as PaymentIntent['status']
-
       return (
         <LinkToItem id={row.original.id}>
-          <Badge status={status} />
+          <Badge status={row.original.status} />
         </LinkToItem>
       )
     },
@@ -96,6 +108,66 @@ export const columns: ColumnDef<Data>[] = [
       }).format(date)
 
       return formatted
+    },
+  },
+  {
+    id: 'actions',
+    enableHiding: false,
+    cell: ({row}) => {
+      const pi = row.original
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const fetcher = useFetcher()
+
+      // submit form programmatically
+      const handleSubmit = (intent: string) => {
+        fetcher.submit(
+          {
+            id: pi.id,
+            [conform.INTENT]: intent,
+          },
+          {method: 'post'},
+        )
+      }
+
+      return (
+        <fetcher.Form method="post" onClick={e => e.stopPropagation()}>
+          <input type="hidden" name="id" value={pi.id} />
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <Icons.More className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuItem
+                onClick={() => navigator.clipboard.writeText(pi.id)}
+              >
+                Copy payment ID
+              </DropdownMenuItem>
+              {pi.mode === 'dev' &&
+                ['pending', 'processing'].includes(pi.status) && (
+                  <>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuLabel>Simulate</DropdownMenuLabel>
+                    <DropdownMenuItem
+                      onClick={() => handleSubmit('pay-and-confirm')}
+                    >
+                      <Icons.CheckCheck className="mr-2 h-4 w-4 text-success" />
+                      <span>Pay and confirm</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleSubmit('pay-only')}>
+                      <Icons.Check className="mr-2 h-4 w-4 text-warning" />
+                      <span>Pay only</span>
+                    </DropdownMenuItem>
+                  </>
+                )}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </fetcher.Form>
+      )
     },
   },
 ]

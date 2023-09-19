@@ -1,61 +1,34 @@
-const {PrismaClient} = require('@prisma/client')
+import {PrismaClient} from '@prisma/client'
+
+import {createSecret} from '~/utils/encryption.server'
 
 const prisma = new PrismaClient()
 
 async function main() {
   console.log('🌱 Seeding...')
 
-  console.time(`👑 Created admin role/permission...`)
-  const adminRole = await prisma.role.upsert({
-    where: {name: 'admin'},
-    update: {},
-    create: {
-      name: 'admin',
-      permissions: {
-        create: {name: 'admin'},
-      },
+  const {id: accountId} = await prisma.account.findFirstOrThrow({
+    where: {name: 'Initial Account'},
+  })
+
+  const {id: webhookId} = await prisma.webhook.create({
+    data: {
+      url: 'http://localhost:3000/webhook/bamotf',
+      accountId,
+      secret: createSecret(),
+      mode: 'prod',
     },
   })
-  console.timeEnd(`👑 Created admin role/permission...`)
-  console.time(
-    `👾 Created "satoshi" user with password "satoshi" and admin role`,
-  )
-  await prisma.user.upsert({
-    where: {username: 'satoshi'},
-    update: {},
-    create: {
-      name: 'Satoshi Nakamoto',
-      username: 'satoshi',
-      roles: {connect: {id: adminRole.id}},
-      password: {
-        create: {
-          // Currently, the default user is being created after running the seed script during production.
-          // Probably this is not a good idea because I had to make this script JS instead of TS to make it work.
-          // Maybe we should create a default user in the migration file instead?
-
-          // It's "satoshi":
-          hash: '$2a$10$4Medc9f4b2gOmHTTcoLzA.PcLJcmKHcoD2zeGVdaAm8VPZel5Stim',
-        },
-      },
-    },
-  })
-  console.timeEnd(
-    `👾 Created "satoshi" user with password "satoshi" and admin role`,
-  )
-
-  // eslint-disable-next-line turbo/no-undeclared-env-vars
-  if (process.env.NODE_ENV === 'production') {
-    return
-  }
 
   console.time(`🦺 Created example payment intents`)
-
   // Create a test payment intents
   prisma.$transaction([
     prisma.paymentIntent.upsert({
       where: {id: 'seed-1'},
       update: {},
       create: {
+        mode: 'dev',
+        accountId,
         id: 'seed-1',
         amount: 1,
         description: 'User has not paid',
@@ -67,6 +40,8 @@ async function main() {
       where: {id: 'seed-2'},
       update: {},
       create: {
+        mode: 'prod',
+        accountId,
         id: 'seed-2',
         amount: 42069,
         address: 'random-address-2',
@@ -81,6 +56,29 @@ async function main() {
             },
           ],
         },
+        webhookAttempts: {
+          create: [
+            {
+              id: 'webhook-attempt-1',
+              webhookId,
+              status: 200,
+              body: {
+                userId: 1,
+                id: 1,
+                title: 'delectus aut autem',
+                completed: false,
+              },
+              response: {
+                userId: 1,
+                id: 1,
+                title: 'delectus aut autem',
+                completed: false,
+              },
+              event: 'payment_intent.created',
+              url: 'http://localhost:3000/webhook/bamotf',
+            },
+          ],
+        },
       },
     }),
 
@@ -88,6 +86,8 @@ async function main() {
       where: {id: 'seed-3'},
       update: {},
       create: {
+        mode: 'dev',
+        accountId,
         id: 'seed-3',
         amount: 10_002_001,
         address: 'random-address-3',
@@ -110,6 +110,8 @@ async function main() {
       where: {id: 'seed-4'},
       update: {},
       create: {
+        mode: 'dev',
+        accountId,
         id: 'seed-4',
         amount: 1000,
         address: 'random-address-4',
@@ -131,6 +133,8 @@ async function main() {
       where: {id: 'seed-5'},
       update: {},
       create: {
+        mode: 'dev',
+        accountId,
         id: 'seed-5',
         amount: 10_000_00,
         address: 'random-address-5',
@@ -143,6 +147,8 @@ async function main() {
       where: {id: 'seed-6'},
       update: {},
       create: {
+        mode: 'dev',
+        accountId,
         id: 'seed-6',
         amount: 13099,
         address: 'random-address-6',
@@ -188,6 +194,8 @@ async function main() {
       where: {id: 'seed-7'},
       update: {},
       create: {
+        mode: 'test',
+        accountId,
         id: 'seed-7',
         amount: 13000099,
         address: 'random-address-7',
