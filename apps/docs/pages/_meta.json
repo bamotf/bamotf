@@ -7,10 +7,6 @@
       "layout": "raw"
     }
   },
-    "templates": {
-    "type": "page",
-    "title": "Templates"
-  },
   "docs": {
     "type": "page",
     "title": "Documentation"
