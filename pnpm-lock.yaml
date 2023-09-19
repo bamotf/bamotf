@@ -85,7 +85,7 @@ importers:
         specifier: 18.17.17
         version: 18.17.17
       typescript:
-        specifier: ^5.0.0
+        specifier: ^5.0.4
         version: 5.0.4
 
   apps/donation:
@@ -593,7 +593,7 @@ importers:
         specifier: ^7.0.0
         version: 7.0.0(postcss@8.4.21)(typescript@5.0.4)
       typescript:
-        specifier: ^5.0.0
+        specifier: ^5.0.4
         version: 5.0.4
 
   packages/tailwind-config:
@@ -4152,7 +4152,7 @@ packages:
       eslint: ^6.0.0 || ^7.0.0 || >=8.0.0
     dependencies:
       eslint: 8.42.0
-      eslint-visitor-keys: 3.4.1
+      eslint-visitor-keys: 3.4.3
 
   /@eslint-community/eslint-utils@4.4.0(eslint@8.49.0):
     resolution: {integrity: sha512-1/sA4dwrzBAyeUoQ6oxahHKmrZvsnLCg4RfxW3ZFGGmQkSNQPFNLV9CUEFQP1x9EYXHTo5p6xdhZM1Ne9p/AfA==}
@@ -11003,7 +11003,6 @@ packages:
   /eslint-visitor-keys@3.4.3:
     resolution: {integrity: sha512-wpc+LXeiyiisxPlEkUzU6svyS1frIO3Mgxj1fdy7Pm8Ygzguax2N3Fa/D/ag1WqbOprdI+uY6wMUl8/a2G+iag==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-    dev: true
 
   /eslint@8.38.0:
     resolution: {integrity: sha512-pIdsD2jwlUGf/U38Jv97t8lq6HpaU/G9NKbYmpWpZGw3LdTNhZLbJePqxOXGB5+JEKfOPU/XLxYxFh03nr1KTg==}
