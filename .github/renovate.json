@@ -22,20 +22,27 @@
     },
     {
       "groupName": "definitelyTyped",
-      "automerge": "true",
       "packagePatterns": ["^@types/"],
       "updateTypes": ["patch", "minor"],
       "schedule": ["before 8am on Monday"]
     },
     {
+      "groupName": "Remix",
+      "matchPackagePatterns": ["@remix-run/*"],
+      "schedule": ["before 8am on Monday"]
+    },
+    {
+      "groupName": "Next",
+      "matchPackagePatterns": ["next"],
+      "schedule": ["before 8am on Monday"]
+    },
+    {
       "groupName": "Storybook",
-      "automerge": "true",
       "matchPackagePatterns": [".*storybook.*"],
       "schedule": ["before 8am on Monday"]
     },
     {
       "groupName": "Turbo",
-      "automerge": "true",
       "matchPackagePatterns": ["eslint-config-turbo", "turbo"],
       "schedule": ["before 8am on Monday"]
     }
