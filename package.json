@@ -35,13 +35,13 @@
     "nano-staged": "0.8.0",
     "prettier": "3.0.0",
     "prettier-plugin-tailwindcss": "^0.4.1",
-    "turbo": "1.10.3",
+    "turbo": "1.10.14",
     "vitest": "0.33.0"
   },
   "engines": {
     "node": ">=14.0.0"
   },
-  "packageManager": "pnpm@8.6.10",
+  "packageManager": "pnpm@8.7.6",
   "nano-staged": {
     "*.{js,jsx,ts,tsx}": "eslint --cache --cache-location ./node_modules/.cache/eslint --fix",
     "*.{js,jsx,json,yml,yaml,css,ts,tsx,md,mdx}": "prettier --write"
