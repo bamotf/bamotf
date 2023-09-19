@@ -27,10 +27,10 @@
     "eslint": "^8.0.0",
     "eslint-config-custom": "workspace:*",
     "logger": "workspace:*",
-    "msw": "^1.2.1",
+    "msw": "^1.3.1",
     "tsconfig": "workspace:*",
     "tsup": "^7.0.0",
-    "typescript": "^5.0.4"
+    "typescript": "^5.2.2"
   },
   "dependencies": {
     "@swan-bitcoin/xpub-lib": "^0.1.5",

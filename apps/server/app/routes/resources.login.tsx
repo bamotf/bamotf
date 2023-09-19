@@ -28,7 +28,6 @@ export async function action({request}: DataFunctionArgs) {
   const formData = await request.formData()
   const submission = parse(formData, {
     schema: loginFormSchema,
-    acceptMultipleErrors: () => true,
   })
   if (submission.intent !== 'submit') {
     return json({status: 'idle', submission} as const)
@@ -58,7 +57,7 @@ export async function action({request}: DataFunctionArgs) {
             ...submission,
             error: {
               // show authorization error as a form level error message.
-              '': error.message,
+              '': [error.message],
             },
           },
         } as const,

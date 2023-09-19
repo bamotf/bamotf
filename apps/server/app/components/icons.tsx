@@ -27,7 +27,7 @@ import {
   User,
   Webhook,
   X,
-  type Icon as LucideIcon,
+  type LucideIcon,
   type LucideProps,
 } from 'lucide-react'
 
