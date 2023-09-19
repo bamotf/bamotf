@@ -22,7 +22,7 @@
     "prepare": "node ./scripts/prepare.js",
     "changeset": "changeset",
     "release": "turbo build --filter=react --filter=node --filter=utils && changeset publish",
-    "setup": "pnpm setup:install && docker-compose up -d && pnpm prisma migrate reset --force --skip-seed && pnpm validate && pnpm prisma db seed && turbo test:e2e",
+    "setup": "pnpm setup:install && docker-compose up -d && pnpm prisma migrate reset --force --skip-seed && pnpm validate && pnpm prisma migrate reset --force && turbo test:e2e",
     "setup:install": "pnpm install && pnpm run --parallel test:e2e:install"
   },
   "devDependencies": {
