@@ -85,8 +85,8 @@ importers:
         specifier: 18.11.10
         version: 18.11.10
       typescript:
-        specifier: ^4.9.3
-        version: 4.9.4
+        specifier: ^5.0.0
+        version: 5.0.4
 
   apps/donation:
     dependencies:
@@ -591,10 +591,10 @@ importers:
         version: link:../tsconfig
       tsup:
         specifier: ^7.0.0
-        version: 7.0.0(postcss@8.4.21)(typescript@4.9.4)
+        version: 7.0.0(postcss@8.4.21)(typescript@5.0.4)
       typescript:
-        specifier: ^4.9.4
-        version: 4.9.4
+        specifier: ^5.0.0
+        version: 5.0.4
 
   packages/tailwind-config:
     devDependencies:
@@ -17575,7 +17575,7 @@ packages:
   /tslib@2.5.0:
     resolution: {integrity: sha512-336iVw3rtn2BUK7ORdIAHTyxHGRIHVReokCR3XjbckJMK7ms8FysBfhLR8IXnAgy7T0PTPNBWKiH514FOW/WSg==}
 
-  /tsup@7.0.0(postcss@8.4.21)(typescript@4.9.4):
+  /tsup@7.0.0(postcss@8.4.21)(typescript@5.0.4):
     resolution: {integrity: sha512-yYARDRkPq07mO3YUXTvF12ISwWQG57Odve8aFEgLdHyeGungxuKxb19yf9G0W8y59SZFkLnRj1gkoVk1gd5fbQ==}
     engines: {node: '>=16.14'}
     hasBin: true
@@ -17606,7 +17606,7 @@ packages:
       source-map: 0.8.0-beta.0
       sucrase: 3.32.0
       tree-kill: 1.2.2
-      typescript: 4.9.4
+      typescript: 5.0.4
     transitivePeerDependencies:
       - supports-color
       - ts-node
@@ -17825,12 +17825,6 @@ packages:
   /typeforce@1.18.0:
     resolution: {integrity: sha512-7uc1O8h1M1g0rArakJdf0uLRSSgFcYexrVoKo+bzJd32gd4gDy2L/Z+8/FjPnU9ydY3pEnVPtr9FyscYY60K1g==}
     dev: false
-
-  /typescript@4.9.4:
-    resolution: {integrity: sha512-Uz+dTXYzxXXbsFpM86Wh3dKCxrQqUcVMxwU54orwlJjOpO3ao8L7j5lH+dWfTwgCwIuM9GQ2kvVotzYJMXTBZg==}
-    engines: {node: '>=4.2.0'}
-    hasBin: true
-    dev: true
 
   /typescript@5.0.4:
     resolution: {integrity: sha512-cW9T5W9xY37cc+jfEnaUvX91foxtHkza3Nw3wkoF4sSlKn0MONdkdEndig/qPBWXNkmplh3NzayQzCiHM4/hqw==}
