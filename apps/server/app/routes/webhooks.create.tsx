@@ -75,7 +75,6 @@ export async function action({request}: DataFunctionArgs) {
         })
       }
     }),
-    acceptMultipleErrors: () => true,
   })
 
   if (submission.intent !== 'submit') {
