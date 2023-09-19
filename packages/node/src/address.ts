@@ -1,8 +1,5 @@
-import ecc from '@bitcoinerlab/secp256k1'
-import BIP32Factory from 'bip32'
-import * as bitcoin from 'bitcoinjs-lib'
-
-const bip32 = BIP32Factory(ecc)
+// @ts-expect-error - this lib doesn't have any type definition
+import {addressFromExtPubKey} from '@swan-bitcoin/xpub-lib'
 
 /**
  * Derive a bitcoin address from an Extended Public Key (XPUB) at a given index and
@@ -21,22 +18,22 @@ export function derive(
 ): string {
   const network =
     environment === 'production'
-      ? bitcoin.networks.bitcoin
+      ? 'mainnet'
       : environment === 'test'
-      ? bitcoin.networks.testnet
-      : bitcoin.networks.regtest
+      ? 'testnet'
+      : 'testnet'
 
-  const hdNode = bip32.fromBase58(xpub, network)
-  const child = hdNode.derive(index)
-
-  const {address} = bitcoin.payments.p2pkh({
-    pubkey: child.publicKey,
+  const r = addressFromExtPubKey({
+    extPubKey: xpub,
     network,
+    keyIndex: index,
   })
 
-  if (!address) {
-    throw new Error('Could not derive address')
+  if (!r) {
+    throw new Error(
+      'Could not derive address.\n\nCheck if the environment is consistent with the Extended Public Key.',
+    )
   }
 
-  return address
+  return r.address as string
 }

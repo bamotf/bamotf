@@ -180,6 +180,7 @@ export async function listUnspent(wallet: string): Promise<
   return await cmd({
     method: 'listunspent',
     wallet,
+    params: {minconf: 0},
   })
 }
 
