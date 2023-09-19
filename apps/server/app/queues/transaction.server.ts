@@ -53,18 +53,6 @@ export const queue = createQueue<QueueData>(
       throw new Error('No transactions found')
     }
 
-    // If there are no NEW transactions, reschedule the job
-    const oldTransactionIds = await prisma.transaction.findMany({
-      where: {paymentIntentId},
-      select: {id: true},
-    })
-    const hasNewItem = transactions.some(
-      transaction => !oldTransactionIds.find(({id}) => id === transaction.txid),
-    )
-    if (!hasNewItem) {
-      throw new Error('No new transactions found')
-    }
-
     logger.debug(
       `🟠 Address: ${format.cyan(paymentIntent.address)} has ${format.yellow(
         transactions.length,
@@ -109,12 +97,27 @@ export const queue = createQueue<QueueData>(
       }),
     )
 
+    // // If there are no NEW transactions, reschedule the job
+    // const oldTransactionIds = await prisma.transaction.findMany({
+    //   where: {paymentIntentId},
+    //   select: {id: true},
+    // })
+    // const hasNewItem = transactions.some(
+    //   transaction => !oldTransactionIds.find(({id}) => id === transaction.txid),
+    // )
+    // if (!hasNewItem) {
+    //   throw new Error('No new transactions found')
+    // }
+
     const isPaid = isPaymentIntentPaid({
       ...paymentIntent,
       transactions: savedTransactions,
     })
 
     if (!isPaid) {
+      if (paymentIntent.status === 'processing') {
+        throw new Error('Nothing changed')
+      }
       await updatePaymentIntentStatus(paymentIntentId, 'processing')
       throw new Error('Payment not confirmed yet')
     }

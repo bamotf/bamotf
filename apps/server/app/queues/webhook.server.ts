@@ -43,7 +43,7 @@ export const queue = createQueue<QueueData>(QUEUE_ID, async job => {
   }
 
   const webhooks = await prisma.webhook.findMany({
-    where: {accountId},
+    where: {accountId, mode},
   })
 
   // Add a job for each webhook
