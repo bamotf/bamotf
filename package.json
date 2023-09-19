@@ -15,15 +15,15 @@
     "test:unit": "turbo test:unit",
     "test:integration": "turbo test:integration",
     "test:e2e": "turbo test:e2e",
-    "test:e2e:install": "pnpx playwright install chromium --with-deps",
     "typecheck": "turbo typecheck",
+    "validate": "turbo lint typecheck test:unit test:integration && turbo --filter=!donation build",
     "format": "prettier --write \"**/*.{js,jsx,json,yml,yaml,css,ts,tsx,md,mdx}\"",
     "prisma": "cd apps/server && pnpm prisma",
     "prepare": "node ./scripts/prepare.js",
     "changeset": "changeset",
     "release": "turbo build --filter=react --filter=node --filter=utils && changeset publish",
-    "validate": "turbo test:unit lint typecheck build",
-    "setup": "docker-compose up -d && pnpm install && pnpm prisma migrate reset --force && pnpm validate && pnpm test:e2e:install && turbo test:integration test:e2e"
+    "setup": "pnpm setup:install && docker-compose up -d && pnpm prisma migrate reset --force --skip-seed && pnpm validate && pnpm prisma db seed && turbo test:e2e",
+    "setup:install": "pnpm install && pnpm run --parallel test:e2e:install"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.1",

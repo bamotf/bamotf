@@ -15,6 +15,7 @@
     "test:integration": "vitest -c vitest.config.integration.ts run",
     "test:integration:watch": "vitest -c vitest.config.integration.ts",
     "test:e2e": "playwright test",
+    "test:e2e:install": "pnpm exec playwright install chromium --with-deps",
     "postinstall": "prisma generate"
   },
   "dependencies": {
