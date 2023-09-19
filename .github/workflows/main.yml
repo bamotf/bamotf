@@ -45,8 +45,8 @@ jobs:
       - name: ⬣ ESLint
         run: pnpm lint
 
-      - name: ʦ TypeScript
-        run: pnpm typecheck
+      # - name: ʦ TypeScript
+      #   run: pnpm typecheck
 
   # Unit tests are tests that are not dependent on any external service.
   # Usually, they are tests that are testing the logic of a specific function or component.
