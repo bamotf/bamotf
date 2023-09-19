@@ -7,7 +7,7 @@
     "@remix-run/eslint-config": "^1.16.1",
     "eslint": "^8.42.0",
     "eslint-config-next": "13.0.0",
-    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-prettier": "^9.0.0",
     "eslint-config-turbo": "1.10.14",
     "eslint-plugin-react": "7.31.8",
     "eslint-plugin-react-hooks": "^4.6.0"
