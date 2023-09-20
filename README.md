@@ -63,7 +63,7 @@ the [docs directory](./apps/docs).
 
 ## Repo Activity
 
-![Alt](https://repobeats.axiom.co/api/embed/84bb2aa5366b8bbd73d859914d8d655ac65ce02a.svg 'Repobeats analytics image')
+![Alt](https://repobeats.axiom.co/api/embed/8fef936a6bf8f6e503c5b6c6cb746fc1b1ae504e.svg 'Repobeats analytics image')
 
 <!-- CONTRIBUTING -->
 
