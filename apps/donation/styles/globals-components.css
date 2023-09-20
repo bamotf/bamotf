@@ -1,0 +1,10 @@
+@layer components {
+  .gradients-hero {
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  .text-wrap-balance {
+    text-wrap: balance;
+  }
+}

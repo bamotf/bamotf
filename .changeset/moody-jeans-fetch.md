@@ -1,5 +1,4 @@
 ---
-'donation': patch
 '@bamotf/node': patch
 ---
 

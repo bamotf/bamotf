@@ -2,7 +2,6 @@ import React from 'react'
 import {links} from '@/config/links'
 import Link from 'next/link'
 
-import style from './hero.module.css'
 import {Logo} from './logo'
 
 export function Hero() {
@@ -11,7 +10,7 @@ export function Hero() {
       <div className="z-50 flex flex-col items-center justify-center gap-5 px-6 text-center lg:gap-6">
         <Logo className="w-[160px] md:w-[200px]" />
         <h1
-          className={`bg-gradient-to-b from-black to-[#555] dark:from-white dark:to-[#aaa] ${style.gradients_hero} ${style.text_balance} font-extrabold tracking-[-0.04em] leading-none text-[40px] md:text-5xl lg:text-[80px] max-w-lg md:max-w-xl lg:max-w-4xl text-center text-transparent`}
+          className={`bg-gradient-to-b from-black to-[#555] dark:from-white dark:to-[#aaa] gradients-hero text-wrap-balance font-extrabold tracking-[-0.04em] leading-none text-[40px] md:text-5xl lg:text-[80px] max-w-lg md:max-w-xl lg:max-w-4xl text-center text-transparent`}
         >
           The Bitcoin toolkit for developers
         </h1>

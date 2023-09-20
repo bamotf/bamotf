@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 
-import {links} from '../config/links'
+import {links} from '../../donation/config/links'
 import {Logo} from './logo'
 
 const navLinks = [
@@ -31,7 +31,10 @@ const navLinks = [
   },
   {
     title: 'Company',
-    items: [{name: 'Twitter', href: links.x}],
+    items: [
+      {name: 'Twitter', href: links.x},
+      {name: 'About', href: '/about'},
+    ],
   },
   {
     title: 'Legal',
