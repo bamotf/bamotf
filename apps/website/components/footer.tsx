@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 
-import {links} from '../../donation/config/links'
+import {links} from '../config/links'
 import {Logo} from './logo'
 
 const navLinks = [
