@@ -16,7 +16,7 @@
     "test:integration": "turbo test:integration",
     "test:e2e": "turbo test:e2e",
     "typecheck": "turbo typecheck",
-    "validate": "turbo lint typecheck test:unit test:integration && turbo --filter=!donation build",
+    "validate": "turbo lint typecheck test:unit test:integration && turbo --filter=!website build",
     "format": "prettier --write \"**/*.{js,jsx,json,yml,yaml,css,ts,tsx,md,mdx}\"",
     "prisma": "cd apps/server && pnpm prisma",
     "prepare": "node ./scripts/prepare.js",

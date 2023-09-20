@@ -31,7 +31,10 @@ const navLinks = [
   },
   {
     title: 'Company',
-    items: [{name: 'Twitter', href: links.x}],
+    items: [
+      {name: 'Twitter', href: links.x},
+      {name: 'About', href: '/about'},
+    ],
   },
   {
     title: 'Legal',
