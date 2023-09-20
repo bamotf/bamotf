@@ -1,0 +1,28 @@
+{
+  "name": "nextjs-donation",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --port 4000",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@bamotf/node": "latest",
+    "@bamotf/react": "latest",
+    "@bamotf/utils": "latest",
+    "@t3-oss/env-nextjs": "^0.6.1",
+    "@types/node": "20.6.2",
+    "@types/react": "18.2.22",
+    "@types/react-dom": "18.2.7",
+    "@vercel/kv": "^0.2.3",
+    "next": "13.5.1",
+    "pusher": "^5.1.3",
+    "pusher-js": "^8.3.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "typescript": "5.2.2",
+    "zod": "^3.22.2"
+  }
+}
