@@ -2,8 +2,6 @@
 
 # dependencies
 node_modules
-.pnp
-.pnp.js
 
 # testing
 coverage
@@ -37,7 +35,8 @@ yarn-error.log*
 docker/*/data
 
 # TypeScript
-tsconfig.tsbuildinfo
+*.tsbuildinfo
+next-env.d.ts
 
 # local Postgres data
 postgres-data
@@ -50,3 +49,6 @@ dist
 
 # Storybook stuff
 storybook-static
+
+# local env files
+.env*.local
