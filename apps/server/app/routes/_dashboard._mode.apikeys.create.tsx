@@ -78,7 +78,6 @@ export async function action({request}: DataFunctionArgs) {
       name,
       key,
       accountId: account.id,
-      // FIX: should come from query param
       mode,
     },
   })
