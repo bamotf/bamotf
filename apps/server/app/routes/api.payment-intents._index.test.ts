@@ -114,10 +114,10 @@ describe('[POST] /api/payment-intents', () => {
       expect(response.ok).toBeTruthy()
 
       // Simulate the payment in the background
-      // FIX: the bitcoin core should match the mode
       await bitcoinCore.simulatePayment({
         address,
         amount,
+        network: mode,
       })
 
       // Wait for the webhooks to be called
@@ -176,10 +176,10 @@ describe('[POST] /api/payment-intents', () => {
       })
 
       // Simulate the payment in the background
-      // FIX: the bitcoin core should match the mode
       await bitcoinCore.simulatePayment({
         address,
         amount: amountToPay,
+        network: mode,
       })
 
       // Wait for the webhook to be called
@@ -250,10 +250,11 @@ describe('[POST] /api/payment-intents', () => {
 
       // Simulate the payment to the last payment intent
       const lastPaymentIntent = paymentIntents[paymentIntents.length - 1]
-      // FIX: the bitcoin core should match the mode
+
       await bitcoinCore.simulatePayment({
         address: lastPaymentIntent.address,
         amount: lastPaymentIntent.amount,
+        network: mode,
       })
 
       // Wait for the webhook to be called

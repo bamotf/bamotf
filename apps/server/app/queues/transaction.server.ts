@@ -27,14 +27,9 @@ export const queue = createQueue<QueueData>(
   async job => {
     const {data: payload} = job
     const {paymentIntentId} = payload
-
-    const [transactions, paymentIntent] = await Promise.all([
-      // Check if the payment was made
-      listUnspent(paymentIntentId),
-      prisma.paymentIntent.findFirst({
-        where: {id: paymentIntentId},
-      }),
-    ])
+    const paymentIntent = await prisma.paymentIntent.findFirst({
+      where: {id: paymentIntentId},
+    })
 
     if (!paymentIntent) {
       throw new UnrecoverableError(
@@ -47,6 +42,19 @@ export const queue = createQueue<QueueData>(
         `Payment intent was canceled ${format.red(paymentIntentId)}`,
       )
     }
+
+    if (paymentIntent.mode === 'dev') {
+      throw new UnrecoverableError(
+        `Payment intent ${format.red(
+          paymentIntentId,
+        )} is in dev mode therefore should not be monitored`,
+      )
+    }
+
+    const transactions = await listUnspent({
+      wallet: paymentIntentId,
+      network: paymentIntent.mode,
+    })
 
     // If there are no transactions, reschedule the job
     if (!transactions.length) {
