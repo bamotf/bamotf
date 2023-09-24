@@ -3,7 +3,9 @@
   "changelog": "@changesets/cli/changelog",
   "commit": false,
   "privatePackages": {"tag": true, "version": true},
-  "fixed": [["@bamotf/*"]],
+  "fixed": [
+    ["@bamotf/server", "@bamotf/node", "@bamotf/react", "@bamotf/utils"]
+  ],
   "linked": [],
   "access": "public",
   "baseBranch": "main",
