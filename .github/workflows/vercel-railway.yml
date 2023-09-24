@@ -29,5 +29,5 @@ jobs:
 
       - name: Run vercel-env script
         run:
-          node scripts/vercel-env.mjs ${{github.event.action}}
+          node scripts/vercel.env.mjs ${{github.event.action}}
           ${{github.head_ref}} ${{github.event.number}}

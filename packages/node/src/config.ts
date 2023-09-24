@@ -1,7 +1,7 @@
 export type BamotfConfig = {
   /**
    * Hostname of the *bamotf* server.
-   * @default 'http://localhost:21000'
+   * @default 'http://localhost:21000' or loaded from `BAMOTF_SERVER_URL` environment variable.
    */
   baseURL?: string
 
