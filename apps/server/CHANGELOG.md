@@ -1,5 +1,26 @@
 # @bamotf/server
 
+## 0.1.0
+
+### Minor Changes
+
+- 49d7348: Add environment selector to allow devs to share the same server for
+  development, test and production data. `Development` environmnet will not be
+  connected to any bitcoin core so devs can simulate payments without having to
+  dealing with the network while leaving the `test` enviroment for the Bitcoin
+  testnet and `production` for the mainnet. This also introduces a new api
+  endpoint at `/api/payment-intents/:idOrAddress/simulate-payment` that allows
+  bypassing the payment checks during development. The simulate payment UI is
+  directly on the payment now.
+
+### Patch Changes
+
+- 85af7f2: Add extra colors and move components to named colors
+- d8927cf: Fix an error when the initial amount datatypes don't correspont to
+  the typescript types
+- d214075: chore: update vistest and close some security issues
+  - @bamotf/utils@0.1.0
+
 ## 0.0.2
 
 ### Patch Changes

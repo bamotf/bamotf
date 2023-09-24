@@ -1,6 +1,6 @@
 {
   "name": "@bamotf/utils",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "A typescript utility library to help with formatting and converting Bitcoin values.",
   "license": "MIT",
   "repository": {
