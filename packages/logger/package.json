@@ -1,5 +1,6 @@
 {
   "name": "logger",
+  "version": "0.0.0",
   "private": true,
   "sideEffects": false,
   "main": "./index.ts",
