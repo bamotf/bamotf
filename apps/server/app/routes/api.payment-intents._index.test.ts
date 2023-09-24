@@ -3,7 +3,8 @@ import {afterEach, beforeEach, describe, expect, test} from 'tests/base.fixture'
 import faker from 'tests/faker'
 import {server, waitForRequest} from 'tests/setup.integration'
 
-import {queue} from '~/queues/transaction.server'
+import {queue as transactionQueue} from '~/queues/transaction.server'
+import {queue as watchPIQueue} from '~/queues/watch-pi.server'
 import {getBtcAmountFromFiat} from '~/utils/price'
 import {action, loader} from './api.payment-intents._index'
 
@@ -114,21 +115,30 @@ describe('[POST] /api/payment-intents', () => {
       expect(response.ok).toBeTruthy()
 
       // Simulate the payment in the background
-      // FIX: the bitcoin core should match the mode
       await bitcoinCore.simulatePayment({
         address,
         amount,
+        network: mode,
       })
 
       // Wait for the webhooks to be called
 
       await Promise.all(webhookRequests)
 
-      // Make sure the job has been removed from the queue
-      const jobs = await queue.getJobs('completed')
       const data = await response.json()
-      const job = jobs.find(job => job.data.paymentIntentId === data.id)
-      expect(job).toBeTruthy()
+
+      // Make sure the job has been removed from the queue
+      const watchJobs = await watchPIQueue.getJobs('completed')
+      const watchJob = watchJobs.find(
+        job => job.data.paymentIntentId === data.id,
+      )
+      expect(watchJob).toBeTruthy()
+
+      const transactionJobs = await transactionQueue.getJobs('completed')
+      const transactionJob = transactionJobs.find(
+        job => job.data.paymentIntentId === data.id,
+      )
+      expect(transactionJob).toBeTruthy()
     })
 
     test('should accept payments with another currency', async ({
@@ -176,10 +186,10 @@ describe('[POST] /api/payment-intents', () => {
       })
 
       // Simulate the payment in the background
-      // FIX: the bitcoin core should match the mode
       await bitcoinCore.simulatePayment({
         address,
         amount: amountToPay,
+        network: mode,
       })
 
       // Wait for the webhook to be called
@@ -250,10 +260,11 @@ describe('[POST] /api/payment-intents', () => {
 
       // Simulate the payment to the last payment intent
       const lastPaymentIntent = paymentIntents[paymentIntents.length - 1]
-      // FIX: the bitcoin core should match the mode
+
       await bitcoinCore.simulatePayment({
         address: lastPaymentIntent.address,
         amount: lastPaymentIntent.amount,
+        network: mode,
       })
 
       // Wait for the webhook to be called

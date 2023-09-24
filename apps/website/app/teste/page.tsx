@@ -14,6 +14,7 @@ async function donate(formData: FormData) {
   if (!donate) return
 
   let index = await kv.incr(`donations-index`)
+  console.log('🔥 ~ ', {index})
   let address = bamotf.address.derive(
     env.XPUB,
     index,

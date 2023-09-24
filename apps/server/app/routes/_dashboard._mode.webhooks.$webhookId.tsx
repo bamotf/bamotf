@@ -65,6 +65,7 @@ export async function loader({request, params}: LoaderArgs) {
 // export async function action({request}: ActionArgs) {
 //   const userId = await requireUserId(request)
 //   const account = await getAccountByUser(userId)
+// const mode = await requireEnabledMode(request)
 
 //   const formData = await request.formData()
 
@@ -72,8 +73,7 @@ export async function loader({request, params}: LoaderArgs) {
 //     where: {
 //       id: formData.get('id') as string,
 //       accountId: account.id,
-//       // FIX: should come from query param
-//       mode: 'DEV',
+//       mode,
 //     },
 //   })
 

@@ -1,0 +1,33 @@
+# ℹ️ Railway still doesn't support sending the final URL to Vercel's preview
+# when the app gets deployed. So to workaround this, we always set the API_URL
+# on the vercel service when a PR gets opened or closed following the
+# ephemeral url pattern that railway has.
+#
+# See:
+# https://feedback.railway.app/feature-requests/p/push-static-endpoints-as-env-vars-to-vercel
+
+name: Vercel 🔗 Railway
+
+on:
+  pull_request:
+    types: [opened, reopened, closed]
+
+jobs:
+  sync-env:
+    name: Sync BAMOTF_SERVER_URL
+    runs-on: ubuntu-latest
+    env:
+      TOKEN: ${{ secrets.TURBO_TOKEN }}
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Run vercel-env script
+        run:
+          node scripts/vercel-env.mjs ${{github.event.action}}
+          ${{github.head_ref}} ${{github.event.number}}

@@ -1,7 +1,5 @@
 import {PrismaClient} from '@prisma/client'
 
-import {createSecret} from '~/utils/encryption.server'
-
 const prisma = new PrismaClient()
 
 async function main() {
@@ -13,11 +11,37 @@ async function main() {
 
   const {id: webhookId} = await prisma.webhook.create({
     data: {
-      url: 'http://localhost:3000/webhook/bamotf',
+      url: 'http://localhost:3001/webhook',
       accountId,
-      secret: createSecret(),
+      secret: 'prod-webhook-secret',
       mode: 'prod',
     },
+  })
+
+  await prisma.webhook.create({
+    data: {
+      url: 'http://localhost:3001/webhook',
+      accountId,
+      secret: 'test-webhook-secret',
+      mode: 'test',
+    },
+  })
+
+  await prisma.api.createMany({
+    data: [
+      {
+        accountId,
+        key: 'test-api-key',
+        name: '[seed] Test API Key',
+        mode: 'test',
+      },
+      {
+        accountId,
+        key: 'prod-api-key',
+        name: '[seed] Prod API Key',
+        mode: 'prod',
+      },
+    ],
   })
 
   console.time(`🦺 Created example payment intents`)

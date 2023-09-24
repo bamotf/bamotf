@@ -34,9 +34,7 @@ afterEach(() => server.resetHandlers())
 beforeEach(async () => {
   logger.debug('Resetting all services...')
 
-  await resetDb()
-  await resetQueues()
-  await resetBitcoinCore()
+  await Promise.all([resetDb(), resetQueues(), resetBitcoinCore()])
 })
 
 // HACK: Depending on the tools we need we might need to replicate this thing

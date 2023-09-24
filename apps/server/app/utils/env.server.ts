@@ -1,16 +1,11 @@
-import {ConnectionString} from 'connection-string'
-
 import {createSecret} from './encryption.server'
 import {z} from './zod'
 
-const STRING_REQUIRED = z.string().min(1, 'Required')
-const URL_REQUIRED = STRING_REQUIRED.url()
-const URL = z.string().url()
+const URL_SCHEMA = z.string().url()
+const URL_REQUIRED = URL_SCHEMA.min(1, 'Required')
 const BOOLEAN = z.preprocess(a => a === 'true', z.boolean())
-const CONNECTION_STRING = URL.transform(url => {
-  return new ConnectionString(url, {
-    protocol: 'https',
-  })
+const CONNECTION_STRING = URL_SCHEMA.transform(url => {
+  return new URL(url)
 })
 
 const envSchema = z.object({
@@ -60,7 +55,7 @@ const envSchema = z.object({
    * event happens in the server.
    * For example, when a payment is received, we send a webhook
    */
-  DEV_WEBHOOK_URL: URL.optional(),
+  DEV_WEBHOOK_URL: URL_SCHEMA.optional(),
 
   /**
    * This is the secret that we use to sign the webhook events
@@ -126,16 +121,16 @@ const refinedEnvSchema = envSchema.superRefine(
           DEV_API_KEY: string
           DEV_WEBHOOK_SECRET: string
           DEV_WEBHOOK_URL: string
-          MAINNET_BITCOIN_CORE_URL: ConnectionString | undefined
-          TESTNET_BITCOIN_CORE_URL: ConnectionString | undefined
+          MAINNET_BITCOIN_CORE_URL: URL | undefined
+          TESTNET_BITCOIN_CORE_URL: URL | undefined
         }
       | {
           DEV_MODE_ENABLED: false
           DEV_API_KEY: string | undefined
           DEV_WEBHOOK_SECRET: string | undefined
           DEV_WEBHOOK_URL: string | undefined
-          MAINNET_BITCOIN_CORE_URL: ConnectionString | undefined
-          TESTNET_BITCOIN_CORE_URL: ConnectionString | undefined
+          MAINNET_BITCOIN_CORE_URL: URL | undefined
+          TESTNET_BITCOIN_CORE_URL: URL | undefined
         }
     ) => {
     const {

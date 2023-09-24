@@ -11,9 +11,7 @@ import {format, logger} from 'logger'
 
 import {env} from './env.server'
 
-const BITCOIN_CORE_URL = `${env.MAINNET_BITCOIN_CORE_URL!.protocol}://${
-  env.MAINNET_BITCOIN_CORE_URL!.host
-}`
+export type SupportedNetworks = 'prod' | 'test'
 
 type BitcoinCoreResponse = {
   id: string
@@ -35,10 +33,12 @@ type BitcoinCoreResponse = {
  * Abstracts the Bitcoin Core RPC calls.
  */
 async function cmd({
+  network,
   method,
   params = {},
   wallet,
 }: {
+  network: SupportedNetworks
   method: string
   params?: object
   /**
@@ -46,20 +46,35 @@ async function cmd({
    */
   wallet?: string
 }) {
-  const address = `${BITCOIN_CORE_URL}${
+  let url: URL
+
+  switch (network) {
+    case 'prod':
+      if (!env.MAINNET_BITCOIN_CORE_URL) {
+        throw new Error('MAINNET_BITCOIN_CORE_URL is not defined')
+      }
+      url = env.MAINNET_BITCOIN_CORE_URL
+      break
+    case 'test':
+      if (!env.TESTNET_BITCOIN_CORE_URL) {
+        throw new Error('TESTNET_BITCOIN_CORE_URL is not defined')
+      }
+      url = env.TESTNET_BITCOIN_CORE_URL
+      break
+
+    default:
+      throw new Error(`Invalid network '${network}'`)
+  }
+
+  const address = `${url.origin}${
     wallet ? `/wallet/${encodeURIComponent(wallet)}` : ''
   }`
+
   const request = await fetch(address, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization:
-        'Basic ' +
-        btoa(
-          `${env.MAINNET_BITCOIN_CORE_URL!.user}:${
-            env.MAINNET_BITCOIN_CORE_URL!.password
-          }`,
-        ),
+      Authorization: 'Basic ' + btoa(`${url.username}:${url.password}`),
     },
     body: JSON.stringify({
       jsonrpc: '1.0',
@@ -87,7 +102,13 @@ async function cmd({
  * @param name
  * @returns
  */
-export async function createWatchOnlyWallet(name: string) {
+export async function createWatchOnlyWallet({
+  name,
+  network,
+}: {
+  name: string
+  network: SupportedNetworks
+}) {
   logger.silly(`🟠 Creating wallet '${format.yellow(name)}'`)
 
   return await cmd({
@@ -97,6 +118,7 @@ export async function createWatchOnlyWallet(name: string) {
       disable_private_keys: true,
       load_on_startup: true,
     },
+    network,
   })
 }
 
@@ -106,12 +128,19 @@ export async function createWatchOnlyWallet(name: string) {
  * @param address A Bitcoin address
  * @returns
  */
-export async function getDescriptor(address: string) {
+export async function getDescriptor({
+  address,
+  network,
+}: {
+  address: string
+  network: SupportedNetworks
+}) {
   logger.silly(`🟠 Getting descriptor for address '${format.yellow(address)}'`)
 
   const result = await cmd({
     method: 'getdescriptorinfo',
     params: {descriptor: `addr(${address})`},
+    network,
   })
 
   return result.descriptor as string
@@ -124,7 +153,10 @@ export async function getDescriptor(address: string) {
 export async function addWatchOnlyAddress({
   wallet,
   descriptor,
+  network,
+  timestamp,
 }: {
+  network: SupportedNetworks
   /**
    * The wallet name
    */
@@ -135,6 +167,7 @@ export async function addWatchOnlyAddress({
    * @see https://bitcoincore.org/en/doc/0.21.0/rpc/wallet/importdescriptors/
    */
   descriptor: string
+  timestamp: Date
 }) {
   logger.silly('🟠 Importing address into wallet in the Bitcoin Core')
 
@@ -145,11 +178,12 @@ export async function addWatchOnlyAddress({
       requests: [
         {
           desc: descriptor,
-          timestamp: 'now',
+          timestamp: (timestamp.getTime() / 1000) | 0,
           label: 'test-address',
         },
       ],
     },
+    network,
   })
 }
 
@@ -158,7 +192,10 @@ export async function addWatchOnlyAddress({
  * @param wallet wallet name
  * @returns
  */
-export async function listUnspent(wallet: string): Promise<
+export async function listUnspent(props: {
+  wallet: string
+  network: SupportedNetworks
+}): Promise<
   {
     txid: string
     vout: number
@@ -174,13 +211,13 @@ export async function listUnspent(wallet: string): Promise<
   }[]
 > {
   logger.silly(
-    `🟠 Requesting transactions from wallet ${format.magenta(wallet)}`,
+    `🟠 Requesting transactions from wallet ${format.magenta(props.wallet)}`,
   )
 
   return await cmd({
     method: 'listunspent',
-    wallet,
     params: {minconf: 0},
+    ...props,
   })
 }
 
@@ -189,9 +226,15 @@ export async function listUnspent(wallet: string): Promise<
  * @param wallet wallet name
  * @returns
  */
-export async function getBalance(wallet: string) {
+export async function getBalance({
+  wallet,
+  network,
+}: {
+  wallet: string
+  network: SupportedNetworks
+}) {
   logger.silly(`🟠 Getting balance for wallet ${format.magenta(wallet)}`)
-  const l = await listUnspent(wallet)
+  const l = await listUnspent({wallet, network})
   return l
     .filter(a => a.confirmations > 0)
     .reduce((acc, curr) => acc + curr.amount, 0)
@@ -204,12 +247,14 @@ export async function getBalance(wallet: string) {
 export async function simulatePayment({
   address,
   amount: providedAmount,
+  network,
 }: {
   address: string
   /**
    * Amount in satoshis
    */
   amount: bigint
+  network: SupportedNetworks
 }) {
   if (env.NODE_ENV !== 'test') {
     throw new Error(
@@ -227,7 +272,7 @@ export async function simulatePayment({
   )
 
   const wallet = 'test-wallet'
-  const balance = await getBalance(wallet)
+  const balance = await getBalance({wallet, network})
   if (amount > balance) {
     // TODO: mine a block in order to get some funds
     throw new Error('Insufficient funds')
@@ -247,12 +292,14 @@ export async function simulatePayment({
       amount,
       fee_rate: 25,
     },
+    network,
   })
 
   // getnewaddress from the wallet
   const testWalletAddress = await cmd({
     wallet: 'test-wallet',
     method: 'getnewaddress',
+    network,
   })
   logger.silly(
     `🟠 Mining a block to get the funds to the test wallet ${format.magenta(
@@ -267,6 +314,7 @@ export async function simulatePayment({
       nblocks: 1,
       address: testWalletAddress,
     },
+    network,
   })
 }
 
@@ -274,15 +322,25 @@ export async function simulatePayment({
  * Only for testing purposes.
  * @returns
  */
-export async function listWallets() {
-  return (await cmd({method: 'listwallets'})) as string[]
+export async function listWallets(network: SupportedNetworks) {
+  return (await cmd({method: 'listwallets', network})) as string[]
 }
 
 /**
- * Only for testing purposes.
+ * Removes the given wallet from the Bitcoin Core list of wallets.
  * @param wallet
  * @returns
  */
-export function unloadWallet(wallet: string) {
-  return cmd({method: 'unloadwallet', params: {wallet_name: wallet}})
+export function unloadWallet({
+  wallet,
+  network,
+}: {
+  wallet: string
+  network: SupportedNetworks
+}) {
+  return cmd({
+    method: 'unloadwallet',
+    params: {wallet_name: wallet, load_on_startup: false},
+    network,
+  })
 }

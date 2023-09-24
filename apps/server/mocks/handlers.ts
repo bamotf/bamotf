@@ -3,14 +3,23 @@ import {rest, type MockedRequest, type RestHandler} from 'msw'
 import {env} from '../app/utils/env.server'
 import {logMockedData, skip} from './utils'
 
-const BITCOIN_CORE_URL = `${env.MAINNET_BITCOIN_CORE_URL!.protocol}://${
-  env.MAINNET_BITCOIN_CORE_URL!.host
-}`
+const btcServers: Array<RestHandler<MockedRequest>> = []
+
+if (!env.TESTNET_BITCOIN_CORE_URL) {
+  // HACK: we need to skip the Bitcoin Core API connection during integration tests
+  // but, for now, theres not way to mock the connection string, so this makes the
+  // env variable required for the tests to pass.
+  throw new Error('TESTNET_BITCOIN_CORE_URL is not defined during tests')
+}
+
+// 🍚 Skip the Bitcoin Core API
+btcServers.push(rest.post(env.TESTNET_BITCOIN_CORE_URL.origin, skip))
+btcServers.push(
+  rest.post(`${env.TESTNET_BITCOIN_CORE_URL.origin}/wallet/:wallet_name`, skip),
+)
 
 export const handlers = [
-  // 🍚 Skip the Bitcoin Core API
-  rest.post(BITCOIN_CORE_URL, skip),
-  rest.post(`${BITCOIN_CORE_URL}/wallet/:wallet_name`, skip),
+  ...btcServers,
 
   // 💰 Mock the Price Endpoint
   rest.get(
