@@ -7,7 +7,6 @@ services:
       context: .
       dockerfile: apps/server/Dockerfile
     container_name: bamotf
-    restart: always
     environment:
       - REDIS_URL=redis://redis:6379
       - POSTGRES_URL=postgresql://johndoe:randompassword@postgres:5432
