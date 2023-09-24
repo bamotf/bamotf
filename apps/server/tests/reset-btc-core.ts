@@ -17,5 +17,8 @@ async function cleanWallets(network: SupportedNetworks) {
 }
 
 export default async function resetBitcoinCore() {
-  return await Promise.all([cleanWallets('prod'), cleanWallets('test')])
+  return await Promise.all([
+    // cleanWallets('prod'),
+    cleanWallets('test'),
+  ])
 }
