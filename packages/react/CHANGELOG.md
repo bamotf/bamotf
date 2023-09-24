@@ -1,5 +1,11 @@
 # @bamotf/react
 
+## 0.0.3
+
+### Patch Changes
+
+- @bamotf/utils@0.0.3
+
 ## 0.0.2
 
 ### Patch Changes

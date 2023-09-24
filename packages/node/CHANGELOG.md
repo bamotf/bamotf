@@ -1,5 +1,11 @@
 # @bamotf/node
 
+## 0.0.3
+
+### Patch Changes
+
+- 94ac7fd: Fix error while derivating old addresses (#73)
+
 ## 0.0.2
 
 ### Patch Changes

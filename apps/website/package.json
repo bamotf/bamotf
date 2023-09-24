@@ -39,5 +39,6 @@
     "tailwind-config": "workspace:*",
     "tsconfig": "workspace:*",
     "typescript": "^5.2.2"
-  }
+  },
+  "version": null
 }
