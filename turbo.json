@@ -28,7 +28,7 @@
       ]
     },
     "@bamotf/node#build": {
-      "env": ["PUBLISHING"]
+      "env": ["PUBLISHING", "BAMOTF_SERVER_URL"]
     },
     "lint": {
       "outputs": []
