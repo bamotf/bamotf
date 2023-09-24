@@ -11,6 +11,8 @@ const logger = winston.createLogger({
   ],
 })
 
+export type {Logger} from 'winston'
+
 export {
   /**
    * A logger tool that can be used to log messages to the logger service
