@@ -46,7 +46,6 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "cmdk": "^0.2.0",
-    "connection-string": "^4.3.6",
     "date-fns": "^2.30.0",
     "ecpair": "^2.1.0",
     "ioredis": "^5.2.3",
