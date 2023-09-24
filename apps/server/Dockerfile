@@ -70,7 +70,7 @@ COPY --from=deps /app/ .
 COPY ./config ./config
 
 # Build the project
-RUN pnpm build --filter=server...
+RUN pnpm build --filter=@bamotf/server...
 
 
 # STAGE 5
