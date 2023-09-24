@@ -26,7 +26,7 @@
     "setup:install": "pnpm install && pnpm run --parallel test:e2e:install"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.26.1",
+    "@changesets/cli": "^2.26.2",
     "@ianvs/prettier-plugin-sort-imports": "^4.1.0",
     "dotenv": "^16.1.0",
     "eslint": "8.49.0",
