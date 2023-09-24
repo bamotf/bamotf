@@ -1,6 +1,6 @@
 // This script is used to add/remove the API_URL env var on vercel
 // when a PR is opened/closed
-// It is used by the github action: .github/workflows/vercel-env.yml
+// It is used by the github action: .github/workflows/vercel-railway.yml
 //
 // See:
 // https://vercel.com/docs/rest-api#endpoints/projects/create-one-or-more-environment-variables
