@@ -36,5 +36,8 @@
     "@swan-bitcoin/xpub-lib": "^0.1.5",
     "axios": "^1.4.0",
     "secure-webhooks": "^0.3.0"
+  },
+  "peerDependencies": {
+    "@bamotf/utils": "^0.1.0"
   }
 }

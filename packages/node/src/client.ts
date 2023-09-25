@@ -2,6 +2,7 @@ import axios, {type AxiosInstance} from 'axios'
 
 import * as address from './address'
 import type {BamotfConfig} from './config'
+import {Currency} from './currency'
 import {UnauthorizedError} from './errors'
 import {parse} from './parse'
 import {PaymentIntents} from './payment-intents'
@@ -15,6 +16,7 @@ import * as webhooks from './webhooks'
 
 export class Bamotf {
   public paymentIntents: PaymentIntents
+  public currency: Currency
   private config: BamotfConfig
   private client: AxiosInstance
   public webhooks = webhooks
@@ -65,5 +67,6 @@ export class Bamotf {
     )
 
     this.paymentIntents = new PaymentIntents(this.client)
+    this.currency = new Currency(this.client)
   }
 }
