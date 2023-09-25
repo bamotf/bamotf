@@ -33,14 +33,17 @@ To make sure that the requests are coming from bamotf, you can validate the
 requests using the `WEBHOOK_SECRET` that you have set in your server. You can
 use the `bamotf.webhooks.constructEvent` method to validate the requests.
 
-```ts filename="app/api/routes.ts" copy
+```ts filename="app/webhook/bamotf/route.ts" copy
 import {bamotf} from '@/utils/bamotf'
 import {NextResponse} from 'next/server'
 
 export async function POST(request: Request) {
+  // TODO: add your secret here
+  const secret = 'my-secret'
+
   const rawBody = await request.text()
   const signatureHeader = request.headers.get('x-webhook-signature') || ''
-  const secret = process.env.WEBHOOK_SECRET!
+
   const {success, parsed} = bamotf.webhooks.constructEvent(
     rawBody,
     signatureHeader,

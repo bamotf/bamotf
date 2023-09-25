@@ -1,8 +1,10 @@
+import {Callout, Steps} from 'nextra/components'
+
 # Building a Simple Donation System with Bitcoin
 
 In this tutorial, we will demonstrate how to create a basic donation system
-using Bitcoin. The system allows users to donate to a specific address, and the
-status of each donation can be tracked in real time.
+using Bitcoin. The system allows users to pay to a specific address, and the
+status of each payment can be tracked in real time.
 
 ## Prerequisites
 
@@ -20,98 +22,6 @@ the following command:
 npx create-next-app@latest
 ```
 
-## Setting up Docker
-
-Let's start by setting up the Docker services required for the application.
-Create a `docker-compose.yml` file in the root directory of your project and
-paste the following:
-
-```yml filename="docker-compose.yml" copy
-version: '3.8'
-services:
-  bamotf:
-    image: bamotf/server:latest
-    restart: always
-    environment:
-      - REDIS_URL=redis://redis:6379
-      - POSTGRES_URL=postgresql://johndoe:randompassword@postgres:5432
-      - BITCOIN_CORE_URL=http://username:wc7eFmVwEeZCDYTMaOqxRnLWSR7aI76bGmHl6pRFtAU@bitcoin-core:18443
-    ports:
-      - 21000:21000
-    depends_on:
-      - postgres
-      - redis
-      - bitcoin-core
-
-  # Bitcoin-core for development
-  bitcoin-core:
-    image: bamotf/core-dev:latest
-    volumes:
-      - ./bitcoin-core:/home/bitcoin/.bitcoin
-
-  postgres:
-    image: postgres:latest
-    restart: always
-    environment:
-      - POSTGRES_USER=johndoe
-      - POSTGRES_PASSWORD=randompassword
-    volumes:
-      - ./postgres-data:/var/lib/postgresql/data
-
-  redis:
-    image: redis:latest
-```
-
-This configuration will run four docker services: bamotf, bitcoin-core,
-postgres, and redis. The bamotf service is our main service and it will interact
-with the other services.
-
-Remember to add Docker data directories to your `.gitignore` file to avoid
-pushing them to the repository:
-
-```bash filename=".gitignore" copy
-# docker images
-bitcoin-core
-postgres-data
-```
-
-You can start the Docker services by running:
-
-```bash copy
-docker-compose up -d
-```
-
-## Installing Required Packages
-
-We will use three packages from the bamotf library: @bamotf/react, @bamotf/node,
-and @bamotf/utils. Install these packages using the following command:
-
-```sh npm2yarn copy
-npm install --save @bamotf/react @bamotf/node @bamotf/utils
-```
-
-## Configuring bamotf
-
-Create a new file `utils/bamotf.ts` in your project directory:
-
-```ts filename="utils/bamotf.ts" copy
-import {Bamotf} from '@bamotf/node'
-
-const bamotf = new Bamotf(process.env.API_KEY!)
-
-export {bamotf}
-```
-
-In this file, we import the Bamotf class from `@bamotf/node`, instantiate it,
-and export the instance. We use the API key from the environment variables.
-
-Next, create a `.env.local` file in your root directory and add your API key:
-
-```bash filename=".env.local" copy
-# get your api key from https://localhost:21000/apikeys
-API_KEY=........
-```
-
 Ensure the experimental server action feature is enabled in your Next.js app.
 Add the following configuration to `next.config.js`:
 
@@ -126,69 +36,138 @@ const nextConfig = {
 module.exports = nextConfig
 ```
 
-## Creating Donation Page
+<Callout type="info">
+  `Server Action` is not required for bamotf to work, but it is required for
+  this tutorial.
+</Callout>
 
-Create a new page `app/page.tsx` to handle the donation flow:
+## Setting up the Application
+
+<Steps>
+### Start up bamotf
+
+Let's start by setting up the Docker services required for bamotf. Create a
+`docker-compose.yml` file in the root directory of your project and paste the
+following:
+
+```yml filename="docker-compose.yml" copy
+version: '3.8'
+services:
+  bamotf:
+    image: bamotf/server:latest
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - POSTGRES_URL=postgresql://johndoe:randompassword@postgres:5432
+      - DEV_MODE_ENABLED=true
+      - DEV_API_KEY=my-key
+      - DEV_WEBHOOK_URL=http://host.docker.internal:3000/webhook/bamotf
+      - DEV_WEBHOOK_SECRET=my-secret
+    ports:
+      - 21000:21000
+    depends_on:
+      - postgres
+      - redis
+
+  postgres:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=johndoe
+      - POSTGRES_PASSWORD=randompassword
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:latest
+```
+
+This configuration will run docker services: bamotf, postgres, and redis. The
+bamotf service is our main service and it will interact with the other services.
+
+You can start the Docker services by running:
+
+```bash copy
+docker-compose up -d
+```
+
+Remember to add Docker data directories to your `.gitignore` file to avoid
+pushing them to the repository:
+
+```bash filename=".gitignore" copy
+# docker images
+bitcoin-core
+postgres-data
+```
+
+### Install required packages
+
+We will use three packages from the bamotf library: @bamotf/react, @bamotf/node,
+and @bamotf/utils. Install these packages using the following command:
+
+```sh npm2yarn copy
+npm install --save @bamotf/react @bamotf/node
+```
+
+### Configuring bamotf
+
+Create a new file `utils/bamotf.ts` in your project directory:
+
+```ts filename="utils/bamotf.ts" copy
+import {Bamotf} from '@bamotf/node'
+
+// TODO: Replace with your API key
+const bamotf = new Bamotf('my-key')
+
+export {bamotf}
+```
+
+### Creating Payment Flow
+
+Replace your `app/page.tsx` with this code to create simple payment form:
 
 ```tsx filename="app/page.tsx" copy
 import {bamotf} from '@/utils/bamotf'
 import {redirect} from 'next/navigation'
 
+const donate = async () => {
+  'use server'
+
+  // Addresses are unique to each payment. You normally want this index to
+  // come from your database, but for this example we'll just use 0 for
+  // creating one payment intent.
+  const index = 0
+  // TODO: Replace with your XPUB
+  const xpub =
+    'tpubD6NzVbkrYhZ4XkJSgrMFnNTX9yThvRVCaBTeXhXMC54PfJ9Y8uwzLNQcT53fCW2ADemefH1ADEX7CeyjnkBNws7NoP7nfjKo93wBNQuRVMw'
+
+  const address = await bamotf.address.derive(xpub, index, 'development')
+  const pi = await bamotf.paymentIntents.create({
+    amount: 1000,
+    currency: 'USD',
+    address,
+  })
+
+  return redirect(`/${pi.id}`)
+}
+
 export default async function Home() {
-  const donate = async () => {
-    'use server'
-
-    // Addresses are unique to each payment. You normally want this index to
-    // come from your database, but for this example we'll just use 0.
-    const index = 0
-    const address = await bamotf.address.derive(process.env.XPUB!, index)
-    const pi = await bamotf.paymentIntents.create({
-      amount: 1000,
-      currency: 'USD',
-      address,
-    })
-
-    return redirect(`/${pi.id}`)
-  }
-
   return (
-    <main className="flex min-h-screen items-center justify-center">
-      <form action={donate}>
-        <button className="bg-gray-500 rounded-md px-4 py-3" type="submit">
-          Donate $10
-        </button>
-      </form>
-    </main>
+    <form action={donate}>
+      <button type="submit">Donate $10</button>
+    </form>
   )
 }
 ```
 
-Don't forget to add your Bitcoin extended public key (XPUB) to your `.env.local`
-file:
-
-```bash filename=".env.local" copy
-# Use a regtest XPUB for development
-XPUB=tpubD6NzVbkrYhZ4WqDXB2micwhW8FN4LPM1tz3Jp2Bx8SnVsbcRQPSbePpV5MUwLxtVgaC6NE8h9ouV5pfw4d4YG4Waw44YggcBsP7fftmpQK8
-```
-
-Creating the Donation Status Page Create a new page `app/[id]/page.tsx` to
-display the status of a specific donation:
+Creating the Payment Status Page Create a new page `app/[id]/page.tsx` to
+display the status of a specific payment:
 
 ```tsx filename="app/[id]/page.tsx" copy
 import React from 'react'
 import {bamotf} from '@/utils/bamotf'
-import {notFound} from 'next/navigation'
 
 import {PaymentDetails} from './payment-details'
-import RefreshButton from './refresh-button'
 
 import '@bamotf/react/components.css'
-
-async function getPrice(currency: string) {
-  const response = await fetch(`http://localhost:21000/api/price/${currency}`)
-  const {price} = await response.json()
-  return price
-}
 
 export default async function DonationStatusPage({
   params,
@@ -196,33 +175,13 @@ export default async function DonationStatusPage({
   params: {id: string}
 }) {
   const pi = await bamotf.paymentIntents.retrieve(params.id)
+  const amountInBtc = await bamotf.currency.convert(pi)
 
-  if (!pi) {
-    notFound()
+  if (pi.status === 'succeeded') {
+    return <>Thank you of your donation</>
   }
 
-  // Get current price of 1 btc in a given the currency
-  const price = await getPrice(pi.currency)
-
-  return (
-    <main className="flex min-h-screen items-center justify-center">
-      {pi.status === 'succeeded' ? (
-        <div>Thank you of your donation 🥰</div>
-      ) : (
-        <div className="space-y-4">
-          <PaymentDetails
-            amount={pi.amount}
-            currency={pi.currency}
-            address={pi.address}
-            price={price}
-            label="Donation to bamotf"
-            message="Thank you for your donation!"
-          />
-          <RefreshButton />
-        </div>
-      )}
-    </main>
-  )
+  return <PaymentDetails amount={amountInBtc} address={pi.address} />
 }
 ```
 
@@ -235,35 +194,65 @@ file for the client-side components. Next, create the
 
 // Make the PaymentDetails component available only to the client
 // This is a Next.js workaround for exporting client-side components
-// See
-// https://nextjs.org/docs/getting-started/react-essentials#third-party-packages
+// See: https://nextjs.org/docs/getting-started/react-essentials#third-party-packages
 export {PaymentDetails} from '@bamotf/react'
 ```
 
-And the `app/[id]/refresh-button.tsx`:
+With these steps, your payment system is now set up. Users can make payments in
+Bitcoin and check their status in real time.
 
-```tsx filename="app/[id]/refresh-button.tsx" copy
-'use client'
+### Creating a Webhook
 
-import {useRouter} from 'next/navigation'
+To receive payment status updates, we need to create a webhook. Create a new
+file `app/webhook/bamotf/route.ts`:
 
-const RefreshButton = () => {
-  const router = useRouter()
-  const handleRefresh = () => {
-    router.refresh()
-  }
-  return (
-    <button className="text-blue-400" onClick={handleRefresh}>
-      Refresh
-    </button>
+```ts filename="app/webhook/bamotf/route.ts" copy
+import {bamotf} from '@/utils/bamotf'
+import {NextResponse} from 'next/server'
+
+export async function POST(request: Request) {
+  // TODO: add your secret here
+  const secret = 'my-secret'
+
+  const rawBody = await request.text()
+  const signatureHeader = request.headers.get('x-webhook-signature') || ''
+
+  const {success, parsed} = bamotf.webhooks.constructEvent(
+    rawBody,
+    signatureHeader,
+    secret,
   )
-}
 
-export default RefreshButton
+  if (!success) {
+    return NextResponse.json(
+      {success: false, error: 'Invalid signature'},
+      {status: 401, statusText: 'Unauthorized'},
+    )
+  }
+
+  const {
+    event,
+    data: {paymentIntent},
+  } = parsed
+
+  switch (event) {
+    case 'payment_intent.succeeded':
+      // here is where you update the database with the payment status
+      // and send a confirmation email to the user or push a web socket event to
+      // the client to update the UI
+      // ...
+
+      console.log(`✅ Payment intent succeeded: ${paymentIntent.id}`)
+      return NextResponse.json({success: true})
+
+    default:
+      console.error(`Unknown event: ${event}`)
+      return NextResponse.json({success: false, error: 'Unknown event'})
+  }
+}
 ```
 
-With these steps, your donation system is now set up. Users can make donations
-in Bitcoin and check their status in real time.
+</Steps>
 
 ## Running the Application
 
@@ -275,8 +264,8 @@ npm run dev
 
 This will start the Next.js development server and expose it on
 [`http://localhost:3000`](http://localhost:3000). You can now open the
-application in your browser and start the donation. You can visualise the
-payment status in real time by opening the application in two different tabs on
+application in your browser and start the payment. You can visualise the payment
+status in real time by opening the application in a different tab on
 [`http://localhost:21000`](http://localhost:21000). There's also a
-[simulate page](http://localhost:21000/simulate) where you can simulate a
-payment directly on bitcoin core. You can access it on .
+[simulate function](/docs/guides/testing-integration#simulate-a-payment) where
+you can simulate a payment during development.

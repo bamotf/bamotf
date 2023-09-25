@@ -25,17 +25,8 @@ A server that exposes a REST API to create and manage payments in Bitcoin.
 ## Configuration
 
 When starting you server, you need to certain environment variables for it to
-run:
-
-```ts
-POSTGRES_URL // is the url to the postgres database
-REDIS_URL // is the url to the redis server
-BITCOIN_CORE_URL // is the url to the bitcoin core node
-
-/* optionals */
-PRICE_DATA_SERVER_CLEARNET_URL // default: price data will be fetched from the bisq network
-SESSION_SECRET // default: a random string will be used
-```
+run properly. You can find a full list of environment variables
+[here](https://github.com/bamotf/bamotf/blob/main/.env.example).
 
 ## REST APIs
 

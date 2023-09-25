@@ -19,10 +19,8 @@ export default function PaymentPage() {
   return (
     // show a payment details for 10.00 BRL
     <PaymentDetails
-      amount={1000n}
-      currency="BRL"
+      amount={0.00017}
       address="bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwfxxxx"
-      price={69420.0}
       label="Donation to bamotf"
       message="Thank you for your donation!"
     />
@@ -36,16 +34,14 @@ CSS to format it.
 ```tsx {3}
 import {PaymentDetails} from '@bamotf/react'
 
-import '@bamotf/react/base.css'
+import '@bamotf/react/styles.css'
 
 export default function PaymentPage() {
   return (
     // show a payment details for 10.00 BRL
     <PaymentDetails
-      amount={1000n}
-      currency="BRL"
+      amount={0.00017}
       address="bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwfxxxx"
-      price={69420.0}
       label="Donation to bamotf"
       message="Thank you for your donation!"
     />
@@ -53,7 +49,7 @@ export default function PaymentPage() {
 }
 ```
 
-the `@bamotf/react/base.css` will import all the CSS needed format the
+the `@bamotf/react/styles.css` will import all the CSS needed format the
 components but sometimes you don't want it to change any other style in the page
 like when you already have Tailwind setup and working on your website. For that
 reason, the `@bamotf/react/components.css` is also exported by the package. It
@@ -101,10 +97,8 @@ export default function PaymentPage() {
   return (
     // show a payment details for 10.00 BRL
     <PaymentDetails
-      amount={1000n}
-      currency="BRL"
+      amount={0.42}
       address="bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwfxxxx"
-      price={69420.0}
       label="Donation to bamotf"
       message="Thank you for your donation!"
     />

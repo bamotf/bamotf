@@ -15,32 +15,41 @@ To create a payment intent with the libraries, you need to call the `create`
 method on the `PaymentIntent` class which may vary depending on the language
 you're using. Here's an example:
 
-<Tabs items={['javascript', 'typescript']}>
-    <Tab>
-    Make sure you have the **bamotf** Node library installed. See the [installation guide](/reference/node#installation) for more information.
+Make sure you have the **bamotf** Node library installed. See the
+[installation guide](/docs/reference/node#installation) for more information.
 
-    ```js
-    import bamotf from 'bamotf'
+```js
+import {Bamotf} from '@bamotf/node'
 
-    {/* FIXME: missing stuff */}
-    const pi = await bamotf.paymentIntents.create({
-            amount,
-            address,
-            currency: 'USD',
-            confirmations: 6,
-            description: 'Donation',
-            tolerance: 0.02,
-        })
-    ```
-    </Tab>
+// TODO: Replace with your API key
+const bamotf = new Bamotf('my-key')
 
-</Tabs>
+const pi = await bamotf.paymentIntents.create({
+  amount,
+  address,
+  currency: 'USD',
+  confirmations: 6,
+  description: 'Donation',
+  tolerance: 0.02,
+})
+```
 
 ## Creating a payment intent using the API
 
 To create a payment intent with the API, you need to make a `POST` request to
-the `/FIXME` endpoint. The request should include the following parameters:
-{/* FIXME: Maybe add the link to the openapi specs */}
+the `/api/payment-intents` endpoint. Here's an example:
 
-- `amount`: The amount of the payment intent in cents.
-- `currency`: The currency of the payment intent. {/* FIXME: missing stuff */}
+```bash copy
+curl -X POST 'https://localhost:21000' \
+    -H 'Content-Type: application/json' \
+    -d '{
+        "address": "your_address",
+        "amount": 100_000_000,
+        "confirmations": 6,
+        "currency": "BTC",
+        "description": "your_optional_description_value"
+    }'
+```
+
+More information about the parameters can be found in the
+[API reference](/docs/reference/server#requests).

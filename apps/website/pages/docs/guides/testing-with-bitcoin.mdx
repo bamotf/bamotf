@@ -79,11 +79,15 @@ services:
     ...
     environment:
       ...
-      - TESTNET_BITCOIN_CORE_URL=http://myrpcuser:myrpcpassword@localhost:18332
+      - TESTNET_BITCOIN_CORE_URL=http://myrpcuser:myrpcpassword@bitcoin-core-testnet:18332
 
   bitcoin-core-testnet:
     ...
 ```
+
+After that, you will need to create an [API Key](http://localhost:21000/apikeys)
+and [Webhook](http://localhost:21000/apikeys) to your test environment and add
+them to your application.
 
 ## Setting up Your Testnet Wallet
 
