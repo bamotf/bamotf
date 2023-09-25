@@ -70,7 +70,9 @@ COPY --from=deps /app/ .
 COPY ./config ./config
 
 # Build the project
-RUN pnpm build --filter=@bamotf/server...
+# TODO: turbo stopped working on docker, so I changed to use pnpm straight
+# RUN pnpm build --filter=server...
+RUN pnpm -C apps/server build
 
 
 # STAGE 5

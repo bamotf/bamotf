@@ -10,7 +10,10 @@ services:
     environment:
       - REDIS_URL=redis://redis:6379
       - POSTGRES_URL=postgresql://johndoe:randompassword@postgres:5432
-      - BITCOIN_CORE_URL=http://username:wc7eFmVwEeZCDYTMaOqxRnLWSR7aI76bGmHl6pRFtAU@bitcoin-core:18443
+      - DEV_MODE_ENABLED=true
+      - DEV_API_KEY=my-key
+      - DEV_WEBHOOK_URL=http://localhost:3001/webhook
+      - DEV_WEBHOOK_SECRET=my-secret
     ports:
       - 21000:21000
     depends_on:

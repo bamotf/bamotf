@@ -53,6 +53,9 @@ importers:
       '@conform-to/zod':
         specifier: ^0.9.0
         version: 0.9.0(@conform-to/dom@0.9.0)(zod@3.21.4)
+      '@faker-js/faker':
+        specifier: ^8.0.2
+        version: 8.0.2
       '@prisma/client':
         specifier: ^5.0.0
         version: 5.0.0(prisma@5.0.0)
@@ -195,9 +198,6 @@ importers:
         specifier: ^0.0.9
         version: 0.0.9(decimal.js@10.4.3)(zod@3.21.4)
     devDependencies:
-      '@faker-js/faker':
-        specifier: ^8.0.2
-        version: 8.0.2
       '@playwright/test':
         specifier: ^1.35.1
         version: 1.35.1
@@ -4200,7 +4200,7 @@ packages:
   /@faker-js/faker@8.0.2:
     resolution: {integrity: sha512-Uo3pGspElQW91PCvKSIAXoEgAUlRnH29sX2/p89kg7sP1m2PzCufHINd0FhTXQf6DYGiUlVncdSPa2F9wxed2A==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0, npm: '>=6.14.13'}
-    dev: true
+    dev: false
 
   /@fal-works/esbuild-plugin-global-externals@2.1.2:
     resolution: {integrity: sha512-cEee/Z+I12mZcFJshKcCqC8tuX5hG3s+d+9nZ3LabqKF1vKdF41B92pJVCBggjAGORAeOzyyDDKrZwIkLffeOQ==}

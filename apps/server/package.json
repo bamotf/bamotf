@@ -22,6 +22,7 @@
     "@bamotf/utils": "workspace:*",
     "@conform-to/react": "^0.9.0",
     "@conform-to/zod": "^0.9.0",
+    "@faker-js/faker": "^8.0.2",
     "@prisma/client": "^5.0.0",
     "@radix-ui/react-avatar": "^1.0.3",
     "@radix-ui/react-checkbox": "^1.0.4",
@@ -71,7 +72,6 @@
     "zod-prisma-utils": "^0.0.9"
   },
   "devDependencies": {
-    "@faker-js/faker": "^8.0.2",
     "@playwright/test": "^1.35.1",
     "@remix-run/dev": "^1.19.2",
     "@types/bcryptjs": "^2.4.2",
