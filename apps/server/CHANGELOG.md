@@ -1,5 +1,12 @@
 # @bamotf/server
 
+## 0.1.1
+
+### Patch Changes
+
+- Updated dependencies [4a8ff4b]
+  - @bamotf/utils@0.1.1
+
 ## 0.1.0
 
 ### Minor Changes

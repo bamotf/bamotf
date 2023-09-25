@@ -1,5 +1,18 @@
 # @bamotf/node
 
+## 0.1.1
+
+### Patch Changes
+
+- 5f12736: - Added `currency.toBitcoin` to get the bitcoin value of a currency
+  amount
+
+  - Added `currency.getBitcoinPrice` to get the price of 1 BTC in the given
+    currency
+
+- Updated dependencies [4a8ff4b]
+  - @bamotf/utils@0.1.1
+
 ## 0.1.0
 
 ### Patch Changes

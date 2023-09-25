@@ -1,6 +1,6 @@
 {
   "name": "@bamotf/node",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A convenient access to the bamotf API from applications written in server-side JavaScript.",
   "license": "MIT",
   "repository": {
