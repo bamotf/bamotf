@@ -1,5 +1,13 @@
 # @bamotf/react
 
+## 0.1.1
+
+### Patch Changes
+
+- 286d788: remove price related stuff from `<PaymentDetails />`
+- Updated dependencies [4a8ff4b]
+  - @bamotf/utils@0.1.1
+
 ## 0.1.0
 
 ### Patch Changes
