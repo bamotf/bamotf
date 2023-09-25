@@ -1,5 +1,13 @@
 # @bamotf/node
 
+## 0.1.2
+
+### Patch Changes
+
+- 09f327d: fix package exports
+- Updated dependencies [09f327d]
+  - @bamotf/utils@0.1.2
+
 ## 0.1.1
 
 ### Patch Changes
