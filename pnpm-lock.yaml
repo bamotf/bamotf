@@ -464,7 +464,7 @@ importers:
   packages/node:
     dependencies:
       '@bamotf/utils':
-        specifier: ^0.1.0
+        specifier: workspace:*
         version: link:../utils
       '@swan-bitcoin/xpub-lib':
         specifier: ^0.1.5
