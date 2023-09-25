@@ -23,10 +23,7 @@ export class Bamotf {
   public address = address
 
   constructor(apiKey: string, config?: BamotfConfig) {
-    const devBaseURL =
-      process.env.PUBLISHING === 'true'
-        ? 'http://localhost:21000'
-        : 'http://localhost:3000'
+    const devBaseURL = 'http://localhost:21000'
 
     const {
       baseURL = process.env.BAMOTF_SERVER_URL || devBaseURL,

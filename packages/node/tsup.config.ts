@@ -6,11 +6,4 @@ export default defineConfig({
   dts: true,
   minify: true,
   clean: true,
-  legacyOutput: true,
-  env:
-    process.env.PUBLISHING === 'true'
-      ? {
-          PUBLISHING: 'true',
-        }
-      : undefined,
 })
