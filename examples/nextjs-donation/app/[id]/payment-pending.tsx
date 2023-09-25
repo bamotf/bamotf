@@ -1,4 +1,5 @@
 import React from 'react'
+import {bamotf} from '@/utils/bamotf'
 import {env} from '@/utils/env'
 
 import {PaymentDetails} from './payment-details'
@@ -17,8 +18,7 @@ async function getPrice(currency: string) {
 export async function PaymentPending({
   id,
   amount,
-  currency,
-  address,
+  ...rest
 }: {
   id: string
   amount: bigint
@@ -30,13 +30,12 @@ export async function PaymentPending({
   const redirectUrl =
     env.VERCEL_ENV === 'development' ? developmentUrl : productionUrl
 
-  const price = await getPrice(currency)
+  const payableAmount = await bamotf.currency.toBitcoin(rest)
+
   return (
     <PaymentDetails
       amount={amount}
-      currency={currency}
-      address={address}
-      price={price}
+      address={payableAmount}
       label="Donation to bamotf"
       message="Thank you for your donation!"
       redirectUrl={redirectUrl}
