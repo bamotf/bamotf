@@ -263,7 +263,10 @@ export async function simulatePayment({
   }
 
   const convertedAmount = BigInt(providedAmount)
-  const amount = currency.toFraction({amount: convertedAmount, currency: 'BTC'})
+  const amount = currency.fractionate({
+    amount: convertedAmount,
+    currency: 'BTC',
+  })
 
   logger.silly(
     `🟠 Simulating payment of ${format.yellow(

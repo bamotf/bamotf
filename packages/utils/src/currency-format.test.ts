@@ -4,15 +4,15 @@ import {
   convertFromSats,
   convertToSats,
   format,
-  toFraction,
+  fractionate,
 } from './currency-format'
 
 test('toFraction', () => {
-  expect(toFraction({amount: 199n, currency: 'USD'})).toBe(1.99)
-  expect(toFraction({amount: 100n, currency: 'BRL'})).toBe(1)
-  expect(toFraction({amount: 100n, currency: 'JPY'})).toBe(100)
-  expect(toFraction({amount: 100n, currency: 'BDT'})).toBe(0.1)
-  expect(toFraction({amount: 100n, currency: 'KWD'})).toBe(0.1)
+  expect(fractionate({amount: 199n, currency: 'USD'})).toBe(1.99)
+  expect(fractionate({amount: 100n, currency: 'BRL'})).toBe(1)
+  expect(fractionate({amount: 100n, currency: 'JPY'})).toBe(100)
+  expect(fractionate({amount: 100n, currency: 'BDT'})).toBe(0.1)
+  expect(fractionate({amount: 100n, currency: 'KWD'})).toBe(0.1)
 })
 
 test('format', () => {

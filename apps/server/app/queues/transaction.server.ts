@@ -70,7 +70,7 @@ export const queue = createQueue<QueueData>(
     // Update the local database with transaction history
     const savedTransactions = await Promise.all(
       transactions.map(async tx => {
-        const amount = currency.convertToBigInt({
+        const amount = currency.removeFraction({
           amount: tx.amount,
           currency: 'BTC',
         })

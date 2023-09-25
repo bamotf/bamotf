@@ -23,23 +23,17 @@ export function format(x: any, y?: any): string {
     ...fractions,
   })
 
-  const formattedAmount = formatter.format(toFraction({amount, currency}))
+  const formattedAmount = formatter.format(fractionate({amount, currency}))
 
   return formattedAmount
-}
-
-type FractionOpts = {
-  amount: bigint
-  currency: CurrencyCode
 }
 
 /**
  * Converts a bigint amount to a fraction based on the currency decimal places
  *
- * @param opts
- * @returns
+ * @example USD 123456 -> USD 1234.56
  */
-export function toFraction(opts: FractionOpts) {
+export function fractionate(opts: {amount: bigint; currency: CurrencyCode}) {
   const {amount, currency} = opts
   const {maximumFractionDigits} = getFractionDigits(currency)
 
@@ -50,10 +44,23 @@ export function toFraction(opts: FractionOpts) {
 }
 
 /**
+ * Converts a fractionated amount to an integer based
+ *
+ * @example USD 1234.56 -> USD 123456
+ */
+export function removeFraction(opts: {amount: number; currency: CurrencyCode}) {
+  const {amount, currency} = opts
+  const {maximumFractionDigits} = getFractionDigits(currency)
+
+  const fractionMultiplier = 10 ** maximumFractionDigits
+  const priceInInt = Math.ceil(amount * fractionMultiplier)
+  return BigInt(priceInInt)
+}
+
+/**
  * Returns the minimum and maximum fraction digits for a given currency
  *
  * @param currency Currency code
- * @returns
  */
 export function getFractionDigits(currency: CurrencyCode): {
   minimumFractionDigits: number
@@ -100,6 +107,12 @@ export function getFractionDigits(currency: CurrencyCode): {
 
 /**
  * Calculate the number of satoshis are equally a given amount of fiat
+ * @deprecated
+ * use the literal instead
+ * ```js
+ * const ratio = Number(amount) / Number(price)
+ * return Math.ceil(ratio / 1e8) * 1e8
+ * ```
  */
 export function convertToSats(opts: {
   /**
@@ -115,13 +128,19 @@ export function convertToSats(opts: {
 }) {
   const {currency, amount, price} = opts
 
-  const priceInInt = convertToBigInt({currency, amount: price})
+  const priceInInt = removeFraction({currency, amount: price})
 
   return BigInt(Math.round((Number(amount) / Number(priceInInt)) * 1e8))
 }
 
 /**
  * Calculate the amount of fiat that is equally a given number of satoshis
+ * @deprecated
+ * use the literal instead
+ * ```js
+ * const ratio = Number(amount) / Number(price)
+ * return Math.ceil(ratio * 1e8) / 1e8
+ * ```
  */
 export function convertFromSats(opts: {
   /**
@@ -136,25 +155,7 @@ export function convertFromSats(opts: {
   price: number
 }) {
   const {currency, amount, price} = opts
-  const priceInInt = convertToBigInt({currency, amount: price})
+  const priceInInt = removeFraction({currency, amount: price})
 
   return BigInt(Math.round((Number(amount) * Number(priceInInt)) / 1e8))
-}
-
-/**
- * Convert a amount to an integer based maintaining the number of decimal places
- * for the given currency. This is useful to avoid floating point errors.
- */
-export function convertToBigInt({
-  currency,
-  amount,
-}: {
-  currency: CurrencyCode
-  amount: number
-}) {
-  const {maximumFractionDigits} = getFractionDigits(currency)
-
-  const fractionMultiplier = 10 ** maximumFractionDigits
-  const priceInInt = Math.ceil(amount * fractionMultiplier)
-  return BigInt(priceInInt)
 }
