@@ -20,7 +20,7 @@ export class Currency {
     const request = await this.client.get<{
       price: number
       currency: T
-    }>(`/api/price/${currency}`)
+    }>(`/price/${currency}`)
 
     return request.data
   }

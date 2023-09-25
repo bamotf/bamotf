@@ -11,10 +11,22 @@
   "publishConfig": {
     "access": "public"
   },
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist/**"
+  ],
   "bugs": "https://github.com/bamotf/bamotf/issues",
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
   "scripts": {
+    "dev": "tsup --watch",
     "build": "tsup",
     "lint": "eslint *.ts*",
     "typecheck": "tsc",
