@@ -1,7 +1,6 @@
 import React from 'react'
 import {currency as currencyUtil} from '@bamotf/utils'
 
-import type {CurrencyCode} from '../../../config/currency'
 import {Copyable} from './copyable'
 import {QRCode, type QRCodeProps} from './qr-code'
 
@@ -20,46 +19,26 @@ export interface PaymentDetailsProps
   /** Address where the payment should be sent */
   address: string
   /** Amount of the payment returned from the server */
-  amount: bigint
-  /** Currency code */
-  currency: CurrencyCode
-  /**
-   * The current price of the bitcoin
-   */
-  price: number
+  amount: number
 }
 
+/**
+ * Renders the payment details for a payment intent.
+ * Users can copy the address and amount to their clipboard or scan the QR code.
+ */
 export function PaymentDetails({
   address,
   amount,
-  currency,
-  price,
   label,
   message,
   redirectUrl,
 }: PaymentDetailsProps) {
-  let amountInBTC = currencyUtil.toFraction({amount, currency})
-
-  if (currency !== 'BTC') {
-    // TODO: this should be probably getting the price from the endpoint instead of
-    // receiving it as a prop
-    const converted = currencyUtil.convertToSats({
-      amount,
-      currency,
-      price,
-    })
-    amountInBTC = currencyUtil.toFraction({
-      amount: converted,
-      currency: 'BTC',
-    })
-  }
-
   return (
     <div className="payment-details">
       <h3>Payment Details</h3>
       <QRCode
         address={address}
-        amount={amountInBTC}
+        amount={amount}
         label={label}
         message={message}
         redirectUrl={redirectUrl}
@@ -72,7 +51,7 @@ export function PaymentDetails({
 
       <div className="copyable-field">
         <label>Amount</label>
-        <Copyable prefix="BTC" text={amountInBTC.toString()} />
+        <Copyable prefix="BTC" text={amount.toString()} />
       </div>
     </div>
   )
