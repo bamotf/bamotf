@@ -47,7 +47,7 @@ services:
     ports:
       - 18332:18332
     volumes:
-      - ./bitcoin:/home/bitcoin/.bitcoin
+      - ./docker-data/bitcoin:/home/bitcoin/.bitcoin
 ```
 
 Be aware that this may take some time to download and sync the blockchain. You

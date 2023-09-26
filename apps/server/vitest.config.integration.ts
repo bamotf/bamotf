@@ -10,7 +10,6 @@ process.env.LOG_LEVEL = 'error'
 process.env.MODE = 'development'
 
 export default defineProject({
-  // @ts-expect-error - vite-tsconfig-paths has a different vite version
   plugins: [tsconfigPaths()],
   test: {
     threads: false,
