@@ -1,5 +1,11 @@
 # @bamotf/utils
 
+## 0.1.2
+
+### Patch Changes
+
+- 09f327d: fix package exports
+
 ## 0.1.1
 
 ### Patch Changes
