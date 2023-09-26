@@ -18,7 +18,7 @@
     "autoprefixer": "10.4.16",
     "encoding": "^0.1.13",
     "logger": "workspace:*",
-    "next": "13.4.7",
+    "next": "13.5.3",
     "nextra": "latest",
     "nextra-theme-docs": "latest",
     "postcss": "8.4.30",
