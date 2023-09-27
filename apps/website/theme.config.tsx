@@ -137,6 +137,8 @@ const config: DocsThemeConfig = {
       }
     }
   },
+  primaryHue: 27,
+  primarySaturation: 96,
 }
 
 export default config

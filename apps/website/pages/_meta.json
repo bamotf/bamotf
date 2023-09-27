@@ -17,5 +17,10 @@
     "theme": {
       "typesetting": "article"
     }
+  },
+  "login": {
+    "title": "Login",
+    "href": "https://app.bamotf.com",
+    "type": "page"
   }
 }

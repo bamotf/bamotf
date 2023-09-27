@@ -334,6 +334,9 @@ importers:
       '@bamotf/utils':
         specifier: workspace:*
         version: link:../../packages/utils
+      '@bsmnt/scrollytelling':
+        specifier: ^0.2.8
+        version: 0.2.8(@types/react-dom@18.2.7)(@types/react@18.2.22)(gsap@3.12.2)(react-dom@18.2.0)(react@18.2.0)
       '@t3-oss/env-nextjs':
         specifier: ^0.6.0
         version: 0.6.0(typescript@5.2.2)(zod@3.22.2)
@@ -349,9 +352,15 @@ importers:
       encoding:
         specifier: ^0.1.13
         version: 0.1.13
+      gsap:
+        specifier: ^3.12.2
+        version: 3.12.2
       logger:
         specifier: workspace:*
         version: link:../../packages/logger
+      lucide-react:
+        specifier: ^0.279.0
+        version: 0.279.0(react@18.2.0)
       next:
         specifier: 13.5.3
         version: 13.5.3(@babel/core@7.22.9)(react-dom@18.2.0)(react@18.2.0)
@@ -3245,6 +3254,23 @@ packages:
 
   /@braintree/sanitize-url@6.0.2:
     resolution: {integrity: sha512-Tbsj02wXCbqGmzdnXNk0SOF19ChhRU70BsroIi4Pm6Ehp56in6vch94mfbdQ17DozxkL3BAVjbZ4Qc1a0HFRAg==}
+    dev: false
+
+  /@bsmnt/scrollytelling@0.2.8(@types/react-dom@18.2.7)(@types/react@18.2.22)(gsap@3.12.2)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-aHReL4HtBkWkqp+5uo7GFbfyzc3lT5iZzX7hTSI/alwazptusAkpk47JKOXPPGWHtLa13ttEumSn4B7gF44KoQ==}
+    peerDependencies:
+      gsap: '>=3'
+      react: '>=18'
+      react-dom: '>=18'
+    dependencies:
+      '@radix-ui/react-portal': 1.0.4(@types/react-dom@18.2.7)(@types/react@18.2.22)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-slot': 1.0.2(@types/react@18.2.22)(react@18.2.0)
+      gsap: 3.12.2
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    transitivePeerDependencies:
+      - '@types/react'
+      - '@types/react-dom'
     dev: false
 
   /@changesets/apply-release-plan@6.1.4:
@@ -12134,6 +12160,10 @@ packages:
       kind-of: 6.0.3
       section-matter: 1.0.0
       strip-bom-string: 1.0.0
+    dev: false
+
+  /gsap@3.12.2:
+    resolution: {integrity: sha512-EkYnpG8qHgYBFAwsgsGEqvT1WUidX0tt/ijepx7z8EUJHElykg91RvW1XbkT59T0gZzzszOpjQv7SE41XuIXyQ==}
     dev: false
 
   /gunzip-maybe@1.4.2:
