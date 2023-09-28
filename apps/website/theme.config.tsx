@@ -94,6 +94,28 @@ const config: DocsThemeConfig = {
         name="msapplication-square310x310logo"
         content="mstile-310x310.png"
       />
+      <meta
+        property="og:title"
+        content="bamotf - Bitcoin Payment Infrastructure"
+      />
+      <meta
+        property="og:description"
+        content="The first open source Payment Gateway."
+      />
+      <meta property="og:image" content="https://bamotf.com/hero.png" />
+      <meta property="og:url" content="https://bamotf.com" />
+      <meta property="og:type" content="website" />
+      <meta property="twitter:card" content="summary_large_image" />
+      <meta property="twitter:url" content="https://bamotf.com" />
+      <meta
+        property="twitter:title"
+        content="bamotf - Payment Infrastructure"
+      />
+      <meta
+        property="twitter:description"
+        content="The first open source Payment Gateway."
+      />
+      <meta property="twitter:image" content="https://bamotf.com/hero.png" />
     </>
   ),
   project: {
