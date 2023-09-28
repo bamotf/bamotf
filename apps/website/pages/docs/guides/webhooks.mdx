@@ -98,5 +98,7 @@ page of your server to see if the webhook event was received.
 
 ## List of webhook events available
 
-- `payment_intent.succeeded` - Occurs whenever a new PaymentIntent is
-  successfully created. See the Payment Intents API for more details.
+- `payment_intent.processing` - Occurs whenever a new Transaction is detected on
+  the Mempool.
+- `payment_intent.succeeded` - Occurs when the sum of all transactions for a
+  given PaymentIntent have reached the minimum confirmations.
