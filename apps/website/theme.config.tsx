@@ -81,6 +81,15 @@ const config: DocsThemeConfig = {
         href="favicon-128.png"
         sizes="128x128"
       />
+      <meta
+        name="description"
+        content="Open-Source Bitcoin payment processor for developers. Secure, private, and easy to set up."
+      />
+      <meta
+        name="keywords"
+        content="Bitcoin, Payments, bamotf, Open-source, Developers, Security, Privacy"
+      />
+      <meta name="author" content="bamotf" />
       <meta name="application-name" content="&nbsp;" />
       <meta name="msapplication-TileColor" content="#161616" />
       <meta name="msapplication-TileImage" content="mstile-144x144.png" />
@@ -96,11 +105,11 @@ const config: DocsThemeConfig = {
       />
       <meta
         property="og:title"
-        content="bamotf - Bitcoin Payment Infrastructure"
+        content="bamotf - Your Gateway to Seamless Bitcoin Payments"
       />
       <meta
         property="og:description"
-        content="The first open source Payment Gateway."
+        content="Elevate your app with bamotf - the first open-source Bitcoin payment processor crafted for developers. Ensure security, embrace privacy, and accelerate your project with our near zero-config solution."
       />
       <meta property="og:image" content="https://bamotf.com/og.png" />
       <meta property="og:url" content="https://bamotf.com" />
@@ -109,11 +118,11 @@ const config: DocsThemeConfig = {
       <meta property="twitter:url" content="https://bamotf.com" />
       <meta
         property="twitter:title"
-        content="bamotf - Payment Infrastructure"
+        content="bamotf - Your Gateway to Seamless Bitcoin Payments"
       />
       <meta
         property="twitter:description"
-        content="The first open source Payment Gateway."
+        content="Elevate your app with bamotf - the first open-source Bitcoin payment processor crafted for developers. Ensure security, embrace privacy, and accelerate your project with our near zero-config solution."
       />
       <meta property="twitter:image" content="https://bamotf.com/og.png" />
     </>

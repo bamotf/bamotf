@@ -49,7 +49,7 @@ export default function FeatureA() {
                   Create faster
                 </h2>
                 <p className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
-                  Everything you need to get payed
+                  Everything you need to get paid
                 </p>
                 <p className="mt-6 text-lg leading-8 text-neutral-700 dark:text-neutral-300">
                   bamotf integrates the whole infrastructure needed for starting
