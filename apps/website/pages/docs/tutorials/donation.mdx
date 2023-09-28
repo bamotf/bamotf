@@ -174,7 +174,7 @@ export default async function DonationStatusPage({
   params: {id: string}
 }) {
   const pi = await bamotf.paymentIntents.retrieve(params.id)
-  const amountInBtc = await bamotf.currency.convert(pi)
+  const amountInBtc = await bamotf.currency.toBitcoin(pi)
 
   if (pi.status === 'succeeded') {
     return <>Thank you of your donation</>
