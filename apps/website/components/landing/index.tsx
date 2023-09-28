@@ -14,6 +14,7 @@ export function LandingPage() {
         </div>
 
         <FeatureA />
+        <FeatureB />
 
         <CallToAction />
       </main>
