@@ -177,7 +177,7 @@ async function main() {
         amount: 13099,
         address: 'random-address-6',
         currency: 'BRL',
-        description: 'Payed a PI that requested in another currency',
+        description: 'Paid a PI that requested in another currency',
         status: 'succeeded',
         tolerance: 0.1,
         metadata: {
