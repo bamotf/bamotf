@@ -102,7 +102,7 @@ const config: DocsThemeConfig = {
         property="og:description"
         content="The first open source Payment Gateway."
       />
-      <meta property="og:image" content="https://bamotf.com/hero.png" />
+      <meta property="og:image" content="https://bamotf.com/og.png" />
       <meta property="og:url" content="https://bamotf.com" />
       <meta property="og:type" content="website" />
       <meta property="twitter:card" content="summary_large_image" />
@@ -115,7 +115,7 @@ const config: DocsThemeConfig = {
         property="twitter:description"
         content="The first open source Payment Gateway."
       />
-      <meta property="twitter:image" content="https://bamotf.com/hero.png" />
+      <meta property="twitter:image" content="https://bamotf.com/og.png" />
     </>
   ),
   project: {

@@ -85,10 +85,7 @@ export function Hero() {
             >
               Get started <span aria-hidden="true">→</span>
             </Link>
-            <a
-              href={links.github}
-              className="text-sm font-semibold leading-6 text-white"
-            >
+            <a href={links.github} className="text-sm font-semibold leading-6">
               GitHub <span aria-hidden="true">→</span>
             </a>
           </div>
