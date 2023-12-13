@@ -47,7 +47,7 @@
   "dependencies": {
     "@bamotf/utils": "workspace:*",
     "@swan-bitcoin/xpub-lib": "^0.1.5",
-    "axios": "^1.4.0",
+    "axios": "^1.6.0",
     "secure-webhooks": "^0.3.0"
   }
 }
